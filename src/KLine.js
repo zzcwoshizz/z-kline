@@ -2,6 +2,7 @@ import setData from './setData';
 import draw from './draw';
 import operation from './operation';
 import select from './select';
+import drawCsi from './drawCsi';
 export function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
@@ -17,6 +18,7 @@ KLine.prototype = {
     operation,
     setData,
     draw,
+    drawCsi,
     select,
     setDP,
     getMousePos,
@@ -70,7 +72,7 @@ function setOption(option) {
         yAxisWidth: option.yAxisWidth || 120,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || [],
+        csi2: option.csi2 || ['volume'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {
