@@ -139,11 +139,11 @@ function drawMacd(view1, view2) {
             break;
         }
         if (this.state.macd[i] > 0) {
-            ctx.fillStyle = this.colors.redColor;
-            ctx.strokeStyle = this.colors.redColor;
-        } else {
             ctx.fillStyle = this.colors.greenColor;
             ctx.strokeStyle = this.colors.greenColor;
+        } else {
+            ctx.fillStyle = this.colors.redColor;
+            ctx.strokeStyle = this.colors.redColor;
         }
         let y = view1.y + view1.h * 0.5;
         let w = view1.w / this.state.verticalRectNumber * 0.8;
