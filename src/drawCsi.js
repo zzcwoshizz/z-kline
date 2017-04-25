@@ -139,16 +139,16 @@ function drawMacd(view1, view2) {
             break;
         }
         if (this.state.macd[i] > 0) {
-            ctx.fillStyle = this.colors.redColor;
-            ctx.strokeStyle = this.colors.redColor;
-        } else {
             ctx.fillStyle = this.colors.greenColor;
             ctx.strokeStyle = this.colors.greenColor;
+        } else {
+            ctx.fillStyle = this.colors.redColor;
+            ctx.strokeStyle = this.colors.redColor;
         }
         let y = view1.y + view1.h * 0.5;
         let w = view1.w / this.state.verticalRectNumber * 0.8;
         let x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
-        let h = this.state.macd[i] / max * view1.h * 0.5;
+        let h = -this.state.macd[i] / max * view1.h * 0.5;
         if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
             ctx.fillRect(x, y, w, h);
         } else {

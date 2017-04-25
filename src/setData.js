@@ -114,7 +114,7 @@ export default function setData(data) {
         }
     });
     this.state.macd = this.state.dif.map((el, i) => {
-        let val = (this.state.dea[i] - el) * 2;
+        let val = (el - this.state.dea[i]) * 2;
         return this.setDP(val);
     });
     this.draw();
