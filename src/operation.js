@@ -190,6 +190,12 @@ function drawHairline(x, y, currentIndex) {
     if (flag === 0) {
         const yText = max - (max - min) * (y - view.y) / view.h;
         overCtx.fillText(this.option.overYFilter(yText), view.x + view.w, y);
+    } else if (flag === 1) {
+        view = this.views[3];
+        if (csiStr === 'volume') {
+            const yText = (1 - (y - view.y) / view.h) * (this.state.csiYAxisSector[0] - this.state.csiYAxisSector[1]);
+            overCtx.fillText(this.setDP(yText), view.x + view.w, y);
+        }
     }
     this.option.onSelect.call(this, {
         time: this.state.times[currentIndex + this.state.startIndex],
@@ -202,4 +208,15 @@ function drawHairline(x, y, currentIndex) {
         [this.option.csi + 30]: this.state[this.option.csi + 30][currentIndex + this.state.startIndex],
     }, 0);
 
+    let ma7Color = this.colors.ma7Color;
+    let ma30Color = this.colors.ma30Color;
+    if (csiStr === 'volume') {
+        let bar = this.topBar[1];
+        bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px">
+            VOLUME：${this.state.volume[currentIndex + this.state.startIndex]}</div>
+            <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma7Color}">
+            MA7：${this.state.volumeMa7[currentIndex + this.state.startIndex]}</div>
+            <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma30Color}">
+            MA30：${this.state.volumeMa30[currentIndex + this.state.startIndex]}</div>`;
+    }
 }
