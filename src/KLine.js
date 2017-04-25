@@ -10,7 +10,13 @@ export function KLine(ele, option) {
 KLine.prototype = {
     setOption,
     setData,
+    setDP,
 };
+
+// 控制小数位数
+function setDP(num) {
+    return Math.abs(num) > 1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+}
 
 function setOption(option) {
     if (option.width === undefined || option.widh === null) {
