@@ -1,5 +1,6 @@
 export default function setData(data) {
     let times = [];
+    let timeStr = [];
     let start = [];
     let hi = [];
     let lo = [];
@@ -7,6 +8,7 @@ export default function setData(data) {
     let volume = [];
     data.forEach(d => {
         times.push(d[0]);
+        timeStr.push(this.option.timeFilter(d[0]));
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
@@ -19,6 +21,7 @@ export default function setData(data) {
         verticalRectNumber: 50,
         isDown: false,
         times,
+        timeStr,
         start,
         hi,
         lo,

@@ -14,6 +14,7 @@ function drawKLine() {
     const theme = this.option.theme;
 
     const times = this.state.times;
+    const timeStr = this.state.timeStr;
     const start = this.state.start;
     const hi = this.state.hi;
     const lo = this.state.lo;
@@ -52,47 +53,59 @@ function drawKLine() {
         if (i >= times.length) {
             break;
         }
-        ctx.fillText(this.option.timeFilter(times[i]), view1.x + (i - this.state.startIndex) / this.state.verticalRectNumber * view1.w, this.height - 7);
+        let x = view1.x + (i - this.state.startIndex) / this.state.verticalRectNumber * view1.w;
+        if (x > this.width || x < 0) {
+            continue;
+        }
+        let y = this.height - 7;
+        ctx.fillText(timeStr[i], x, y);
     }
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
+    ctx.strokeStyle = this.colors.redColor;
+    ctx.fillStyle = this.colors.redColor;
     for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
         if (i >= times.length) {
             break;
         }
-        ctx.strokeStyle = start[i] < close[i] ? this.colors.greenColor : this.colors.redColor;
-        ctx.fillStyle = start[i] < close[i] ? this.colors.greenColor : this.colors.redColor;
-        let x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-        let y = (max - Math.max(start[i], close[i])) / (max - min) * view1.h + view1.y;
-        let w = view1.w / this.state.verticalRectNumber * 0.8;
-        let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * view1.h;
-        if (close[i] < start[i]) {
+        if (close[i] <= start[i]) {
+            let x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+            let y = (max - Math.max(start[i], close[i])) / (max - min) * view1.h + view1.y;
+            let w = view1.w / this.state.verticalRectNumber * 0.8;
+            let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * view1.h;
             ctx.fillRect(x, y, w, h);
+            let x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            let y1 = (max - hi[i]) / (max - min) * view1.h + view1.y;
+            let x2 = x1;
+            let y2 = (max - lo[i]) / (max - min) * view1.h + view1.y;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+    }
+    ctx.strokeStyle = this.colors.greenColor;
+    ctx.fillStyle = this.colors.greenColor;
+    for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
+        if (i >= times.length) {
+            break;
         }
         if (close[i] > start[i]) {
+            let x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+            let y = (max - Math.max(start[i], close[i])) / (max - min) * view1.h + view1.y;
+            let w = view1.w / this.state.verticalRectNumber * 0.8;
+            let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * view1.h;
             ctx.fillRect(x, y, w, h);
-        }
-        if (close[i] == start[i]) {
+            let x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            let y1 = (max - hi[i]) / (max - min) * view1.h + view1.y;
+            let x2 = x1;
+            let y2 = (max - lo[i]) / (max - min) * view1.h + view1.y;
             ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + w, y);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
             ctx.stroke();
-            ctx.closePath();
         }
-
-        let x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        let y1 = (max - hi[i]) / (max - min) * view1.h + view1.y;
-        let x2 = x1;
-        let y2 = (max - lo[i]) / (max - min) * view1.h + view1.y;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x1, y);
-        ctx.stroke();
-        ctx.moveTo(x2, y2);
-        ctx.lineTo(x2, y + h);
-        ctx.stroke();
-        ctx.closePath();
     }
 
     if (this.option.csi === 'ma') {
@@ -111,7 +124,6 @@ function drawKLine() {
             ctx.lineTo(x, y);
         }
         ctx.stroke();
-        ctx.closePath();
 
         // ma7
         ctx.beginPath();
@@ -144,7 +156,6 @@ function drawKLine() {
             ctx.lineTo(x, y);
         }
         ctx.stroke();
-        ctx.closePath();
 
         // ema7
         ctx.beginPath();
