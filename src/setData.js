@@ -55,4 +55,6 @@ export default function setData(data) {
             }
         }),
     };
+
+    this.draw();
 }

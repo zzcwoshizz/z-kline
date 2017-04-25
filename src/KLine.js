@@ -1,4 +1,5 @@
 import setData from './setData';
+import draw from './draw';
 export function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
@@ -11,6 +12,7 @@ KLine.prototype = {
     setOption,
     init,
     setData,
+    draw,
     setDP,
 };
 
@@ -37,7 +39,7 @@ function setOption(option) {
         minKLineNumber: option.minKLineNumber || 20,
         yAxisWidth: option.yAxisWidth || 120,
         fontSize: option.fontSize || 14,
-        csi: option.csi || 'ema',
+        csi: option.csi || 'ma',
         csi2: option.csi2 || ['macd'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
@@ -54,6 +56,7 @@ function setOption(option) {
             return Number(d.toFixed(2));
         }),
     };
+    this.init();
 }
 
 function init() {
