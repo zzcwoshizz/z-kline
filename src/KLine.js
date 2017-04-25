@@ -1,20 +1,50 @@
 import setData from './setData';
 import draw from './draw';
+import operation from './operation';
+import select from './select';
 export function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
     }
     this.ele = ele;
     this.setOption(option);
+    this.operation();
 }
 
 KLine.prototype = {
     setOption,
     init,
+    operation,
     setData,
     draw,
+    select,
     setDP,
+    getMousePos,
+    isInLineView,
 };
+
+// 获取鼠标在canvas上的坐标点
+function getMousePos(e) {
+    let rect = e.target.getBoundingClientRect();
+    return {
+        x: (e.clientX - rect.left) * this.dpr,
+        y: (e.clientY - rect.top) * this.dpr
+    };
+}
+
+// 判断鼠标是否在${this.views}中
+function isInLineView(pos) {
+    const { x, y } = pos;
+    const view1 = this.views[0];
+    const view2 = this.views[2];
+    if (x >= view1.x && x < view1.x + view1.w && y >= view1.y && y < view1.y + view1.h) {
+        return 0;
+    } else if (x >= view2.x && x < view2.x + view2.w && y >= view2.y && y < view2.y + view2.h) {
+        return 1;
+    } else {
+        return false;
+    }
+}
 
 // 控制小数位数
 function setDP(num) {
@@ -40,7 +70,7 @@ function setOption(option) {
         yAxisWidth: option.yAxisWidth || 120,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['macd'],
+        csi2: option.csi2 || [],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {
