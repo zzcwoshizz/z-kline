@@ -126,6 +126,38 @@ function drawKLine() {
         }
         ctx.stroke();
     } else if (this.option.csi === 'ema') {
+        // ema30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (let i = this.state.startIndex, j = 0; j < this.state.verticalRectNumber; i++, j++) {
+            if (i >= this.state.times.length) {
+                break;
+            }
+            let x = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            let y = (max - this.state.ema30[i]) / (max - min) * view1.h + view1.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.closePath();
+
+        // ema7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (let i = this.state.startIndex, j = 0; j < this.state.verticalRectNumber; i++, j++) {
+            if (i >= this.state.times.length) {
+                break;
+            }
+            let x = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            let y = (max - this.state.ema7[i]) / (max - min) * view1.h + view1.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
     }
 
     // 画最高点，最低点

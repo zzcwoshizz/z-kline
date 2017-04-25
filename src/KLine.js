@@ -39,7 +39,7 @@ function setOption(option) {
         minKLineNumber: option.minKLineNumber || 20,
         yAxisWidth: option.yAxisWidth || 120,
         fontSize: option.fontSize || 14,
-        csi: option.csi || 'ma',
+        csi: option.csi || 'ema',
         csi2: option.csi2 || ['macd'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,

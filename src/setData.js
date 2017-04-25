@@ -55,6 +55,23 @@ export default function setData(data) {
             }
         }),
     };
-
+    this.state.ema30 = [];
+    this.state.close.forEach((el, i) => {
+        if (i === 0) {
+            this.state.ema30[i] = el;
+        } else {
+            let val = 2 / 31 * (this.state.close[i] - this.state.ema30[i - 1]) + this.state.ema30[i - 1];
+            this.state.ema30[i] = this.setDP(val);
+        }
+    });
+    this.state.ema7 = [];
+    this.state.close.forEach((el, i) => {
+        if (i === 0) {
+            this.state.ema7[i] = el;
+        } else {
+            let val = 2 / 8 * (this.state.close[i] - this.state.ema7[i - 1]) + this.state.ema7[i - 1];
+            this.state.ema7[i] = this.setDP(val);
+        }
+    });
     this.draw();
 }
