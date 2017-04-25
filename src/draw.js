@@ -4,6 +4,9 @@ export default function draw() {
     this.ctx.clearRect(0, 0, this.width, this.height);
     drawBackground.call(this);
     drawKLine.call(this);
+    if (this.option.csi2.length > 0) {
+        this.drawCsi();
+    }
 }
 
 function drawKLine() {
