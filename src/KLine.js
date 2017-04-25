@@ -72,7 +72,7 @@ function setOption(option) {
         yAxisWidth: option.yAxisWidth || 120,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['volume'],
+        csi2: option.csi2 || ['macd'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {
