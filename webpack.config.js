@@ -9,6 +9,7 @@ module.exports = {
     devServer: {
         publicPath: '/dist',
         host: '0.0.0.0',
+        disableHostCheck: true,
     },
     module: {
         rules: [{
