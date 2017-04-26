@@ -8,7 +8,9 @@ export default function setData(data) {
     let volume = [];
     data.forEach(d => {
         times.push(d[0]);
-        timeStr.push(this.option.timeFilter(d[0]));
+        if (!this.initial) {
+            timeStr.push(this.option.timeFilter(d[0]));
+        }
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
