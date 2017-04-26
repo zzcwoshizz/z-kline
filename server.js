@@ -13,7 +13,7 @@ app.use(cors({
 
 app.get('/data', function(req, res) {
     request({
-        url: 'https://k.sosobtc.com/data/period?symbol=okcoinbtccny&step=3600',
+        url: 'https://k.sosobtc.com/data/period?symbol=okcoinbtccny&step=60',
         method: 'GET',
         headers: {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36',
@@ -33,10 +33,10 @@ io.sockets.on('connection', function(socket) {
     });
     ws.on('open', function() {
         ws.send('420["market.subscribe","btc:okcoin"]');
+        setInterval(function() {
+            ws.send('3');
+        }, 3600);
         ws.on('message', function(data, flags) {
-            if (data == 2) {
-                ws.send('3');
-            }
             if (data.indexOf('update:trades') > -1) {
                 console.log(JSON.parse(data.slice(2, data.length))[1][0]);
                 socket.emit('update', JSON.parse(data.slice(2, data.length))[1][0]);

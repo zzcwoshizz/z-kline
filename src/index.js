@@ -12,7 +12,7 @@ fetch('http://localhost:3000/data').then(res => {
     socket.on('update', function(data) {
         let newTime = parseInt(data.date);
         let newPrice = parseInt(data.price);
-        if (newTime - json[json.length - 1][0] < 3600) {
+        if (newTime - json[json.length - 1][0] < 60) {
             let hi = Math.max(json[json.length - 1][2], newPrice);
             let lo = Math.min(json[json.length - 1][3], newPrice);
             let close = data.price;
@@ -22,6 +22,9 @@ fetch('http://localhost:3000/data').then(res => {
             json[json.length - 1][5] += data.amount;
             chart.setData(json);
             console.log(data);
+        } else {
+            json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
+            chart.setData(json);
         }
     });
 });
