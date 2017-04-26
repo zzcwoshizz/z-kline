@@ -1,5 +1,5 @@
 import { KLine } from './KLine.js';
-fetch('http://localhost:3000/data').then(res => {
+fetch('http://192.168.16.160:3000/data').then(res => {
     return res.json();
 }).then(json => {
     var chart = new KLine(document.getElementById('app'), {
@@ -9,7 +9,7 @@ fetch('http://localhost:3000/data').then(res => {
     });
     chart.setData(json);
     console.log(chart);
-    var socket = window.io.connect('http://localhost:3000');
+    var socket = window.io.connect('http://192.168.16.160:3000');
     socket.on('update', function(data) {
         let newTime = parseInt(data.date);
         let newPrice = parseInt(data.price);

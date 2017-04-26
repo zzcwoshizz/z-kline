@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:8080'],
+    origin: ['http://localhost:8080', 'http://192.168.16.160:8080'],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'token'],
     credentials: true,
