@@ -1,11 +1,11 @@
 let lastStartIndex = -1;
 let lastEndIndex = -1;
 let lastVerticalRectNumber = -1;
-export default function draw() {
+export default function draw(flag) {
     if (this.isDraw) {
         return;
     }
-    if (lastStartIndex === this.state.startIndex && lastEndIndex === this.state.endIndex && lastVerticalRectNumber === this.state.verticalRectNumber) {
+    if (lastStartIndex === this.state.startIndex && lastEndIndex === this.state.endIndex && lastVerticalRectNumber === this.state.verticalRectNumber && !flag) {
         return;
     }
     this.isDraw = true;
@@ -244,6 +244,8 @@ export function computAxis() {
     const close = this.state.close;
     const ma30 = this.state.ma30;
     const ma7 = this.state.ma7;
+    const ema30 = this.state.ema30;
+    const ema7 = this.state.ema7;
     const startIndex = this.state.startIndex;
     const endIndex = this.state.endIndex;
     const intervalY = this.option.intervalY;
@@ -257,8 +259,8 @@ export function computAxis() {
         if (i < startIndex || i >= endIndex) {
             return;
         }
-        let maxVal = Math.max(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i]);
-        let minVal = Math.min(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i]);
+        let maxVal = Math.max(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
+        let minVal = Math.min(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
         maxY = maxVal > maxY ? maxVal : maxY;
         minY = minVal < minY ? minVal : minY;
         let maxPriceVal = hi[i];
