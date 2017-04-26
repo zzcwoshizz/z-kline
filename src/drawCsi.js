@@ -17,7 +17,7 @@ function drawVolume(view1, view2) {
 
     const realVolume = [];
     this.state.volume.forEach((el, i) => {
-        if (i >= this.state.startIndex) {
+        if (i >= this.state.startIndex && i < this.state.endIndex) {
             realVolume.push(el);
         }
     });
@@ -42,7 +42,6 @@ function drawVolume(view1, view2) {
         ctx.moveTo(0, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.lineTo(view1.x + view1.w, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.stroke();
-        ctx.closePath();
     }
 
     ctx.setLineDash([]);
