@@ -1,4 +1,14 @@
+let lastStartIndex = -1;
+let lastEndIndex = -1;
+let lastVerticalRectNumber = -1;
 export default function draw() {
+    if (this.isDraw) {
+        return;
+    }
+    if (lastStartIndex === this.state.startIndex && lastEndIndex === this.state.endIndex && lastVerticalRectNumber === this.state.verticalRectNumber) {
+        return;
+    }
+    this.isDraw = true;
     this.state.yaxis = computAxis.call(this);
     this.option.onChange(this.state);
     this.ctx.clearRect(0, 0, this.width, this.height);
@@ -7,6 +17,10 @@ export default function draw() {
     if (this.option.csi2.length > 0) {
         this.drawCsi();
     }
+    this.isDraw = false;
+    lastStartIndex = this.state.startIndex;
+    lastEndIndex = this.state.endIndex;
+    lastVerticalRectNumber = this.state.verticalRectNumber;
 }
 
 function drawKLine() {
