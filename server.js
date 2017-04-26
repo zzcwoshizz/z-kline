@@ -34,6 +34,9 @@ io.sockets.on('connection', function(socket) {
     ws.on('open', function() {
         ws.send('420["market.subscribe","btc:okcoin"]');
         ws.on('message', function(data, flags) {
+            if (data == 2) {
+                ws.send('3');
+            }
             if (data.indexOf('update:trades') > -1) {
                 console.log(JSON.parse(data.slice(2, data.length))[1][0]);
                 socket.emit('update', JSON.parse(data.slice(2, data.length))[1][0]);
