@@ -24,7 +24,7 @@ function drawVolume(view1, view2) {
     const maxVolume = Math.max(...realVolume);
     this.csiYAxisSector = [maxVolume, 0];
     const n = (maxVolume * 0.25).toFixed(0).length;
-    const interval = Math.floor(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     const yAxis = [];
     for (let i = interval; i < maxVolume; i += interval) {
         yAxis.unshift(i);
