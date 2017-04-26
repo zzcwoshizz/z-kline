@@ -17,7 +17,7 @@ function drawVolume(view1, view2) {
 
     const realVolume = [];
     this.state.volume.forEach((el, i) => {
-        if (i >= this.state.startIndex) {
+        if (i >= this.state.startIndex && i < this.state.endIndex) {
             realVolume.push(el);
         }
     });
@@ -42,7 +42,6 @@ function drawVolume(view1, view2) {
         ctx.moveTo(0, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.lineTo(view1.x + view1.w, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.stroke();
-        ctx.closePath();
     }
 
     ctx.setLineDash([]);
@@ -53,8 +52,8 @@ function drawVolume(view1, view2) {
         }
         let x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
         let w = view1.w / this.state.verticalRectNumber * 0.8;
-        let h = realVolume[j] / maxVolume * view1.h;
-        let y = view1.y + view1.h - h;
+        let h = -realVolume[j] / maxVolume * view1.h;
+        let y = view1.y + view1.h;
         if (this.state.start[i] < this.state.close[i]) {
             ctx.fillStyle = this.colors.greenColor;
             ctx.fillRect(x, y, w, h);
@@ -134,28 +133,47 @@ function drawMacd(view1, view2) {
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
+    ctx.fillStyle = this.colors.greenColor;
+    ctx.strokeStyle = this.colors.greenColor;
     for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
         if (i >= this.state.times.length) {
             break;
         }
         if (this.state.macd[i] > 0) {
-            ctx.fillStyle = this.colors.greenColor;
-            ctx.strokeStyle = this.colors.greenColor;
-        } else {
-            ctx.fillStyle = this.colors.redColor;
-            ctx.strokeStyle = this.colors.redColor;
-        }
-        let y = view1.y + view1.h * 0.5;
-        let w = view1.w / this.state.verticalRectNumber * 0.8;
-        let x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
-        let h = -this.state.macd[i] / max * view1.h * 0.5;
-        if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
-            ctx.fillRect(x, y, w, h);
-        } else {
-            if (w <= this.dpr * 4) {
+            let y = view1.y + view1.h * 0.5;
+            let w = view1.w / this.state.verticalRectNumber * 0.8;
+            let x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
+            let h = -this.state.macd[i] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
                 ctx.fillRect(x, y, w, h);
             } else {
-                ctx.strokeRect(x, y, w, h);
+                if (w <= this.dpr * 4) {
+                    ctx.fillRect(x, y, w, h);
+                } else {
+                    ctx.strokeRect(x, y, w, h);
+                }
+            }
+        }
+    }
+    ctx.fillStyle = this.colors.redColor;
+    ctx.strokeStyle = this.colors.redColor;
+    for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        if (this.state.macd[i] <= 0) {
+            let y = view1.y + view1.h * 0.5;
+            let w = view1.w / this.state.verticalRectNumber * 0.8;
+            let x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
+            let h = -this.state.macd[i] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
+                ctx.fillRect(x, y, w, h);
+            } else {
+                if (w <= this.dpr * 4) {
+                    ctx.fillRect(x, y, w, h);
+                } else {
+                    ctx.strokeRect(x, y, w, h);
+                }
             }
         }
     }

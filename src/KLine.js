@@ -3,6 +3,7 @@ import draw from './draw';
 import operation from './operation';
 import select from './select';
 import drawCsi from './drawCsi';
+import update from './update';
 export function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
@@ -23,6 +24,7 @@ KLine.prototype = {
     setDP,
     getMousePos,
     isInLineView,
+    update,
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -66,13 +68,12 @@ function setOption(option) {
         width: option.width,
         height: option.height,
         intervalY: option.intervalY || 200,
-        intervalX: option.intervalX || 50,
         maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2),
         minKLineNumber: option.minKLineNumber || 20,
-        yAxisWidth: option.yAxisWidth || 120,
+        yAxisWidth: option.yAxisWidth || 160,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['macd'],
+        csi2: option.csi2 || ['volume'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {
