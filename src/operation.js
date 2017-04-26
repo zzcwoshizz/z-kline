@@ -193,49 +193,43 @@ function drawHairline(x, y, currentIndex) {
     } else if (flag === 1) {
         view = this.views[3];
         if (csiStr === 'volume') {
-            const yText = (1 - (y - view.y) / view.h) * (this.state.csiYAxisSector[0] - this.state.csiYAxisSector[1]);
+            const yText = (1 - (y - view.y) / view.h) * (this.csiYAxisSector[0] - this.csiYAxisSector[1]);
             overCtx.fillText(this.setDP(yText), view.x + view.w, y);
         }
         if (csiStr === 'macd') {
-            const yText = this.state.csiYAxisSector[1] * (y - view.y) / view.h + this.state.csiYAxisSector[0] * (1 - (y - view.y) / view.h);
+            const yText = this.csiYAxisSector[1] * (y - view.y) / view.h + this.csiYAxisSector[0] * (1 - (y - view.y) / view.h);
             overCtx.fillText(this.setDP(yText), view.x + view.w, y);
         }
     }
-    setTimeout(() => {
-        this.option.onSelect.call(this, {
-            time: this.state.times[currentIndex + this.state.startIndex],
-            start: this.state.start[currentIndex + this.state.startIndex],
-            hi: this.state.hi[currentIndex + this.state.startIndex],
-            lo: this.state.lo[currentIndex + this.state.startIndex],
-            close: this.state.close[currentIndex + this.state.startIndex],
-            volume: this.state.volume[currentIndex + this.state.startIndex],
-            [this.option.csi + 7]: this.state[this.option.csi + 7][currentIndex + this.state.startIndex],
-            [this.option.csi + 30]: this.state[this.option.csi + 30][currentIndex + this.state.startIndex],
-        }, 0);
-    });
+    this.option.onSelect.call(this, {
+        time: this.state.times[currentIndex + this.state.startIndex],
+        start: this.state.start[currentIndex + this.state.startIndex],
+        hi: this.state.hi[currentIndex + this.state.startIndex],
+        lo: this.state.lo[currentIndex + this.state.startIndex],
+        close: this.state.close[currentIndex + this.state.startIndex],
+        volume: this.state.volume[currentIndex + this.state.startIndex],
+        [this.option.csi + 7]: this.state[this.option.csi + 7][currentIndex + this.state.startIndex],
+        [this.option.csi + 30]: this.state[this.option.csi + 30][currentIndex + this.state.startIndex],
+    }, 0);
 
     let ma7Color = this.colors.ma7Color;
     let ma30Color = this.colors.ma30Color;
     if (csiStr === 'volume') {
         let bar = this.topBar[1];
-        setTimeout(() => {
-            bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px">
+        bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px">
             VOLUME：${this.state.volume[currentIndex + this.state.startIndex]}</div>
             <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma7Color}">
             MA7：${this.state.volumeMa7[currentIndex + this.state.startIndex]}</div>
             <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma30Color}">
             MA30：${this.state.volumeMa30[currentIndex + this.state.startIndex]}</div>`;
-        });
     }
     if (csiStr === 'macd') {
         let bar = this.topBar[1];
-        setTimeout(() => {
-            bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.ma7Color}">
+        bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.ma7Color}">
             DIF：${this.state.dif[currentIndex + this.state.startIndex]}</div>
             <div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.ma30Color}">
             DEA：${this.state.dea[currentIndex + this.state.startIndex]}</div>
             <div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.macdColor}">
             MACD：${this.state.macd[currentIndex + this.state.startIndex]}</div>`;
-        });
     }
 }

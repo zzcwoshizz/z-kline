@@ -22,7 +22,7 @@ function drawVolume(view1, view2) {
         }
     });
     const maxVolume = Math.max(...realVolume);
-    this.state.csiYAxisSector = [maxVolume, 0];
+    this.csiYAxisSector = [maxVolume, 0];
     const n = (maxVolume * 0.25).toFixed(0).length;
     const interval = Math.floor(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     const yAxis = [];
@@ -114,7 +114,7 @@ function drawMacd(view1, view2) {
         min = min < val ? min : val;
     });
     max = max > Math.abs(min) ? max : Math.abs(min);
-    this.state.csiYAxisSector = [max, -max];
+    this.csiYAxisSector = [max, -max];
     const yAxis = [max, max * 2 / 3, max / 3, -max / 3, -max * 2 / 3, -max];
 
     ctx.textAlign = 'right';
