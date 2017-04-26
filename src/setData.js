@@ -134,5 +134,8 @@ export default function setData(data) {
         let val = (el - this.state.dea[i]) * 2;
         return this.setDP(val);
     });
-    this.draw();
+    if (!this.initial) {
+        this.draw();
+    }
+    this.initial = true;
 }

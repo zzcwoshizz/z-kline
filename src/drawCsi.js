@@ -53,8 +53,8 @@ function drawVolume(view1, view2) {
         }
         let x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
         let w = view1.w / this.state.verticalRectNumber * 0.8;
-        let h = realVolume[j] / maxVolume * view1.h;
-        let y = view1.y + view1.h - h;
+        let h = -realVolume[j] / maxVolume * view1.h;
+        let y = view1.y + view1.h;
         if (this.state.start[i] < this.state.close[i]) {
             ctx.fillStyle = this.colors.greenColor;
             ctx.fillRect(x, y, w, h);

@@ -5,6 +5,7 @@ fetch('http://localhost:3000/data').then(res => {
     var chart = new KLine(document.getElementById('app'), {
         width: document.body.clientWidth,
         height: document.body.clientHeight,
+        intervalY: 30,
     });
     chart.setData(json);
     console.log(chart);
@@ -20,11 +21,11 @@ fetch('http://localhost:3000/data').then(res => {
             json[json.length - 1][3] = lo;
             json[json.length - 1][4] = data.price;
             json[json.length - 1][5] += data.amount;
-            chart.setData(json);
+            chart.update(json);
             console.log(data);
         } else {
             json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
-            chart.setData(json);
+            chart.update(json);
         }
     });
 });

@@ -75,7 +75,7 @@ function drawKLine() {
             let y = (max - Math.max(start[i], close[i])) / (max - min) * view1.h + view1.y;
             let w = view1.w / this.state.verticalRectNumber * 0.8;
             let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * view1.h;
-            ctx.fillRect(x, y, w, h);
+            ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
             let x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
             let y1 = (max - hi[i]) / (max - min) * view1.h + view1.y;
             let x2 = x1;
@@ -97,7 +97,7 @@ function drawKLine() {
             let y = (max - Math.max(start[i], close[i])) / (max - min) * view1.h + view1.y;
             let w = view1.w / this.state.verticalRectNumber * 0.8;
             let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * view1.h;
-            ctx.fillRect(x, y, w, h);
+            ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
             let x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
             let y1 = (max - hi[i]) / (max - min) * view1.h + view1.y;
             let x2 = x1;
