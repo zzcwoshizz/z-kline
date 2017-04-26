@@ -5,7 +5,8 @@
   "main": "KLine.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --config ./webpack-build.config.js"
+    "build": "webpack --config ./webpack-build.config.js",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -30,10 +31,14 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.24.0",
     "babel-runtime": "^6.23.0",
+    "cors": "^2.8.3",
     "cross-env": "^3.2.4",
+    "es": "^0.5.2",
     "eslint": "^3.18.0",
     "eslint-loader": "^1.7.0",
     "eslint-plugin-babel": "^4.1.1",
+    "express": "^4.15.2",
+    "request": "^2.81.0",
     "webpack": "^2.3.2",
     "webpack-dev-server": "^2.4.2"
   }
