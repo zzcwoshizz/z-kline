@@ -49,7 +49,8 @@ function drawKLine() {
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
-    for (let i = this.option.intervalX + this.state.startIndex; i < this.state.verticalRectNumber + this.state.startIndex; i += this.option.intervalX) {
+    let ix = Math.ceil(this.state.verticalRectNumber * 0.25);
+    for (let i = ix + this.state.startIndex; i < this.state.verticalRectNumber + this.state.startIndex; i += ix) {
         if (i >= times.length) {
             break;
         }

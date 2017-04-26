@@ -66,7 +66,6 @@ function setOption(option) {
         width: option.width,
         height: option.height,
         intervalY: option.intervalY || 200,
-        intervalX: option.intervalX || 50,
         maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2),
         minKLineNumber: option.minKLineNumber || 20,
         yAxisWidth: option.yAxisWidth || 120,
