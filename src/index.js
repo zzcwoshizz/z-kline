@@ -19,12 +19,12 @@ fetch('http://192.168.16.160:3000/data').then(res => {
             let close = data.price;
             json[json.length - 1][2] = hi;
             json[json.length - 1][3] = lo;
-            json[json.length - 1][4] = data.price;
+            json[json.length - 1][4] = newPrice;
             json[json.length - 1][5] += data.amount;
             chart.update(json);
             console.log(data);
         } else {
-            json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
+            json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice + 200, data.amount]);
             chart.update(json);
         }
     });
