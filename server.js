@@ -26,21 +26,19 @@ app.get('/data', function(req, res) {
 
 
 const io = require('socket.io').listen(app.listen(3000));
-io.sockets.on('connection', function(socket) {
-    let wurl = 'wss://io.sosobtc.com/socket.io/?EIO=3&transport=websocket';
-    let ws = new WebSocket(wurl, [], {
-        perMessageDeflate: true
-    });
-    ws.on('open', function() {
-        ws.send('420["market.subscribe","btc:okcoin"]');
-        setInterval(function() {
-            ws.send('3');
-        }, 3600);
-        ws.on('message', function(data, flags) {
-            if (data.indexOf('update:trades') > -1) {
-                console.log(JSON.parse(data.slice(2, data.length))[1][0]);
-                socket.emit('update', JSON.parse(data.slice(2, data.length))[1][0]);
-            }
-        });
+let wurl = 'wss://io.sosobtc.com/socket.io/?EIO=3&transport=websocket';
+let ws = new WebSocket(wurl, [], {
+    perMessageDeflate: true
+});
+ws.on('open', function() {
+    ws.send('420["market.subscribe","btc:okcoin"]');
+    setInterval(function() {
+        ws.send('3');
+    }, 3600);
+    ws.on('message', function(data, flags) {
+        if (data.indexOf('update:trades') > -1) {
+            console.log(JSON.parse(data.slice(2, data.length))[1][0]);
+            io.emit('update', JSON.parse(data.slice(2, data.length))[1][0]);
+        }
     });
 });
