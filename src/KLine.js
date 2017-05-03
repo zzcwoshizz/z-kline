@@ -4,7 +4,8 @@ import operation from './operation';
 import select from './select';
 import drawCsi from './drawCsi';
 import update from './update';
-export function KLine(ele, option) {
+import Depth from './Depth';
+function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
     }
@@ -205,3 +206,10 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
 }
+
+export {
+    KLine,
+    Depth,
+};
+Depth.prototype.getMousePos = getMousePos;
+Depth.prototype.setDP = setDP;
