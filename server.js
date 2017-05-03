@@ -3,6 +3,16 @@ const cors = require('cors');
 const request = require('request');
 const WebSocket = require('ws');
 
+// let ws = new WebSocket('ws://192.168.16.49:8080/infoCenter/btc', [], {
+    // perMessageDeflate: true
+// });
+// ws.on('open', function() {
+    // ws.send('["market:add","btctrade:btc"]');
+    // ws.on('message', function(data) {
+        // console.log(data);
+    // });
+// });
+
 const app = express();
 app.use(cors({
     origin: ['http://localhost:8080', 'http://192.168.16.160:8080'],
@@ -10,6 +20,10 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'token'],
     credentials: true,
 }));
+
+app.post('/user', function(req, res) {
+    res.json({ success: true });
+});
 
 app.get('/data', function(req, res) {
     request({
@@ -39,6 +53,10 @@ ws.on('open', function() {
         if (data.indexOf('update:trades') > -1) {
             console.log(JSON.parse(data.slice(2, data.length))[1][0]);
             io.emit('update', JSON.parse(data.slice(2, data.length))[1][0]);
+        }
+        if (data.indexOf('update:depth') > -1) {
+            console.log(JSON.parse(data.slice(2, data.length))[1]);
+            io.emit('depth', JSON.parse(data.slice(2, data.length))[1]);
         }
     });
 });
