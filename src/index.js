@@ -6,6 +6,7 @@ fetch('http://192.168.16.160:3000/data').then(res => {
         width: 800,
         height: 400,
         intervalY: 30,
+        theme: 'light',
     });
     chart.setData(json);
     // var ws = new window.WebSocket('ws://192.168.16.49:8080/infoCenter/btc');

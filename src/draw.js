@@ -222,18 +222,27 @@ function drawKLine() {
 function drawBackground() {
     const ctx = this.ctx;
     const theme = this.option.theme;
+    ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
-    ctx.fillStyle = this.colors.timeBackground;
-    ctx.fillRect(0, this.views[2].y + this.views[2].h, this.width, this.height);
+    if (theme === 'dark') {
+        ctx.fillStyle = this.colors.timeBackground;
+        ctx.fillRect(0, this.views[2].y + this.views[2].h, this.width, this.height);
+    } else {
+        ctx.strokeStyle = this.colors.splitLine;
+        ctx.beginPath();
+        ctx.moveTo(0, this.views[2].y + this.views[2].h + 6);
+        ctx.lineTo(this.views[3].x + this.views[3].w, this.views[2].y + this.views[2].h + 6);
+        ctx.stroke();
+    }
 
     // 画分割线
     if (this.option.csi2.length > 0) {
         ctx.strokeStyle = this.colors.splitLine;
+        ctx.beginPath();
         ctx.moveTo(0, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
         ctx.lineTo(this.width, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
         ctx.stroke();
-        ctx.closePath();
     }
 }
 
