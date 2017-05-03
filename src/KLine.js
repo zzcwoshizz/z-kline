@@ -139,7 +139,7 @@ function init() {
 
     // 上下画图区域高度比
     if (this.option.csi2.length == 1) {
-        this.split = [6.5, 3.5];
+        this.split = [6, 4];
     } else {
         this.split = [10, 0];
     }
@@ -158,12 +158,12 @@ function init() {
         x: 20,
         y: 96 + (height - 120) * (this.split[0] / (this.split[0] + this.split[1])),
         w: width - 40 - yAxisWidth,
-        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 36
+        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 56
     }, {
         x: width - yAxisWidth - 20,
         y: 96 + (height - 120) * (this.split[0] / (this.split[0] + this.split[1])),
         w: yAxisWidth,
-        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 46
+        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 56
     }];
     this.views = views;
 

@@ -72,7 +72,7 @@ function drawKLine() {
         if (x > this.width || x < 0) {
             continue;
         }
-        let y = this.height - 7;
+        let y = this.height - 10;
         ctx.fillText(timeStr[i], x, y);
     }
 
@@ -225,14 +225,21 @@ function drawBackground() {
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
+
+    const marginTop = 16;
+    // 垂直分割线
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.beginPath();
+    ctx.moveTo(this.views[1].x, 0);
+    ctx.lineTo(this.views[3].x, this.views[3].y + this.views[3].h + marginTop);
+    ctx.stroke();
     if (theme === 'dark') {
         ctx.fillStyle = this.colors.timeBackground;
-        ctx.fillRect(0, this.views[2].y + this.views[2].h, this.width, this.height);
+        ctx.fillRect(0, this.views[2].y + marginTop + this.views[2].h, this.width, this.height);
     } else {
-        ctx.strokeStyle = this.colors.splitLine;
         ctx.beginPath();
-        ctx.moveTo(0, this.views[2].y + this.views[2].h + 6);
-        ctx.lineTo(this.views[3].x + this.views[3].w, this.views[2].y + this.views[2].h + 6);
+        ctx.moveTo(0, this.views[2].y + this.views[2].h + marginTop);
+        ctx.lineTo(this.views[3].x + this.views[3].w, this.views[2].y + this.views[2].h + marginTop);
         ctx.stroke();
     }
 
