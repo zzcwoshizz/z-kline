@@ -74,7 +74,7 @@ function setOption(option) {
         yAxisWidth: option.yAxisWidth || 160,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['volume'],
+        csi2: option.csi2 || ['macd'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {
@@ -144,49 +144,38 @@ function init() {
         this.split = [10, 0];
     }
     const yAxisWidth = this.option.yAxisWidth;
-    const views = [{
-        x: 20,
-        y: 60,
-        w: width - 40 - yAxisWidth,
-        h: (height - 100) * (this.split[0] / (this.split[0] + this.split[1])) - 36
-    }, {
-        x: width - yAxisWidth - 20,
-        y: 60,
+
+    const left = 20;
+    const right = 20;
+    const top = 20;
+    const bottom = 100;
+    const middle = 20;
+    let view1 = {
+        x: left,
+        y: top,
+        w: width - yAxisWidth - left - right - middle,
+        h: height * (this.split[0] / (this.split[0] + this.split[1])) - 10,
+    };
+    let view2 = {
+        x: view1.w + view1.x + middle,
+        y: view1.y,
         w: yAxisWidth,
-        h: (height - 100) * (this.split[0] / (this.split[0] + this.split[1])) - 36
-    }, {
-        x: 20,
-        y: 96 + (height - 120) * (this.split[0] / (this.split[0] + this.split[1])),
-        w: width - 40 - yAxisWidth,
-        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 56
-    }, {
-        x: width - yAxisWidth - 20,
-        y: 96 + (height - 120) * (this.split[0] / (this.split[0] + this.split[1])),
+        h: view1.h,
+    };
+    let view3 = {
+        x: view1.x,
+        y: view1.y + view1.h + middle * 0.5,
+        w: view1.w,
+        h: height - view1.h - middle * 0.5 - bottom,
+    };
+    let view4 = {
+        x: view2.x,
+        y: view3.y,
         w: yAxisWidth,
-        h: (height - 100) * (this.split[1] / (this.split[0] + this.split[1])) - 56
-    }];
+        h: view3.h,
+    };
+    const views = [view1, view2, view3, view4]
     this.views = views;
-
-    // 显示上部详细参数
-    var bar1 = document.createElement('div');
-    ele.appendChild(bar1);
-    bar1.style.width = width / this.dpr + 'px';
-    bar1.style.position = 'absolute';
-    bar1.style.color = this.option.theme == 'dark' ? '#ccc' : '#333';
-    bar1.style.userSelect = 'none';
-    bar1.style.cursor = 'default';
-
-    // 显示下部详细参数
-    var bar2 = document.createElement('div');
-    ele.appendChild(bar2);
-    bar2.style.width = width / this.dpr + 'px';
-    bar2.style.position = 'absolute';
-    bar2.style.top = views[2].y / this.dpr - 15 + 'px';
-    bar2.style.color = this.option.theme == 'dark' ? '#ccc' : '#333';
-    bar2.style.userSelect = 'none';
-    bar2.style.cursor = 'default';
-
-    this.topBar = [bar1, bar2];
 
     // 设置全局色彩
     const isDarkTheme = this.option.theme === 'dark';
