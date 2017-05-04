@@ -21,7 +21,7 @@ function drawVolume(view1, view2) {
             realVolume.push(el);
         }
     });
-    const maxVolume = Math.max(...realVolume) * 1.2;
+    const maxVolume = Math.max(...realVolume) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
     const n = (maxVolume * 0.25).toFixed(0).length;
     const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
@@ -30,14 +30,14 @@ function drawVolume(view1, view2) {
         yAxis.unshift(i);
     }
 
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 0; i < yAxis.length; i++) {
-        ctx.fillText(yAxis[i], view2.w + view2.x, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
+        ctx.fillText(yAxis[i], view2.x + 10 * this.dpr, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.beginPath();
         ctx.moveTo(0, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.lineTo(view2.x, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);

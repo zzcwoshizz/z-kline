@@ -48,8 +48,8 @@ export default function(data, flag) {
     overCtx.textAlign = 'left';
     overCtx.textBaseline = 'top';
     if (flag === 0) {
-        let x = 0;
-        let y = 0;
+        let x = 5;
+        let y = 5;
         for (let i = 0; i < Object.keys(data).length; i++) {
             let key = Object.keys(data)[i];
             let text;
@@ -59,22 +59,22 @@ export default function(data, flag) {
                 text = transformKey(key) + '：' + data[key];
             }
             if (overCtx.measureText(text).width + x + 40 > this.views[0].x + this.views[0].w) {
-                x = 0;
-                y += 36;
+                x = 5;
+                y += 40;
             }
             setStyle.call(this, key, overCtx);
             overCtx.fillText(text, x, y);
             x += overCtx.measureText(text).width + 40;
         }
     } else if (flag === 1) {
-        let x = this.views[2].x;
+        let x = 5;
         let y = this.views[2].y;
         for (let i = 0; i < Object.keys(data).length; i++) {
             let key = Object.keys(data)[i];
             let text = transformKey(key) + '：' + data[key];
             if (overCtx.measureText(text).width + x + 40 > this.views[0].x + this.views[0].w) {
-                x = this.views[2].x;
-                y += 36;
+                x = 5;
+                y += 40;
             }
             setStyle.call(this, key, overCtx);
             overCtx.fillText(text, x, y);

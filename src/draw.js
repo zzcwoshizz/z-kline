@@ -51,11 +51,11 @@ function drawKLine() {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     let lengthY = (max - min) / intervalY;
-    for (let i = 1; i < lengthY; i++) {
-        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + view2.w, i * intervalY / (max - min) * view2.h + view2.y);
+    for (let i = 0; i < lengthY; i++) {
+        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + 10 * this.dpr, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.beginPath();
         ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
@@ -290,8 +290,8 @@ export function computAxis() {
             minPrice = minPriceVal;
         }
     }
-    const n = ((maxPrice - minPrice) * 0.25).toFixed(0).length;
-    const intervalY = Math.ceil((maxPrice - minPrice) * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    const n = (maxY - minY).toFixed(0).length;
+    const intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     return {
         maxY,
         minY,
@@ -299,7 +299,7 @@ export function computAxis() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
-        max: maxY + intervalY - maxY % intervalY + intervalY,
+        max: maxY + 2 * intervalY - maxY % intervalY,
         min: minY - minY % intervalY - intervalY,
         intervalY,
     };
