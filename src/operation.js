@@ -163,9 +163,9 @@ function drawHairline(x, y, currentIndex) {
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'bottom';
     overCtx.fillStyle = this.colors.background;
-    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 40, overCtx.measureText(currentTime).width + 20 * this.dpr, 40 - this.dpr);
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 40, overCtx.measureText(currentTime).width + 20 * this.dpr, 40 - this.dpr);
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
     overCtx.fillStyle = this.colors.textColor;
     overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - 7);
 

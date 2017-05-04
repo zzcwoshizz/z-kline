@@ -41,6 +41,7 @@ function drawKLine() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
+        intervalY,
     } = this.state.yaxis;
 
     const view1 = this.views[0];
@@ -52,12 +53,12 @@ function drawKLine() {
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
-    let lengthY = (max - min) / this.option.intervalY;
-    for (let i = 0; i <= lengthY; i++) {
-        ctx.fillText(this.option.priceFilter(max - (i * this.option.intervalY)), view2.x + view2.w, i * this.option.intervalY / (max - min) * view2.h + view2.y);
+    let lengthY = (max - min) / intervalY;
+    for (let i = 1; i < lengthY; i++) {
+        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + view2.w, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.beginPath();
-        ctx.moveTo(0, i * this.option.intervalY / (max - min) * view2.h + view2.y);
-        ctx.lineTo(view1.x + view1.w, i * this.option.intervalY / (max - min) * view2.h + view2.y);
+        ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
+        ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.stroke();
     }
 
@@ -264,7 +265,6 @@ export function computAxis() {
     const ema7 = this.state.ema7;
     const startIndex = this.state.startIndex;
     const endIndex = this.state.endIndex;
-    const intervalY = this.option.intervalY;
     let maxY = -99999;
     let minY = 99999;
     let maxPrice = -99999;
@@ -290,6 +290,8 @@ export function computAxis() {
             minPrice = minPriceVal;
         }
     }
+    const n = ((maxPrice - minPrice) * 0.25).toFixed(0).length;
+    const intervalY = Math.ceil((maxPrice - minPrice) * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     return {
         maxY,
         minY,
@@ -297,7 +299,8 @@ export function computAxis() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
-        max: maxY + intervalY - maxY % intervalY,
-        min: minY - minY % intervalY,
+        max: maxY + intervalY - maxY % intervalY + intervalY,
+        min: minY - minY % intervalY - intervalY,
+        intervalY,
     };
 }

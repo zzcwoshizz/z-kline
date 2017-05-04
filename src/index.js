@@ -4,7 +4,7 @@ fetch('http://192.168.16.160:3000/data').then(res => {
 }).then(json => {
     var chart = new KLine(document.getElementById('app'), {
         width: 800,
-        height: 400,
+        height: document.documentElement.clientHeight,
         intervalY: 30,
         theme: 'dark',
     });
