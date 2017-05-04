@@ -70,10 +70,10 @@ function setOption(option) {
         height: option.height,
         maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2),
         minKLineNumber: option.minKLineNumber || 20,
-        yAxisWidth: option.yAxisWidth || 160,
+        yAxisWidth: option.yAxisWidth || 140,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['volume'],
+        csi2: option.csi2 || ['macd'],
         onChange: option.onChange || function() {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || (t => {

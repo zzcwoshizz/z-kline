@@ -30,14 +30,14 @@ function drawVolume(view1, view2) {
         yAxis.unshift(i);
     }
 
-    ctx.textAlign = 'left';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 0; i < yAxis.length; i++) {
-        ctx.fillText(yAxis[i], view2.x + 10 * this.dpr, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
+        ctx.fillText(yAxis[i], view2.x + view2.w * 0.5, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.beginPath();
         ctx.moveTo(0, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.lineTo(view2.x, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
@@ -125,14 +125,14 @@ function drawMacd(view1, view2) {
     this.csiYAxisSector = [max, -max];
     const yAxis = [max, max * 2 / 3, max / 3, -max / 3, -max * 2 / 3, -max];
 
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 1; i < yAxis.length - 1; i++) {
-        ctx.fillText(this.setDP(yAxis[i]), view2.x + view2.w, view2.y + i / (yAxis.length - 1) * view2.h);
+        ctx.fillText(this.setDP(yAxis[i]), view2.x + view2.w * 0.5, view2.y + i / (yAxis.length - 1) * view2.h);
         ctx.beginPath();
         ctx.moveTo(0, view2.y + i / (yAxis.length - 1) * view2.h);
         ctx.lineTo(view2.x, view2.y + i / (yAxis.length - 1) * view2.h);

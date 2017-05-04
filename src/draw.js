@@ -51,11 +51,11 @@ function drawKLine() {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
-    ctx.textAlign = 'left';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     let lengthY = (max - min) / intervalY;
     for (let i = 0; i < lengthY; i++) {
-        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + 10 * this.dpr, i * intervalY / (max - min) * view2.h + view2.y);
+        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + view2.w * 0.5, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.beginPath();
         ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
