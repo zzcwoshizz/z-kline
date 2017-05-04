@@ -146,7 +146,7 @@ function init() {
 
     const left = 20;
     const right = 20;
-    const top = 20;
+    const top = 40 * this.dpr;
     const bottom = 100;
     const middle = 20;
     let view1 = {
@@ -173,7 +173,7 @@ function init() {
         w: yAxisWidth,
         h: view3.h,
     };
-    const views = [view1, view2, view3, view4]
+    const views = [view1, view2, view3, view4];
     this.views = views;
 
     // 设置全局色彩
