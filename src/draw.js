@@ -41,6 +41,7 @@ function drawKLine() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
+        intervalY,
     } = this.state.yaxis;
 
     const view1 = this.views[0];
@@ -50,14 +51,14 @@ function drawKLine() {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    let lengthY = (max - min) / this.option.intervalY;
-    for (let i = 0; i <= lengthY; i++) {
-        ctx.fillText(this.option.priceFilter(max - (i * this.option.intervalY)), view2.x + view2.w, i * this.option.intervalY / (max - min) * view2.h + view2.y);
+    let lengthY = (max - min) / intervalY;
+    for (let i = 0; i < lengthY; i++) {
+        ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + view2.w * 0.5, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.beginPath();
-        ctx.moveTo(0, i * this.option.intervalY / (max - min) * view2.h + view2.y);
-        ctx.lineTo(view1.x + view1.w, i * this.option.intervalY / (max - min) * view2.h + view2.y);
+        ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
+        ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
         ctx.stroke();
     }
 
@@ -72,7 +73,7 @@ function drawKLine() {
         if (x > this.width || x < 0) {
             continue;
         }
-        let y = this.height - 7;
+        let y = this.height - 10;
         ctx.fillText(timeStr[i], x, y);
     }
 
@@ -222,18 +223,34 @@ function drawKLine() {
 function drawBackground() {
     const ctx = this.ctx;
     const theme = this.option.theme;
+    ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
-    ctx.fillStyle = this.colors.timeBackground;
-    ctx.fillRect(0, this.views[2].y + this.views[2].h, this.width, this.height);
+
+    const marginTop = 16;
+    // 垂直分割线
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.beginPath();
+    ctx.moveTo(this.views[1].x, 0);
+    ctx.lineTo(this.views[3].x, this.views[3].y + this.views[3].h + marginTop);
+    ctx.stroke();
+    if (theme === 'dark') {
+        ctx.fillStyle = this.colors.timeBackground;
+        ctx.fillRect(0, this.views[2].y + marginTop + this.views[2].h, this.width, this.height);
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(0, this.views[2].y + this.views[2].h + marginTop);
+        ctx.lineTo(this.views[3].x + this.views[3].w, this.views[2].y + this.views[2].h + marginTop);
+        ctx.stroke();
+    }
 
     // 画分割线
     if (this.option.csi2.length > 0) {
         ctx.strokeStyle = this.colors.splitLine;
+        ctx.beginPath();
         ctx.moveTo(0, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
         ctx.lineTo(this.width, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
         ctx.stroke();
-        ctx.closePath();
     }
 }
 
@@ -248,7 +265,6 @@ export function computAxis() {
     const ema7 = this.state.ema7;
     const startIndex = this.state.startIndex;
     const endIndex = this.state.endIndex;
-    const intervalY = this.option.intervalY;
     let maxY = -99999;
     let minY = 99999;
     let maxPrice = -99999;
@@ -274,6 +290,8 @@ export function computAxis() {
             minPrice = minPriceVal;
         }
     }
+    const n = (maxY - minY).toFixed(0).length;
+    const intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     return {
         maxY,
         minY,
@@ -281,7 +299,8 @@ export function computAxis() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
-        max: maxY + intervalY - maxY % intervalY,
-        min: minY - minY % intervalY,
+        max: maxY + 2 * intervalY - maxY % intervalY,
+        min: minY - minY % intervalY - intervalY,
+        intervalY,
     };
 }

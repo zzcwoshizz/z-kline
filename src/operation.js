@@ -34,9 +34,6 @@ export default function operation() {
                     drawHairline.call(this, x, pos.y, currentIndex);
                 } else {
                     this.overCanvas.style.cursor = 'default';
-                    this.topBar.forEach(bar => {
-                        bar.innerHTML = '';
-                    });
                 }
             }
             lastIndex = currentIndex;
@@ -166,9 +163,9 @@ function drawHairline(x, y, currentIndex) {
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'bottom';
     overCtx.fillStyle = this.colors.background;
-    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 40, overCtx.measureText(currentTime).width + 20 * this.dpr, 40 - this.dpr);
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 40, overCtx.measureText(currentTime).width + 20 * this.dpr, 40 - this.dpr);
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
     overCtx.fillStyle = this.colors.textColor;
     overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - 7);
 
@@ -215,21 +212,17 @@ function drawHairline(x, y, currentIndex) {
     let ma7Color = this.colors.ma7Color;
     let ma30Color = this.colors.ma30Color;
     if (csiStr === 'volume') {
-        let bar = this.topBar[1];
-        bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px">
-            VOLUME：${this.state.volume[currentIndex + this.state.startIndex]}</div>
-            <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma7Color}">
-            MA7：${this.state.volumeMa7[currentIndex + this.state.startIndex]}</div>
-            <div style="float:left;margin-right:${this.dpr * 10}px;color:${ma30Color}">
-            MA30：${this.state.volumeMa30[currentIndex + this.state.startIndex]}</div>`;
+        this.option.onSelect.call(this, {
+            volume: this.state.volume[currentIndex + this.state.startIndex],
+            ma7: this.state.volumeMa7[currentIndex + this.state.startIndex],
+            ma30: this.state.volumeMa30[currentIndex + this.state.startIndex],
+        }, 1);
     }
     if (csiStr === 'macd') {
-        let bar = this.topBar[1];
-        bar.innerHTML = `<div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.ma7Color}">
-            DIF：${this.state.dif[currentIndex + this.state.startIndex]}</div>
-            <div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.ma30Color}">
-            DEA：${this.state.dea[currentIndex + this.state.startIndex]}</div>
-            <div style="float:left;margin-right:${this.dpr * 10}px;color:${this.colors.macdColor}">
-            MACD：${this.state.macd[currentIndex + this.state.startIndex]}</div>`;
+        this.option.onSelect.call(this, {
+            dif: this.state.dif[currentIndex + this.state.startIndex],
+            dea: this.state.dea[currentIndex + this.state.startIndex],
+            macd: this.state.macd[currentIndex + this.state.startIndex],
+        }, 1);
     }
 }

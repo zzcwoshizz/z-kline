@@ -21,7 +21,7 @@ function drawVolume(view1, view2) {
             realVolume.push(el);
         }
     });
-    const maxVolume = Math.max(...realVolume);
+    const maxVolume = Math.max(...realVolume) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
     const n = (maxVolume * 0.25).toFixed(0).length;
     const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
@@ -30,17 +30,17 @@ function drawVolume(view1, view2) {
         yAxis.unshift(i);
     }
 
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 0; i < yAxis.length; i++) {
-        ctx.fillText(yAxis[i], view2.w + view2.x, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
+        ctx.fillText(yAxis[i], view2.x + view2.w * 0.5, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.beginPath();
         ctx.moveTo(0, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
-        ctx.lineTo(view1.x + view1.w, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
+        ctx.lineTo(view2.x, view2.y + view2.h - yAxis[i] / maxVolume * view2.h);
         ctx.stroke();
     }
 
@@ -87,7 +87,6 @@ function drawVolume(view1, view2) {
         ctx.lineTo(x, y);
     }
     ctx.stroke();
-    ctx.closePath();
 
     ctx.beginPath();
     for (let i = this.state.startIndex, j = 0; j < this.state.verticalRectNumber; i++, j++) {
@@ -122,21 +121,21 @@ function drawMacd(view1, view2) {
         val = Math.min(el, this.state.dif[i], this.state.dea[i]);
         min = min < val ? min : val;
     });
-    max = max > Math.abs(min) ? max : Math.abs(min);
+    max = (max > Math.abs(min) ? max : Math.abs(min)) * 1.5;
     this.csiYAxisSector = [max, -max];
     const yAxis = [max, max * 2 / 3, max / 3, -max / 3, -max * 2 / 3, -max];
 
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    for (let i = 0; i < yAxis.length; i++) {
-        ctx.fillText(this.setDP(yAxis[i]), view2.x + view2.w, view2.y + i / (yAxis.length - 1) * view2.h);
+    for (let i = 1; i < yAxis.length - 1; i++) {
+        ctx.fillText(this.setDP(yAxis[i]), view2.x + view2.w * 0.5, view2.y + i / (yAxis.length - 1) * view2.h);
         ctx.beginPath();
         ctx.moveTo(0, view2.y + i / (yAxis.length - 1) * view2.h);
-        ctx.lineTo(view1.x + view1.w, view2.y + i / (yAxis.length - 1) * view2.h);
+        ctx.lineTo(view2.x, view2.y + i / (yAxis.length - 1) * view2.h);
         ctx.stroke();
     }
 

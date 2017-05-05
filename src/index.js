@@ -1,45 +1,42 @@
 import { KLine, Depth } from './KLine.js';
-fetch('http://192.168.16.160:3000/data').then(res => {
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=60';
+fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
     var chart = new KLine(document.getElementById('app'), {
         width: 800,
-        height: 400,
+        height: document.documentElement.clientHeight,
         intervalY: 30,
+        theme: 'dark',
     });
     chart.setData(json);
-    // var ws = new window.WebSocket('ws://192.168.16.49:8080/infoCenter/btc');
-    // ws.onopen = function(e) {
-        // ws.send('["market:add","btctrade:btc"]');
-    // };
-    // ws.onmessage = function(e) {
-        // console.log(e.data);
-    // };
-    // ws.onerror = function(e) {
-        // console.log(e);
-    // };
-    var socket = window.io.connect('http://192.168.16.160:3000');
-    socket.on('update', function(data) {
-        let newTime = parseInt(data.date);
-        let newPrice = parseInt(data.price);
-        if (newTime - json[json.length - 1][0] < 60) {
-            let hi = Math.max(json[json.length - 1][2], newPrice);
-            let lo = Math.min(json[json.length - 1][3], newPrice);
-            let close = data.price;
-            json[json.length - 1][2] = hi;
-            json[json.length - 1][3] = lo;
-            json[json.length - 1][4] = newPrice;
-            json[json.length - 1][5] += data.amount;
-            chart.update(json);
-        } else {
-            json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
-            chart.update(json);
+    var socket = window.io.connect('http://io.sosobtc.com');
+    socket.on('connect', function() {
+        socket.emit('market.subscribe', 'btc:okcoin');
+    });
+    socket.on('update:trades', function(d) {
+        for (let data of d) {
+            let newTime = parseFloat(data.date);
+            let newPrice = parseFloat(data.price);
+            if (newTime - json[json.length - 1][0] < 60) {
+                let hi = Math.max(json[json.length - 1][2], newPrice);
+                let lo = Math.min(json[json.length - 1][3], newPrice);
+                let close = data.price;
+                json[json.length - 1][2] = hi;
+                json[json.length - 1][3] = lo;
+                json[json.length - 1][4] = newPrice;
+                json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
+                chart.update(json);
+            } else {
+                json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
+                chart.update(json);
+            }
         }
     });
 
     var ele = document.getElementById('depth');
     var depth = new Depth(ele, { width: 300, height: 400 });
-    socket.on('depth', function(data) {
+    socket.on('update:depth', function(data) {
         const buy = [];
         const sell = [];
         let bids = data.bids.replace(/\[|\]/g, '').split(',');
