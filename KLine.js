@@ -1713,7 +1713,7 @@ function setOption(option) {
         theme: option.theme || 'dark',
         width: option.width,
         height: option.height,
-        maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2),
+        maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2) % 2 === 0 ? parseInt(option.width / 2) : parseInt(option.width / 2) - 1,
         minKLineNumber: option.minKLineNumber || 20,
         yAxisWidth: option.yAxisWidth || 140,
         fontSize: option.fontSize || 14,
