@@ -16,12 +16,16 @@ function drawVolume(view1, view2) {
     const theme = this.option.theme;
 
     const realVolume = [];
+    const realVolumeMa7 = [];
+    const realVolumeMa30 = [];
     this.state.volume.forEach((el, i) => {
         if (i >= this.state.startIndex && i < this.state.endIndex) {
             realVolume.push(el);
+            realVolumeMa7.push(this.state.volumeMa7[i]);
+            realVolumeMa30.push(this.state.volumeMa30[i]);
         }
     });
-    const maxVolume = Math.max(...realVolume) * 1.25;
+    const maxVolume = Math.max(...realVolume, ...realVolumeMa7, ...realVolumeMa30) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
     const n = (maxVolume * 0.25).toFixed(0).length;
     const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
@@ -46,6 +50,16 @@ function drawVolume(view1, view2) {
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
+    ctx.strokeStyle = this.colors.textColor;
+    for (let i = 0; i < yAxis.length; i++) {
+        let x = view2.x;
+        let y = view2.y + view2.h - yAxis[i] / maxVolume * view2.h;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 10, y);
+        ctx.stroke();
+    }
+
     ctx.fillStyle = this.colors.greenColor;
     for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
         if (i >= this.state.times.length) {

@@ -45,6 +45,7 @@ function drawKLine() {
 
     const view1 = this.views[0];
     const view2 = this.views[1];
+    const view3 = this.views[2];
 
     ctx.fillStyle = this.colors.textColor;
     ctx.strokeStyle = this.colors.splitLine;
@@ -55,15 +56,30 @@ function drawKLine() {
     let lengthY = (max - min) / intervalY;
     for (let i = 0; i < lengthY; i++) {
         ctx.fillText(this.option.priceFilter(max - (i * intervalY)), view2.x + view2.w * 0.5, i * intervalY / (max - min) * view2.h + view2.y);
+
+        let x = view2.x;
+        let y = i * intervalY / (max - min) * view2.h + view2.y;
         ctx.beginPath();
-        ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
-        ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
+        ctx.moveTo(0, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+
+    ctx.lineWidth = this.dpr;
+    ctx.setLineDash([]);
+    ctx.strokeStyle = this.colors.textColor;
+    for (let i = 0; i < lengthY; i++) {
+        let x = view2.x;
+        let y = i * intervalY / (max - min) * view2.h + view2.y;
+        ctx.beginPath();
+        ctx.moveTo(x + 10, y);
+        ctx.lineTo(x, y);
         ctx.stroke();
     }
 
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    let ix = Math.ceil(this.state.verticalRectNumber * 0.25);
+    ctx.textBaseline = 'middle';
+    let ix = Math.ceil(this.state.verticalRectNumber * 0.2);
     for (let i = ix + this.state.startIndex; i < this.state.verticalRectNumber + this.state.startIndex; i += ix) {
         if (i >= times.length) {
             break;
@@ -72,12 +88,15 @@ function drawKLine() {
         if (x > this.width || x < 0) {
             continue;
         }
-        let y = this.height - 10;
+        let y = (this.height + view3.y + view3.h) * 0.5;
         ctx.fillText(timeStr[i], x, y);
+
+        ctx.beginPath();
+        ctx.moveTo(x, this.height - 2);
+        ctx.lineTo(x, this.height - 8);
+        ctx.stroke();
     }
 
-    ctx.setLineDash([]);
-    ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.redColor;
     ctx.fillStyle = this.colors.redColor;
     for (let i = this.state.startIndex, j = 0; i < this.state.endIndex; i++, j++) {
@@ -190,7 +209,7 @@ function drawKLine() {
     }
 
     // 画最高点，最低点
-    ctx.fillStyle = this.colors.textColorLight;
+    ctx.fillStyle = this.colors.textColor;
     ctx.textBaseline = 'middle';
     let index = (maxPriceIndex - this.state.startIndex);
     let index1 = (minPriceIndex - this.state.startIndex);

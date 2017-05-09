@@ -78,7 +78,7 @@ function setOption(option) {
             width: option.width,
             height: option.height,
             yAxisWidth: option.yAxisWidth || 140,
-            fontSize: option.fontSize || 14,
+            fontSize: option.fontSize || 12,
             csi: option.csi || 'ema',
             csi2: option.csi2 || ['volume'],
             timeFilter: option.timeFilter || (t => {
@@ -189,7 +189,6 @@ function init() {
     };
     const views = [view1, view2, view3, view4];
     this.views = views;
-    console.log(this);
 
     this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
     this.minKLineNumber = 16;
@@ -201,9 +200,8 @@ function init() {
         timeBackground: isDarkTheme ? '#343f4d' : '#fff',
         splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
         subline: isDarkTheme ? 'rgb(86, 93, 102)' : '#ddd',
-        textColor: isDarkTheme ? '#989898' : '#656565',
+        textColor: isDarkTheme ? '#fff' : '#333',
         currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
-        textColorLight: isDarkTheme ? '#ccc' : '#333',
         textFrameColor: isDarkTheme ? 'white' : 'black',
         greenColor: isDarkTheme ? '#3bd181' : '#48b484',
         redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
