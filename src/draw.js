@@ -79,15 +79,12 @@ function drawKLine() {
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    let ix = Math.ceil(this.state.verticalRectNumber * 0.2);
-    for (let i = ix + this.state.startIndex; i < this.state.verticalRectNumber + this.state.startIndex; i += ix) {
-        if (i >= times.length) {
+    for (let i = 1; i < 5; i++) {
+        let index = (i / 5) * this.state.verticalRectNumber + this.state.startIndex;
+        if (index >= times.length) {
             break;
         }
-        let x = view1.x + (i - this.state.startIndex) / this.state.verticalRectNumber * view1.w;
-        if (x > this.width || x < 0) {
-            continue;
-        }
+        let x = view1.x + view1.w * i / 5;
         let y = (this.height + view3.y + view3.h) * 0.5;
         ctx.fillText(timeStr[i], x, y);
 
