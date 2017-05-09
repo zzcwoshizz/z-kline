@@ -193,7 +193,7 @@ function drawMacd(view1, view2) {
         if (i >= this.state.times.length) {
             break;
         }
-        let x = j * view1.w / this.state.verticalRectNumber + 0.5 + view1.w / this.state.verticalRectNumber + view1.x;
+        let x = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
         let y = (max - this.state.dif[i]) / (2 * max) * view1.h + view1.y;
         if (j === 0) {
             ctx.moveTo(x, y);
@@ -210,7 +210,7 @@ function drawMacd(view1, view2) {
         if (i >= this.state.times.length) {
             break;
         }
-        let x = j * view1.w / this.state.verticalRectNumber + 0.5 + view1.w / this.state.verticalRectNumber + view1.x;
+        let x = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
         let y = (max - this.state.dea[i]) / (2 * max) * view1.h + view1.y;
         if (j === 0) {
             ctx.moveTo(x, y);
