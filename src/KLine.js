@@ -5,7 +5,6 @@ import select from './select';
 import drawCsi from './drawCsi';
 import update from './update';
 import Depth from './Depth';
-import resize from './resize';
 function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
@@ -27,7 +26,6 @@ KLine.prototype = {
     getMousePos,
     isInLineView,
     update,
-    resize,
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -59,40 +57,49 @@ function setDP(num) {
 }
 
 function setOption(option) {
-    if (option.width === undefined || option.widh === null) {
-        console.error('option.width must be number');
-    }
-    if (option.height === undefined || option.height === null) {
-        console.error('option.height must be number');
-    }
     // 配置项
-    this.option = {
-        theme: option.theme || 'dark',
-        width: option.width,
-        height: option.height,
-        yAxisWidth: option.yAxisWidth || 140,
-        fontSize: option.fontSize || 14,
-        csi: option.csi || 'ema',
-        csi2: option.csi2 || ['volume'],
-        onChange: option.onChange || function() {},
-        onSelect: option.onSelect || this.select,
-        timeFilter: option.timeFilter || (t => {
-            return new Date(t * 1000).toLocaleDateString();
-        }),
-        priceFilter: option.priceFilter || (d => {
-            return Number(d.toFixed(2));
-        }),
-        overTimeFilter: option.overTimeFilter || (t => {
-            return new Date(t * 1000).toLocaleTimeString();
-        }),
-        overYFilter: option.overYFilter || (d => {
-            return Number(d.toFixed(2));
-        }),
-    };
+    if (this.option) {
+        this.option = {
+            theme: option.theme || this.option.theme,
+            width: option.width || this.option.width,
+            height: option.height || this.option.height,
+            yAxisWidth: option.yAxisWidth || this.option.yAxisWidth,
+            fontSize: option.fontSize || this.option.fontSize,
+            csi: option.csi || this.option.csi,
+            csi2: option.csi2 || this.option.csi2,
+            timeFilter: option.timeFilter || this.option.timeFilter,
+            priceFilter: option.priceFilter || this.option.priceFilter,
+            overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
+            overYFilter: option.overYFilter || this.option.overYFilter,
+        };
+    } else {
+        this.option = {
+            theme: option.theme || 'dark',
+            width: option.width,
+            height: option.height,
+            yAxisWidth: option.yAxisWidth || 140,
+            fontSize: option.fontSize || 14,
+            csi: option.csi || 'ema',
+            csi2: option.csi2 || ['volume'],
+            timeFilter: option.timeFilter || (t => {
+                return new Date(t * 1000).toLocaleDateString();
+            }),
+            priceFilter: option.priceFilter || (d => {
+                return Number(d.toFixed(2));
+            }),
+            overTimeFilter: option.overTimeFilter || (t => {
+                return new Date(t * 1000).toLocaleTimeString();
+            }),
+            overYFilter: option.overYFilter || (d => {
+                return Number(d.toFixed(2));
+            }),
+        };
+    }
     this.init();
 }
 
 function init() {
+    let flag = true;
     this.device = (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) ? 'mb' : 'pc';
     this.dpr = 2;
     const ele = this.ele;
@@ -109,7 +116,11 @@ function init() {
     ele.style.height = height / this.dpr + 'px';
     ele.style.position = 'relative';
 
-    var canvas = document.createElement('canvas');
+    var canvas = this.canvas || document.createElement('canvas');
+    if (!this.canvas) {
+        ele.appendChild(canvas);
+        flag = false;
+    }
     // 渲染canvas
     this.canvas = canvas;
     canvas.width = width;
@@ -117,9 +128,11 @@ function init() {
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.position = 'absolute';
-    ele.appendChild(canvas);
 
-    var overCanvas = document.createElement('canvas');
+    var overCanvas = this.overCanvas || document.createElement('canvas');
+    if (!this.overCanvas) {
+        ele.appendChild(overCanvas);
+    }
     // 覆盖层canvas
     this.overCanvas = overCanvas;
     overCanvas.width = width;
@@ -127,7 +140,6 @@ function init() {
     overCanvas.style.width = '100%';
     overCanvas.style.height = '100%';
     overCanvas.style.position = 'absolute';
-    ele.appendChild(overCanvas);
 
     // 渲染上下文对象
     const ctx = canvas.getContext('2d');
@@ -155,7 +167,7 @@ function init() {
         x: left,
         y: top,
         w: width - yAxisWidth - left - right - middle,
-        h: height * (this.split[0] / (this.split[0] + this.split[1])) - 10,
+        h: (height - top - bottom) * (this.split[0] / (this.split[0] + this.split[1])) - middle * 0.5,
     };
     let view2 = {
         x: view1.w + view1.x + middle,
@@ -165,9 +177,9 @@ function init() {
     };
     let view3 = {
         x: view1.x,
-        y: view1.y + view1.h + middle * 0.5,
+        y: view1.y + view1.h + middle,
         w: view1.w,
-        h: height - view1.h - middle * 0.5 - bottom,
+        h: (height - top - bottom) * (this.split[1] / (this.split[0] + this.split[1])) + middle * 0.5,
     };
     let view4 = {
         x: view2.x,
@@ -177,6 +189,7 @@ function init() {
     };
     const views = [view1, view2, view3, view4];
     this.views = views;
+    console.log(this);
 
     this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
     this.minKLineNumber = 16;
@@ -198,6 +211,9 @@ function init() {
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
+    if (flag) {
+        this.draw(true);
+    }
 }
 
 export {

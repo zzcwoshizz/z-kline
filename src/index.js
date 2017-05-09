@@ -11,7 +11,10 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
     });
     chart.setData(json);
     setTimeout(function() {
-        chart.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+        chart.setOption({
+            width: document.documentElement.clientWidth,
+            height: document.documentElement.clientHeight,
+        });
     }, 10000);
     var socket = window.io.connect('http://io.sosobtc.com');
     socket.on('connect', function() {

@@ -198,7 +198,7 @@ function drawHairline(x, y, currentIndex) {
             overCtx.fillText(this.setDP(yText), view.x + view.w, y);
         }
     }
-    this.option.onSelect.call(this, {
+    this.select.call(this, {
         time: this.state.times[currentIndex + this.state.startIndex],
         start: this.state.start[currentIndex + this.state.startIndex],
         hi: this.state.hi[currentIndex + this.state.startIndex],
@@ -212,14 +212,14 @@ function drawHairline(x, y, currentIndex) {
     let ma7Color = this.colors.ma7Color;
     let ma30Color = this.colors.ma30Color;
     if (csiStr === 'volume') {
-        this.option.onSelect.call(this, {
+        this.select.call(this, {
             volume: this.state.volume[currentIndex + this.state.startIndex],
             ma7: this.state.volumeMa7[currentIndex + this.state.startIndex],
             ma30: this.state.volumeMa30[currentIndex + this.state.startIndex],
         }, 1);
     }
     if (csiStr === 'macd') {
-        this.option.onSelect.call(this, {
+        this.select.call(this, {
             dif: this.state.dif[currentIndex + this.state.startIndex],
             dea: this.state.dea[currentIndex + this.state.startIndex],
             macd: this.state.macd[currentIndex + this.state.startIndex],

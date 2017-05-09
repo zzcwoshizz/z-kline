@@ -10,7 +10,6 @@ export default function draw(flag) {
     }
     this.isDraw = true;
     this.state.yaxis = computAxis.call(this);
-    this.option.onChange(this.state);
     this.ctx.clearRect(0, 0, this.width, this.height);
     drawBackground.call(this);
     drawKLine.call(this);
@@ -227,7 +226,7 @@ function drawBackground() {
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
 
-    const marginTop = 16;
+    const marginTop = 0;
     // 垂直分割线
     ctx.strokeStyle = this.colors.splitLine;
     ctx.beginPath();
