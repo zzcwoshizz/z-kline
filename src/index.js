@@ -10,28 +10,31 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         theme: 'dark',
     });
     chart.setData(json);
+    setTimeout(function() {
+        chart.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+    }, 10000);
     var socket = window.io.connect('http://io.sosobtc.com');
     socket.on('connect', function() {
         socket.emit('market.subscribe', 'btc:okcoin');
     });
     socket.on('update:trades', function(d) {
-        for (let data of d) {
-            let newTime = parseFloat(data.date);
-            let newPrice = parseFloat(data.price);
-            if (newTime - json[json.length - 1][0] < 60) {
-                let hi = Math.max(json[json.length - 1][2], newPrice);
-                let lo = Math.min(json[json.length - 1][3], newPrice);
-                let close = data.price;
-                json[json.length - 1][2] = hi;
-                json[json.length - 1][3] = lo;
-                json[json.length - 1][4] = newPrice;
-                json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
-                chart.update(json);
-            } else {
-                json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
-                chart.update(json);
-            }
-        }
+        // for (let data of d) {
+            // let newTime = parseFloat(data.date);
+            // let newPrice = parseFloat(data.price);
+            // if (newTime - json[json.length - 1][0] < 60) {
+                // let hi = Math.max(json[json.length - 1][2], newPrice);
+                // let lo = Math.min(json[json.length - 1][3], newPrice);
+                // let close = data.price;
+                // json[json.length - 1][2] = hi;
+                // json[json.length - 1][3] = lo;
+                // json[json.length - 1][4] = newPrice;
+                // json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
+                // chart.update(json);
+            // } else {
+                // json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
+                // chart.update(json);
+            // }
+        // }
     });
 
     var ele = document.getElementById('depth');

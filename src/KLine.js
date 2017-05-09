@@ -5,6 +5,7 @@ import select from './select';
 import drawCsi from './drawCsi';
 import update from './update';
 import Depth from './Depth';
+import resize from './resize';
 function KLine(ele, option) {
     if (option === undefined || option === null) {
         option = {};
@@ -26,6 +27,7 @@ KLine.prototype = {
     getMousePos,
     isInLineView,
     update,
+    resize,
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -97,6 +99,8 @@ function init() {
     this.dpr = 2;
     const ele = this.ele;
     ele.style.fontSize = this.option.fontSize + 'px';
+    this.ele = ele;
+
     var width = this.option.width * this.dpr;
     var height = this.option.height * this.dpr;
     // canvas宽度
