@@ -1008,7 +1008,7 @@ function drawMacd(view1, view2) {
         if (_i8 >= this.state.times.length) {
             break;
         }
-        var _x5 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 + view1.w / this.state.verticalRectNumber + view1.x;
+        var _x5 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
         var _y5 = (max - this.state.dif[_i8]) / (2 * max) * view1.h + view1.y;
         if (_j5 === 0) {
             ctx.moveTo(_x5, _y5);
@@ -1025,7 +1025,7 @@ function drawMacd(view1, view2) {
         if (_i9 >= this.state.times.length) {
             break;
         }
-        var _x6 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 + view1.w / this.state.verticalRectNumber + view1.x;
+        var _x6 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
         var _y6 = (max - this.state.dea[_i9]) / (2 * max) * view1.h + view1.y;
         if (_j6 === 0) {
             ctx.moveTo(_x6, _y6);
@@ -1718,7 +1718,7 @@ function setOption(option) {
         yAxisWidth: option.yAxisWidth || 140,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
-        csi2: option.csi2 || ['macd'],
+        csi2: option.csi2 || ['volume'],
         onChange: option.onChange || function () {},
         onSelect: option.onSelect || this.select,
         timeFilter: option.timeFilter || function (t) {
