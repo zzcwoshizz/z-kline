@@ -26,6 +26,9 @@ export default function resize(width, height) {
     width = this.width;
     height = this.height;
 
+    this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
+    this.minKLineNumber = 16;
+
     const left = 20;
     const right = 20;
     const top = 40 * this.dpr;

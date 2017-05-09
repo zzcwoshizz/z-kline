@@ -70,8 +70,6 @@ function setOption(option) {
         theme: option.theme || 'dark',
         width: option.width,
         height: option.height,
-        maxKLineNumber: option.maxKLineNumber || parseInt(option.width / 2) % 2 === 0 ? parseInt(option.width / 2) : parseInt(option.width / 2) - 1,
-        minKLineNumber: option.minKLineNumber || 20,
         yAxisWidth: option.yAxisWidth || 140,
         fontSize: option.fontSize || 14,
         csi: option.csi || 'ema',
@@ -179,6 +177,9 @@ function init() {
     };
     const views = [view1, view2, view3, view4];
     this.views = views;
+
+    this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
+    this.minKLineNumber = 16;
 
     // 设置全局色彩
     const isDarkTheme = this.option.theme === 'dark';

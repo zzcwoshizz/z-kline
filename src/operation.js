@@ -52,13 +52,13 @@ export default function operation() {
         const lastVerticalRectNumber = this.state.verticalRectNumber;
         this.state.startIndex -= n;
         this.state.endIndex += n;
-        if (this.state.endIndex - this.state.startIndex > this.option.maxKLineNumber) {
-            this.state.startIndex = lastStartIndex - (this.option.maxKLineNumber - lastVerticalRectNumber) / 2;
-            this.state.endIndex = lastEndIndex + (this.option.maxKLineNumber - lastVerticalRectNumber) / 2;
+        if (this.state.endIndex - this.state.startIndex > this.maxKLineNumber) {
+            this.state.startIndex = lastStartIndex - (this.maxKLineNumber - lastVerticalRectNumber) / 2;
+            this.state.endIndex = lastEndIndex + (this.maxKLineNumber - lastVerticalRectNumber) / 2;
         }
-        if (this.state.endIndex - this.state.startIndex < this.option.minKLineNumber) {
-            this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - this.option.minKLineNumber) / 2;
-            this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - this.option.minKLineNumber) / 2;
+        if (this.state.endIndex - this.state.startIndex < this.minKLineNumber) {
+            this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - this.minKLineNumber) / 2;
+            this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - this.minKLineNumber) / 2;
         }
         this.state.verticalRectNumber = this.state.endIndex - this.state.startIndex;
         if (this.state.startIndex < 0) {
