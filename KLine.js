@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -145,7 +145,6 @@ function draw(flag) {
     }
     this.isDraw = true;
     this.state.yaxis = computAxis.call(this);
-    this.option.onChange(this.state);
     this.ctx.clearRect(0, 0, this.width, this.height);
     drawBackground.call(this);
     drawKLine.call(this);
@@ -181,6 +180,7 @@ function drawKLine() {
 
     var view1 = this.views[0];
     var view2 = this.views[1];
+    var view3 = this.views[2];
 
     ctx.fillStyle = this.colors.textColor;
     ctx.strokeStyle = this.colors.splitLine;
@@ -191,45 +191,60 @@ function drawKLine() {
     var lengthY = (max - min) / intervalY;
     for (var i = 0; i < lengthY; i++) {
         ctx.fillText(this.option.priceFilter(max - i * intervalY), view2.x + view2.w * 0.5, i * intervalY / (max - min) * view2.h + view2.y);
+
+        var x = view2.x;
+        var y = i * intervalY / (max - min) * view2.h + view2.y;
         ctx.beginPath();
-        ctx.moveTo(0, i * intervalY / (max - min) * view2.h + view2.y);
-        ctx.lineTo(view2.x, i * intervalY / (max - min) * view2.h + view2.y);
+        ctx.moveTo(0, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+
+    ctx.lineWidth = this.dpr;
+    ctx.setLineDash([]);
+    ctx.strokeStyle = this.colors.textColor;
+    for (var _i = 0; _i < lengthY; _i++) {
+        var _x = view2.x;
+        var _y = _i * intervalY / (max - min) * view2.h + view2.y;
+        ctx.beginPath();
+        ctx.moveTo(_x + 10, _y);
+        ctx.lineTo(_x, _y);
         ctx.stroke();
     }
 
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    var ix = Math.ceil(this.state.verticalRectNumber * 0.25);
-    for (var _i = ix + this.state.startIndex; _i < this.state.verticalRectNumber + this.state.startIndex; _i += ix) {
-        if (_i >= times.length) {
+    ctx.textBaseline = 'middle';
+    for (var _i2 = 1; _i2 < 5; _i2++) {
+        var _index = _i2 / 5 * this.state.verticalRectNumber + this.state.startIndex;
+        if (_index >= times.length) {
             break;
         }
-        var x = view1.x + (_i - this.state.startIndex) / this.state.verticalRectNumber * view1.w;
-        if (x > this.width || x < 0) {
-            continue;
-        }
-        var y = this.height - 10;
-        ctx.fillText(timeStr[_i], x, y);
+        var _x2 = view1.x + view1.w * _i2 / 5;
+        var _y2 = (this.height + view3.y + view3.h) * 0.5;
+        ctx.fillText(timeStr[_i2], _x2, _y2);
+
+        ctx.beginPath();
+        ctx.moveTo(_x2, this.height - 2);
+        ctx.lineTo(_x2, this.height - 8);
+        ctx.stroke();
     }
 
-    ctx.setLineDash([]);
-    ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.redColor;
     ctx.fillStyle = this.colors.redColor;
-    for (var _i2 = this.state.startIndex, j = 0; _i2 < this.state.endIndex; _i2++, j++) {
-        if (_i2 >= times.length) {
+    for (var _i3 = this.state.startIndex, j = 0; _i3 < this.state.endIndex; _i3++, j++) {
+        if (_i3 >= times.length) {
             break;
         }
-        if (close[_i2] <= start[_i2]) {
-            var _x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y = (max - Math.max(start[_i2], close[_i2])) / (max - min) * view1.h + view1.y;
+        if (close[_i3] <= start[_i3]) {
+            var _x3 = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * view1.h + view1.y;
             var w = view1.w / this.state.verticalRectNumber * 0.8;
-            var h = (Math.max(start[_i2], close[_i2]) - Math.min(start[_i2], close[_i2])) / (max - min) * view1.h;
-            ctx.fillRect(_x, _y, w, h < this.dpr ? this.dpr : h);
+            var h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * view1.h;
+            ctx.fillRect(_x3, _y3, w, h < this.dpr ? this.dpr : h);
             var x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var y1 = (max - hi[_i2]) / (max - min) * view1.h + view1.y;
+            var y1 = (max - hi[_i3]) / (max - min) * view1.h + view1.y;
             var x2 = x1;
-            var y2 = (max - lo[_i2]) / (max - min) * view1.h + view1.y;
+            var y2 = (max - lo[_i3]) / (max - min) * view1.h + view1.y;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
@@ -238,23 +253,23 @@ function drawKLine() {
     }
     ctx.strokeStyle = this.colors.greenColor;
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i3 = this.state.startIndex, _j = 0; _i3 < this.state.endIndex; _i3++, _j++) {
-        if (_i3 >= times.length) {
+    for (var _i4 = this.state.startIndex, _j = 0; _i4 < this.state.endIndex; _i4++, _j++) {
+        if (_i4 >= times.length) {
             break;
         }
-        if (close[_i3] > start[_i3]) {
-            var _x2 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y2 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * view1.h + view1.y;
+        if (close[_i4] > start[_i4]) {
+            var _x4 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y4 = (max - Math.max(start[_i4], close[_i4])) / (max - min) * view1.h + view1.y;
             var _w = view1.w / this.state.verticalRectNumber * 0.8;
-            var _h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * view1.h;
-            ctx.fillRect(_x2, _y2, _w, _h < this.dpr ? this.dpr : _h);
-            var _x3 = _j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y3 = (max - hi[_i3]) / (max - min) * view1.h + view1.y;
-            var _x4 = _x3;
-            var _y4 = (max - lo[_i3]) / (max - min) * view1.h + view1.y;
+            var _h = (Math.max(start[_i4], close[_i4]) - Math.min(start[_i4], close[_i4])) / (max - min) * view1.h;
+            ctx.fillRect(_x4, _y4, _w, _h < this.dpr ? this.dpr : _h);
+            var _x5 = _j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y5 = (max - hi[_i4]) / (max - min) * view1.h + view1.y;
+            var _x6 = _x5;
+            var _y6 = (max - lo[_i4]) / (max - min) * view1.h + view1.y;
             ctx.beginPath();
-            ctx.moveTo(_x3, _y3);
-            ctx.lineTo(_x4, _y4);
+            ctx.moveTo(_x5, _y5);
+            ctx.lineTo(_x6, _y6);
             ctx.stroke();
         }
     }
@@ -263,70 +278,70 @@ function drawKLine() {
         // ma30
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i4 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i4++, _j2++) {
-            if (_i4 >= this.state.times.length) {
-                break;
-            }
-            var _x5 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y5 = (max - this.state.ma30[_i4]) / (max - min) * view1.h + view1.y;
-            if (_j2 == 0) {
-                ctx.moveTo(_x5, _y5);
-            }
-            ctx.lineTo(_x5, _y5);
-        }
-        ctx.stroke();
-
-        // ma7
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i5 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i5++, _j3++) {
+        for (var _i5 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i5++, _j2++) {
             if (_i5 >= this.state.times.length) {
                 break;
             }
-            var _x6 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y6 = (max - this.state.ma7[_i5]) / (max - min) * view1.h + view1.y;
-            if (_j3 == 0) {
-                ctx.moveTo(_x6, _y6);
-            }
-            ctx.lineTo(_x6, _y6);
-        }
-        ctx.stroke();
-    } else if (this.option.csi === 'ema') {
-        // ema30
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i6 = this.state.startIndex, _j4 = 0; _j4 < this.state.verticalRectNumber; _i6++, _j4++) {
-            if (_i6 >= this.state.times.length) {
-                break;
-            }
-            var _x7 = _j4 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y7 = (max - this.state.ema30[_i6]) / (max - min) * view1.h + view1.y;
-            if (_j4 == 0) {
+            var _x7 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y7 = (max - this.state.ma30[_i5]) / (max - min) * view1.h + view1.y;
+            if (_j2 == 0) {
                 ctx.moveTo(_x7, _y7);
             }
             ctx.lineTo(_x7, _y7);
         }
         ctx.stroke();
 
-        // ema7
+        // ma7
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i7 = this.state.startIndex, _j5 = 0; _j5 < this.state.verticalRectNumber; _i7++, _j5++) {
-            if (_i7 >= this.state.times.length) {
+        for (var _i6 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i6++, _j3++) {
+            if (_i6 >= this.state.times.length) {
                 break;
             }
-            var _x8 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y8 = (max - this.state.ema7[_i7]) / (max - min) * view1.h + view1.y;
-            if (_j5 == 0) {
+            var _x8 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y8 = (max - this.state.ma7[_i6]) / (max - min) * view1.h + view1.y;
+            if (_j3 == 0) {
                 ctx.moveTo(_x8, _y8);
             }
             ctx.lineTo(_x8, _y8);
         }
         ctx.stroke();
+    } else if (this.option.csi === 'ema') {
+        // ema30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (var _i7 = this.state.startIndex, _j4 = 0; _j4 < this.state.verticalRectNumber; _i7++, _j4++) {
+            if (_i7 >= this.state.times.length) {
+                break;
+            }
+            var _x9 = _j4 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y9 = (max - this.state.ema30[_i7]) / (max - min) * view1.h + view1.y;
+            if (_j4 == 0) {
+                ctx.moveTo(_x9, _y9);
+            }
+            ctx.lineTo(_x9, _y9);
+        }
+        ctx.stroke();
+
+        // ema7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (var _i8 = this.state.startIndex, _j5 = 0; _j5 < this.state.verticalRectNumber; _i8++, _j5++) {
+            if (_i8 >= this.state.times.length) {
+                break;
+            }
+            var _x10 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+            var _y10 = (max - this.state.ema7[_i8]) / (max - min) * view1.h + view1.y;
+            if (_j5 == 0) {
+                ctx.moveTo(_x10, _y10);
+            }
+            ctx.lineTo(_x10, _y10);
+        }
+        ctx.stroke();
     }
 
     // 画最高点，最低点
-    ctx.fillStyle = this.colors.textColorLight;
+    ctx.fillStyle = this.colors.textColor;
     ctx.textBaseline = 'middle';
     var index = maxPriceIndex - this.state.startIndex;
     var index1 = minPriceIndex - this.state.startIndex;
@@ -362,7 +377,7 @@ function drawBackground() {
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
 
-    var marginTop = 16;
+    var marginTop = 0;
     // 垂直分割线
     ctx.strokeStyle = this.colors.splitLine;
     ctx.beginPath();
@@ -456,8 +471,8 @@ module.exports = function(it){
 
 var global    = __webpack_require__(3)
   , core      = __webpack_require__(0)
-  , ctx       = __webpack_require__(28)
-  , hide      = __webpack_require__(32)
+  , ctx       = __webpack_require__(27)
+  , hide      = __webpack_require__(31)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -520,9 +535,9 @@ module.exports = $export;
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject       = __webpack_require__(25)
-  , IE8_DOM_DEFINE = __webpack_require__(33)
-  , toPrimitive    = __webpack_require__(44)
+var anObject       = __webpack_require__(24)
+  , IE8_DOM_DEFINE = __webpack_require__(32)
+  , toPrimitive    = __webpack_require__(43)
   , dP             = Object.defineProperty;
 
 exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProperty(O, P, Attributes){
@@ -553,7 +568,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(34)
+var IObject = __webpack_require__(33)
   , defined = __webpack_require__(6);
 module.exports = function(it){
   return IObject(defined(it));
@@ -830,12 +845,16 @@ function drawVolume(view1, view2) {
     var theme = this.option.theme;
 
     var realVolume = [];
+    var realVolumeMa7 = [];
+    var realVolumeMa30 = [];
     this.state.volume.forEach(function (el, i) {
         if (i >= _this.state.startIndex && i < _this.state.endIndex) {
             realVolume.push(el);
+            realVolumeMa7.push(_this.state.volumeMa7[i]);
+            realVolumeMa30.push(_this.state.volumeMa30[i]);
         }
     });
-    var maxVolume = Math.max.apply(Math, realVolume) * 1.25;
+    var maxVolume = Math.max.apply(Math, realVolume.concat(realVolumeMa7, realVolumeMa30)) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
     var n = (maxVolume * 0.25).toFixed(0).length;
     var interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
@@ -860,60 +879,70 @@ function drawVolume(view1, view2) {
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
+    ctx.strokeStyle = this.colors.textColor;
+    for (var _i2 = 0; _i2 < yAxis.length; _i2++) {
+        var x = view2.x;
+        var y = view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 10, y);
+        ctx.stroke();
+    }
+
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i2 = this.state.startIndex, j = 0; _i2 < this.state.endIndex; _i2++, j++) {
-        if (_i2 >= this.state.times.length) {
+    for (var _i3 = this.state.startIndex, j = 0; _i3 < this.state.endIndex; _i3++, j++) {
+        if (_i3 >= this.state.times.length) {
             break;
         }
-        if (this.state.start[_i2] < this.state.close[_i2]) {
-            var x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+        if (this.state.start[_i3] < this.state.close[_i3]) {
+            var _x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
             var w = view1.w / this.state.verticalRectNumber * 0.8;
             var h = -realVolume[j] / maxVolume * view1.h;
-            var y = view1.y + view1.h;
-            ctx.fillRect(x, y, w, h);
+            var _y = view1.y + view1.h;
+            ctx.fillRect(_x, _y, w, h);
         }
     }
 
     ctx.fillStyle = this.colors.redColor;
-    for (var _i3 = this.state.startIndex, _j = 0; _i3 < this.state.endIndex; _i3++, _j++) {
-        if (_i3 >= this.state.times.length) {
-            break;
-        }
-        if (this.state.close[_i3] <= this.state.start[_i3]) {
-            var _x = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _w = view1.w / this.state.verticalRectNumber * 0.8;
-            var _h = -realVolume[_j] / maxVolume * view1.h;
-            var _y = view1.y + view1.h;
-            ctx.fillRect(_x, _y, _w, _h);
-        }
-    }
-    ctx.beginPath();
-    for (var _i4 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i4++, _j2++) {
+    for (var _i4 = this.state.startIndex, _j = 0; _i4 < this.state.endIndex; _i4++, _j++) {
         if (_i4 >= this.state.times.length) {
             break;
         }
-        ctx.strokeStyle = this.colors.ma30Color;
-        var _x2 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y2 = (maxVolume - this.state.volumeMa30[_i4]) / maxVolume * view1.h + view1.y;
-        if (_j2 == 0) {
-            ctx.moveTo(_x2, _y2);
+        if (this.state.close[_i4] <= this.state.start[_i4]) {
+            var _x2 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
+            var _w = view1.w / this.state.verticalRectNumber * 0.8;
+            var _h = -realVolume[_j] / maxVolume * view1.h;
+            var _y2 = view1.y + view1.h;
+            ctx.fillRect(_x2, _y2, _w, _h);
         }
-        ctx.lineTo(_x2, _y2);
+    }
+    ctx.beginPath();
+    for (var _i5 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i5++, _j2++) {
+        if (_i5 >= this.state.times.length) {
+            break;
+        }
+        ctx.strokeStyle = this.colors.ma30Color;
+        var _x3 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+        var _y3 = (maxVolume - this.state.volumeMa30[_i5]) / maxVolume * view1.h + view1.y;
+        if (_j2 == 0) {
+            ctx.moveTo(_x3, _y3);
+        }
+        ctx.lineTo(_x3, _y3);
     }
     ctx.stroke();
 
     ctx.beginPath();
-    for (var _i5 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i5++, _j3++) {
-        if (_i5 >= this.state.times.length) {
+    for (var _i6 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i6++, _j3++) {
+        if (_i6 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma7Color;
-        var _x3 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y3 = (maxVolume - this.state.volumeMa7[_i5]) / maxVolume * view1.h + view1.y;
+        var _x4 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+        var _y4 = (maxVolume - this.state.volumeMa7[_i6]) / maxVolume * view1.h + view1.y;
         if (_j3 == 0) {
-            ctx.moveTo(_x3, _y3);
+            ctx.moveTo(_x4, _y4);
         }
-        ctx.lineTo(_x3, _y3);
+        ctx.lineTo(_x4, _y4);
     }
     ctx.stroke();
     ctx.closePath();
@@ -958,16 +987,16 @@ function drawMacd(view1, view2) {
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
-    for (var _i6 = this.state.startIndex, j = 0; _i6 < this.state.endIndex; _i6++, j++) {
-        if (_i6 >= this.state.times.length) {
+    for (var _i7 = this.state.startIndex, j = 0; _i7 < this.state.endIndex; _i7++, j++) {
+        if (_i7 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i6] > 0) {
+        if (this.state.macd[_i7] > 0) {
             var y = view1.y + view1.h * 0.5;
             var w = view1.w / this.state.verticalRectNumber * 0.8;
             var x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
-            var h = -this.state.macd[_i6] / max * view1.h * 0.5;
-            if (Math.abs(this.state.macd[_i6]) > Math.abs(this.state.macd[_i6 - 1])) {
+            var h = -this.state.macd[_i7] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[_i7]) > Math.abs(this.state.macd[_i7 - 1])) {
                 ctx.fillRect(x, y, w, h);
             } else {
                 if (w <= this.dpr * 4) {
@@ -980,22 +1009,22 @@ function drawMacd(view1, view2) {
     }
     ctx.fillStyle = this.colors.redColor;
     ctx.strokeStyle = this.colors.redColor;
-    for (var _i7 = this.state.startIndex, _j4 = 0; _i7 < this.state.endIndex; _i7++, _j4++) {
-        if (_i7 >= this.state.times.length) {
+    for (var _i8 = this.state.startIndex, _j4 = 0; _i8 < this.state.endIndex; _i8++, _j4++) {
+        if (_i8 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i7] <= 0) {
-            var _y4 = view1.y + view1.h * 0.5;
+        if (this.state.macd[_i8] <= 0) {
+            var _y5 = view1.y + view1.h * 0.5;
             var _w2 = view1.w / this.state.verticalRectNumber * 0.8;
-            var _x4 = _j4 * view1.w / this.state.verticalRectNumber + view1.x + _w2 * 0.1;
-            var _h2 = -this.state.macd[_i7] / max * view1.h * 0.5;
-            if (Math.abs(this.state.macd[_i7]) > Math.abs(this.state.macd[_i7 - 1])) {
-                ctx.fillRect(_x4, _y4, _w2, _h2);
+            var _x5 = _j4 * view1.w / this.state.verticalRectNumber + view1.x + _w2 * 0.1;
+            var _h2 = -this.state.macd[_i8] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[_i8]) > Math.abs(this.state.macd[_i8 - 1])) {
+                ctx.fillRect(_x5, _y5, _w2, _h2);
             } else {
                 if (_w2 <= this.dpr * 4) {
-                    ctx.fillRect(_x4, _y4, _w2, _h2);
+                    ctx.fillRect(_x5, _y5, _w2, _h2);
                 } else {
-                    ctx.strokeRect(_x4, _y4, _w2, _h2);
+                    ctx.strokeRect(_x5, _y5, _w2, _h2);
                 }
             }
         }
@@ -1004,34 +1033,34 @@ function drawMacd(view1, view2) {
     // dif
     ctx.strokeStyle = this.colors.ma7Color;
     ctx.beginPath();
-    for (var _i8 = this.state.startIndex, _j5 = 0; _i8 < this.state.endIndex; _i8++, _j5++) {
-        if (_i8 >= this.state.times.length) {
+    for (var _i9 = this.state.startIndex, _j5 = 0; _i9 < this.state.endIndex; _i9++, _j5++) {
+        if (_i9 >= this.state.times.length) {
             break;
         }
-        var _x5 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y5 = (max - this.state.dif[_i8]) / (2 * max) * view1.h + view1.y;
+        var _x6 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+        var _y6 = (max - this.state.dif[_i9]) / (2 * max) * view1.h + view1.y;
         if (_j5 === 0) {
-            ctx.moveTo(_x5, _y5);
+            ctx.moveTo(_x6, _y6);
             continue;
         }
-        ctx.lineTo(_x5, _y5);
+        ctx.lineTo(_x6, _y6);
     }
     ctx.stroke();
 
     // dea
     ctx.strokeStyle = this.colors.ma30Color;
     ctx.beginPath();
-    for (var _i9 = this.state.startIndex, _j6 = 0; _i9 < this.state.endIndex; _i9++, _j6++) {
-        if (_i9 >= this.state.times.length) {
+    for (var _i10 = this.state.startIndex, _j6 = 0; _i10 < this.state.endIndex; _i10++, _j6++) {
+        if (_i10 >= this.state.times.length) {
             break;
         }
-        var _x6 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y6 = (max - this.state.dea[_i9]) / (2 * max) * view1.h + view1.y;
+        var _x7 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
+        var _y7 = (max - this.state.dea[_i10]) / (2 * max) * view1.h + view1.y;
         if (_j6 === 0) {
-            ctx.moveTo(_x6, _y6);
+            ctx.moveTo(_x7, _y7);
             continue;
         }
-        ctx.lineTo(_x6, _y6);
+        ctx.lineTo(_x7, _y7);
     }
     ctx.stroke();
 }
@@ -1047,7 +1076,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _defineProperty2 = __webpack_require__(21);
+var _defineProperty2 = __webpack_require__(20);
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
@@ -1202,7 +1231,7 @@ function operation() {
 }
 
 function drawHairline(x, y, currentIndex) {
-    var _option$onSelect$call;
+    var _select$call;
 
     x = x || this.lastPos.x;
     y = y || this.lastPos.y;
@@ -1264,26 +1293,26 @@ function drawHairline(x, y, currentIndex) {
             overCtx.fillText(this.setDP(_yText2), view.x + view.w, y);
         }
     }
-    this.option.onSelect.call(this, (_option$onSelect$call = {
+    this.select.call(this, (_select$call = {
         time: this.state.times[currentIndex + this.state.startIndex],
         start: this.state.start[currentIndex + this.state.startIndex],
         hi: this.state.hi[currentIndex + this.state.startIndex],
         lo: this.state.lo[currentIndex + this.state.startIndex],
         close: this.state.close[currentIndex + this.state.startIndex],
         volume: this.state.volume[currentIndex + this.state.startIndex]
-    }, (0, _defineProperty3.default)(_option$onSelect$call, this.option.csi + 7, this.state[this.option.csi + 7][currentIndex + this.state.startIndex]), (0, _defineProperty3.default)(_option$onSelect$call, this.option.csi + 30, this.state[this.option.csi + 30][currentIndex + this.state.startIndex]), _option$onSelect$call), 0);
+    }, (0, _defineProperty3.default)(_select$call, this.option.csi + 7, this.state[this.option.csi + 7][currentIndex + this.state.startIndex]), (0, _defineProperty3.default)(_select$call, this.option.csi + 30, this.state[this.option.csi + 30][currentIndex + this.state.startIndex]), _select$call), 0);
 
     var ma7Color = this.colors.ma7Color;
     var ma30Color = this.colors.ma30Color;
     if (csiStr === 'volume') {
-        this.option.onSelect.call(this, {
+        this.select.call(this, {
             volume: this.state.volume[currentIndex + this.state.startIndex],
             ma7: this.state.volumeMa7[currentIndex + this.state.startIndex],
             ma30: this.state.volumeMa30[currentIndex + this.state.startIndex]
         }, 1);
     }
     if (csiStr === 'macd') {
-        this.option.onSelect.call(this, {
+        this.select.call(this, {
             dif: this.state.dif[currentIndex + this.state.startIndex],
             dea: this.state.dea[currentIndex + this.state.startIndex],
             macd: this.state.macd[currentIndex + this.state.startIndex]
@@ -1301,85 +1330,8 @@ function drawHairline(x, y, currentIndex) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = resize;
-function resize(width, height) {
-    this.width = width * this.dpr;
-    this.height = height * this.dpr;
 
-    this.ele.style.width = this.width / this.dpr + 'px';
-    this.ele.style.height = this.height / this.dpr + 'px';
-
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    this.ctx = this.canvas.getContext('2d');
-    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-
-    this.overCanvas.width = this.width;
-    this.overCanvas.height = this.height;
-    this.overCtx = this.overCanvas.getContext('2d');
-    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-
-    // 上下画图区域高度比
-    if (this.option.csi2.length == 1) {
-        this.split = [6, 4];
-    } else {
-        this.split = [10, 0];
-    }
-    var yAxisWidth = this.option.yAxisWidth;
-
-    width = this.width;
-    height = this.height;
-
-    this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
-    this.minKLineNumber = 16;
-
-    var left = 20;
-    var right = 20;
-    var top = 40 * this.dpr;
-    var bottom = 100;
-    var middle = 20;
-    var view1 = {
-        x: left,
-        y: top,
-        w: width - yAxisWidth - left - right - middle,
-        h: height * (this.split[0] / (this.split[0] + this.split[1])) - 10
-    };
-    var view2 = {
-        x: view1.w + view1.x + middle,
-        y: view1.y,
-        w: yAxisWidth,
-        h: view1.h
-    };
-    var view3 = {
-        x: view1.x,
-        y: view1.y + view1.h + middle * 0.5,
-        w: view1.w,
-        h: height - view1.h - middle * 0.5 - bottom
-    };
-    var view4 = {
-        x: view2.x,
-        y: view3.y,
-        w: yAxisWidth,
-        h: view3.h
-    };
-    var views = [view1, view2, view3, view4];
-    this.views = views;
-
-    this.draw(true);
-}
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _keys = __webpack_require__(20);
+var _keys = __webpack_require__(19);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -1499,7 +1451,7 @@ function setStyle(key, ctx) {
 }
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1656,7 +1608,7 @@ function setData(data) {
 }
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1684,7 +1636,7 @@ function update(data) {
 }
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1695,7 +1647,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Depth = exports.KLine = undefined;
 
-var _setData = __webpack_require__(16);
+var _setData = __webpack_require__(15);
 
 var _setData2 = _interopRequireDefault(_setData);
 
@@ -1707,7 +1659,7 @@ var _operation = __webpack_require__(13);
 
 var _operation2 = _interopRequireDefault(_operation);
 
-var _select = __webpack_require__(15);
+var _select = __webpack_require__(14);
 
 var _select2 = _interopRequireDefault(_select);
 
@@ -1715,17 +1667,13 @@ var _drawCsi = __webpack_require__(12);
 
 var _drawCsi2 = _interopRequireDefault(_drawCsi);
 
-var _update = __webpack_require__(17);
+var _update = __webpack_require__(16);
 
 var _update2 = _interopRequireDefault(_update);
 
 var _Depth = __webpack_require__(11);
 
 var _Depth2 = _interopRequireDefault(_Depth);
-
-var _resize = __webpack_require__(14);
-
-var _resize2 = _interopRequireDefault(_resize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1749,8 +1697,7 @@ KLine.prototype = {
     setDP: setDP,
     getMousePos: getMousePos,
     isInLineView: isInLineView,
-    update: _update2.default,
-    resize: _resize2.default
+    update: _update2.default
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -1784,40 +1731,49 @@ function setDP(num) {
 }
 
 function setOption(option) {
-    if (option.width === undefined || option.widh === null) {
-        console.error('option.width must be number');
-    }
-    if (option.height === undefined || option.height === null) {
-        console.error('option.height must be number');
-    }
     // 配置项
-    this.option = {
-        theme: option.theme || 'dark',
-        width: option.width,
-        height: option.height,
-        yAxisWidth: option.yAxisWidth || 140,
-        fontSize: option.fontSize || 14,
-        csi: option.csi || 'ema',
-        csi2: option.csi2 || ['volume'],
-        onChange: option.onChange || function () {},
-        onSelect: option.onSelect || this.select,
-        timeFilter: option.timeFilter || function (t) {
-            return new Date(t * 1000).toLocaleDateString();
-        },
-        priceFilter: option.priceFilter || function (d) {
-            return Number(d.toFixed(2));
-        },
-        overTimeFilter: option.overTimeFilter || function (t) {
-            return new Date(t * 1000).toLocaleTimeString();
-        },
-        overYFilter: option.overYFilter || function (d) {
-            return Number(d.toFixed(2));
-        }
-    };
+    if (this.option) {
+        this.option = {
+            theme: option.theme || this.option.theme,
+            width: option.width || this.option.width,
+            height: option.height || this.option.height,
+            yAxisWidth: option.yAxisWidth || this.option.yAxisWidth,
+            fontSize: option.fontSize || this.option.fontSize,
+            csi: option.csi || this.option.csi,
+            csi2: option.csi2 || this.option.csi2,
+            timeFilter: option.timeFilter || this.option.timeFilter,
+            priceFilter: option.priceFilter || this.option.priceFilter,
+            overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
+            overYFilter: option.overYFilter || this.option.overYFilter
+        };
+    } else {
+        this.option = {
+            theme: option.theme || 'dark',
+            width: option.width,
+            height: option.height,
+            yAxisWidth: option.yAxisWidth || 140,
+            fontSize: option.fontSize || 12,
+            csi: option.csi || 'ema',
+            csi2: option.csi2 || ['volume'],
+            timeFilter: option.timeFilter || function (t) {
+                return new Date(t * 1000).toLocaleDateString();
+            },
+            priceFilter: option.priceFilter || function (d) {
+                return Number(d.toFixed(2));
+            },
+            overTimeFilter: option.overTimeFilter || function (t) {
+                return new Date(t * 1000).toLocaleTimeString();
+            },
+            overYFilter: option.overYFilter || function (d) {
+                return Number(d.toFixed(2));
+            }
+        };
+    }
     this.init();
 }
 
 function init() {
+    var flag = true;
     this.device = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) ? 'mb' : 'pc';
     this.dpr = 2;
     var ele = this.ele;
@@ -1834,7 +1790,11 @@ function init() {
     ele.style.height = height / this.dpr + 'px';
     ele.style.position = 'relative';
 
-    var canvas = document.createElement('canvas');
+    var canvas = this.canvas || document.createElement('canvas');
+    if (!this.canvas) {
+        ele.appendChild(canvas);
+        flag = false;
+    }
     // 渲染canvas
     this.canvas = canvas;
     canvas.width = width;
@@ -1842,9 +1802,11 @@ function init() {
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.position = 'absolute';
-    ele.appendChild(canvas);
 
-    var overCanvas = document.createElement('canvas');
+    var overCanvas = this.overCanvas || document.createElement('canvas');
+    if (!this.overCanvas) {
+        ele.appendChild(overCanvas);
+    }
     // 覆盖层canvas
     this.overCanvas = overCanvas;
     overCanvas.width = width;
@@ -1852,7 +1814,6 @@ function init() {
     overCanvas.style.width = '100%';
     overCanvas.style.height = '100%';
     overCanvas.style.position = 'absolute';
-    ele.appendChild(overCanvas);
 
     // 渲染上下文对象
     var ctx = canvas.getContext('2d');
@@ -1880,7 +1841,7 @@ function init() {
         x: left,
         y: top,
         w: width - yAxisWidth - left - right - middle,
-        h: height * (this.split[0] / (this.split[0] + this.split[1])) - 10
+        h: (height - top - bottom) * (this.split[0] / (this.split[0] + this.split[1])) - middle * 0.5
     };
     var view2 = {
         x: view1.w + view1.x + middle,
@@ -1890,9 +1851,9 @@ function init() {
     };
     var view3 = {
         x: view1.x,
-        y: view1.y + view1.h + middle * 0.5,
+        y: view1.y + view1.h + middle,
         w: view1.w,
-        h: height - view1.h - middle * 0.5 - bottom
+        h: (height - top - bottom) * (this.split[1] / (this.split[0] + this.split[1])) + middle * 0.5
     };
     var view4 = {
         x: view2.x,
@@ -1913,9 +1874,8 @@ function init() {
         timeBackground: isDarkTheme ? '#343f4d' : '#fff',
         splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
         subline: isDarkTheme ? 'rgb(86, 93, 102)' : '#ddd',
-        textColor: isDarkTheme ? '#989898' : '#656565',
+        textColor: isDarkTheme ? '#fff' : '#333',
         currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
-        textColorLight: isDarkTheme ? '#ccc' : '#333',
         textFrameColor: isDarkTheme ? 'white' : 'black',
         greenColor: isDarkTheme ? '#3bd181' : '#48b484',
         redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
@@ -1923,6 +1883,9 @@ function init() {
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)'
     };
+    if (flag) {
+        this.draw(true);
+    }
 }
 
 exports.KLine = KLine;
@@ -1930,6 +1893,12 @@ exports.Depth = _Depth2.default;
 
 _Depth2.default.prototype.getMousePos = getMousePos;
 _Depth2.default.prototype.setDP = setDP;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(21), __esModule: true };
 
 /***/ }),
 /* 19 */
@@ -1941,18 +1910,12 @@ module.exports = { "default": __webpack_require__(22), __esModule: true };
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(23), __esModule: true };
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
 exports.__esModule = true;
 
-var _defineProperty = __webpack_require__(19);
+var _defineProperty = __webpack_require__(18);
 
 var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -1974,24 +1937,24 @@ exports.default = function (obj, key, value) {
 };
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(46);
+__webpack_require__(45);
 var $Object = __webpack_require__(0).Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(47);
+__webpack_require__(46);
 module.exports = __webpack_require__(0).Object.keys;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -2000,7 +1963,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4);
@@ -2010,14 +1973,14 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(10)
-  , toLength  = __webpack_require__(42)
-  , toIndex   = __webpack_require__(41);
+  , toLength  = __webpack_require__(41)
+  , toIndex   = __webpack_require__(40);
 module.exports = function(IS_INCLUDES){
   return function($this, el, fromIndex){
     var O      = toIObject($this)
@@ -2036,7 +1999,7 @@ module.exports = function(IS_INCLUDES){
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -2046,11 +2009,11 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(24);
+var aFunction = __webpack_require__(23);
 module.exports = function(fn, that, length){
   aFunction(fn);
   if(that === undefined)return fn;
@@ -2071,7 +2034,7 @@ module.exports = function(fn, that, length){
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(4)
@@ -2083,7 +2046,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -2092,7 +2055,7 @@ module.exports = (
 ).split(',');
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = {}.hasOwnProperty;
@@ -2101,11 +2064,11 @@ module.exports = function(it, key){
 };
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP         = __webpack_require__(8)
-  , createDesc = __webpack_require__(38);
+  , createDesc = __webpack_require__(37);
 module.exports = __webpack_require__(1) ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
 } : function(object, key, value){
@@ -2114,31 +2077,31 @@ module.exports = __webpack_require__(1) ? function(object, key, value){
 };
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = !__webpack_require__(1) && !__webpack_require__(2)(function(){
-  return Object.defineProperty(__webpack_require__(29)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+  return Object.defineProperty(__webpack_require__(28)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(26);
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has          = __webpack_require__(31)
+var has          = __webpack_require__(30)
   , toIObject    = __webpack_require__(10)
-  , arrayIndexOf = __webpack_require__(26)(false)
-  , IE_PROTO     = __webpack_require__(39)('IE_PROTO');
+  , arrayIndexOf = __webpack_require__(25)(false)
+  , IE_PROTO     = __webpack_require__(38)('IE_PROTO');
 
 module.exports = function(object, names){
   var O      = toIObject(object)
@@ -2154,19 +2117,19 @@ module.exports = function(object, names){
 };
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = __webpack_require__(35)
-  , enumBugKeys = __webpack_require__(30);
+var $keys       = __webpack_require__(34)
+  , enumBugKeys = __webpack_require__(29);
 
 module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
@@ -2181,7 +2144,7 @@ module.exports = function(KEY, exec){
 };
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = function(bitmap, value){
@@ -2194,17 +2157,17 @@ module.exports = function(bitmap, value){
 };
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(40)('keys')
-  , uid    = __webpack_require__(45);
+var shared = __webpack_require__(39)('keys')
+  , uid    = __webpack_require__(44);
 module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(3)
@@ -2215,7 +2178,7 @@ module.exports = function(key){
 };
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(9)
@@ -2227,7 +2190,7 @@ module.exports = function(index, length){
 };
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
@@ -2238,7 +2201,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
@@ -2248,7 +2211,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -2265,7 +2228,7 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports) {
 
 var id = 0
@@ -2275,7 +2238,7 @@ module.exports = function(key){
 };
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(7);
@@ -2283,14 +2246,14 @@ var $export = __webpack_require__(7);
 $export($export.S + $export.F * !__webpack_require__(1), 'Object', {defineProperty: __webpack_require__(8).f});
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(43)
-  , $keys    = __webpack_require__(36);
+var toObject = __webpack_require__(42)
+  , $keys    = __webpack_require__(35);
 
-__webpack_require__(37)('keys', function(){
+__webpack_require__(36)('keys', function(){
   return function keys(it){
     return $keys(toObject(it));
   };
