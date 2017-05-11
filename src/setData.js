@@ -1,4 +1,5 @@
 export default function setData(data) {
+    this.data = data;
     let times = [];
     let timeStr = [];
     let start = [];
@@ -8,9 +9,7 @@ export default function setData(data) {
     let volume = [];
     data.forEach(d => {
         times.push(d[0]);
-        if (!this.initial) {
-            timeStr.push(this.option.timeFilter(d[0]));
-        }
+        timeStr.push(this.option.timeFilter(d[0]));
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
@@ -18,9 +17,9 @@ export default function setData(data) {
         volume.push(d[5]);
     });
     this.state = {
-        startIndex: data.length - 50,
-        endIndex: data.length,
-        verticalRectNumber: 50,
+        startIndex: data.length > 30 ? data.length - 30 : 0,
+        endIndex: data.length > 30 ? data.length : 30,
+        verticalRectNumber: 30,
         isDown: false,
         times,
         timeStr,
@@ -136,8 +135,10 @@ export default function setData(data) {
         let val = (el - this.state.dea[i]) * 2;
         return this.setDP(val);
     });
-    if (!this.initial) {
-        this.draw();
+    this.state.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
+    this.state.minKLineNumber = 16;
+    if (this.state.maxKLineNumber > times.length * 2) {
+        this.state.maxKLineNumber = times.length * 2;
     }
-    this.initial = true;
+    this.draw(true);
 }

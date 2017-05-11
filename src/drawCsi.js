@@ -27,8 +27,18 @@ function drawVolume(view1, view2) {
     });
     const maxVolume = Math.max(...realVolume, ...realVolumeMa7, ...realVolumeMa30) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
-    const n = (maxVolume * 0.25).toFixed(0).length;
-    const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    let n = 0;
+    if (maxVolume >= 1) {
+        n = maxVolume.toFixed(0).length;
+    } else {
+        let str = maxVolume.toString().split('.')[1];
+        for (let i = 0; i < str.length; i++) {
+            if (str.charAt[1] == 0) {
+                n--;
+            }
+        }
+    }
+    const interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     const yAxis = [];
     for (let i = interval; i < maxVolume; i += interval) {
         yAxis.unshift(i);

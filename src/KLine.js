@@ -152,7 +152,7 @@ function init() {
 
     // 上下画图区域高度比
     if (this.option.csi2.length == 1) {
-        this.split = [6, 4];
+        this.split = [7, 3];
     } else {
         this.split = [10, 0];
     }
@@ -190,9 +190,6 @@ function init() {
     const views = [view1, view2, view3, view4];
     this.views = views;
 
-    this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
-    this.minKLineNumber = 16;
-
     // 设置全局色彩
     const isDarkTheme = this.option.theme === 'dark';
     this.colors = {
@@ -210,7 +207,7 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
     if (flag) {
-        this.draw(true);
+        this.setData(this.data);
     }
 }
 

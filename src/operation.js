@@ -26,6 +26,10 @@ export default function operation() {
                 }
                 this.state.startIndex += num;
                 this.state.endIndex += num;
+                if (this.state.startIndex < 0) {
+                    this.state.startIndex = 0;
+                    this.state.endIndex = this.state.startIndex + this.state.verticalRectNumber;
+                }
                 this.draw();
             } else {
                 let flag = this.isInLineView(pos);
@@ -52,18 +56,22 @@ export default function operation() {
         const lastVerticalRectNumber = this.state.verticalRectNumber;
         this.state.startIndex -= n;
         this.state.endIndex += n;
-        if (this.state.endIndex - this.state.startIndex > this.maxKLineNumber) {
-            this.state.startIndex = lastStartIndex - (this.maxKLineNumber - lastVerticalRectNumber) / 2;
-            this.state.endIndex = lastEndIndex + (this.maxKLineNumber - lastVerticalRectNumber) / 2;
+        if (this.state.endIndex - this.state.startIndex > this.state.maxKLineNumber) {
+            this.state.startIndex = lastStartIndex - (this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
+            this.state.endIndex = lastEndIndex + (this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
         }
-        if (this.state.endIndex - this.state.startIndex < this.minKLineNumber) {
-            this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - this.minKLineNumber) / 2;
-            this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - this.minKLineNumber) / 2;
+        if (this.state.endIndex - this.state.startIndex < this.state.minKLineNumber) {
+            this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - this.state.minKLineNumber) / 2;
+            this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - this.state.minKLineNumber) / 2;
         }
         this.state.verticalRectNumber = this.state.endIndex - this.state.startIndex;
         if (this.state.startIndex < 0) {
             this.state.endIndex -= this.state.startIndex;
             this.state.startIndex = 0;
+        }
+        if (this.state.startIndex >= this.state.times.length) {
+            this.state.startIndex = this.state.times.length - 1;
+            this.state.endIndex = this.state.startIndex + this.state.verticalRectNumber;
         }
         this.draw();
     };

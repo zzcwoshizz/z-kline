@@ -80,13 +80,13 @@ function drawKLine() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     for (let i = 1; i < 5; i++) {
-        let index = (i / 5) * this.state.verticalRectNumber + this.state.startIndex;
+        let index = parseInt((i / 5) * this.state.verticalRectNumber + this.state.startIndex);
         if (index >= times.length) {
             break;
         }
         let x = view1.x + view1.w * i / 5;
         let y = (this.height + view3.y + view3.h) * 0.5;
-        ctx.fillText(timeStr[i], x, y);
+        ctx.fillText(timeStr[index], x, y);
 
         ctx.beginPath();
         ctx.moveTo(x, this.height - 2);
@@ -280,15 +280,15 @@ export function computAxis() {
     const ema7 = this.state.ema7;
     const startIndex = this.state.startIndex;
     const endIndex = this.state.endIndex;
-    let maxY = -99999;
-    let minY = 99999;
-    let maxPrice = -99999;
-    let minPrice = 99999;
-    let maxPriceIndex = -1;
-    let minPriceIndex = -1;
+    let maxY = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    let minY = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    let maxPrice = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    let minPrice = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    let maxPriceIndex = startIndex;
+    let minPriceIndex = startIndex;
     for (let i = startIndex; i < endIndex; i++) {
-        if (i < startIndex || i >= endIndex) {
-            return;
+        if (i >= this.state.times.length) {
+            break;
         }
         let maxVal = Math.max(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
         let minVal = Math.min(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
@@ -305,8 +305,19 @@ export function computAxis() {
             minPrice = minPriceVal;
         }
     }
-    const n = (maxY - minY).toFixed(0).length;
-    const intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    let cha = maxY - minY;
+    let n = 0;
+    if (cha >= 1) {
+        n = cha.toFixed(0).length;
+    } else {
+        let str = cha.toString().split('.')[1];
+        for (let i = 0; i < str.length; i++) {
+            if (str.charAt(i) == 0) {
+                n--;
+            }
+        }
+    }
+    const intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     return {
         maxY,
         minY,
@@ -314,8 +325,8 @@ export function computAxis() {
         maxPriceIndex,
         minPrice,
         minPriceIndex,
-        max: maxY + 2 * intervalY - maxY % intervalY,
-        min: minY - minY % intervalY - intervalY,
+        max: maxY + intervalY - maxY % intervalY,
+        min: minY - minY % intervalY,
         intervalY,
     };
 }
