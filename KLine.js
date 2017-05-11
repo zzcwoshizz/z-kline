@@ -215,13 +215,13 @@ function drawKLine() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     for (var _i2 = 1; _i2 < 5; _i2++) {
-        var _index = _i2 / 5 * this.state.verticalRectNumber + this.state.startIndex;
+        var _index = parseInt(_i2 / 5 * this.state.verticalRectNumber + this.state.startIndex);
         if (_index >= times.length) {
             break;
         }
         var _x2 = view1.x + view1.w * _i2 / 5;
         var _y2 = (this.height + view3.y + view3.h) * 0.5;
-        ctx.fillText(timeStr[_i2], _x2, _y2);
+        ctx.fillText(timeStr[_index], _x2, _y2);
 
         ctx.beginPath();
         ctx.moveTo(_x2, this.height - 2);
@@ -415,15 +415,15 @@ function computAxis() {
     var ema7 = this.state.ema7;
     var startIndex = this.state.startIndex;
     var endIndex = this.state.endIndex;
-    var maxY = -99999;
-    var minY = 99999;
-    var maxPrice = -99999;
-    var minPrice = 99999;
-    var maxPriceIndex = -1;
-    var minPriceIndex = -1;
+    var maxY = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var minY = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var maxPrice = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var minPrice = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var maxPriceIndex = startIndex;
+    var minPriceIndex = startIndex;
     for (var i = startIndex; i < endIndex; i++) {
-        if (i < startIndex || i >= endIndex) {
-            return;
+        if (i >= this.state.times.length) {
+            break;
         }
         var maxVal = Math.max(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
         var minVal = Math.min(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
@@ -440,8 +440,19 @@ function computAxis() {
             minPrice = minPriceVal;
         }
     }
-    var n = (maxY - minY).toFixed(0).length;
-    var intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    var cha = maxY - minY;
+    var n = 0;
+    if (cha >= 1) {
+        n = cha.toFixed(0).length;
+    } else {
+        var str = cha.toString().split('.')[1];
+        for (var _i9 = 0; _i9 < str.length; _i9++) {
+            if (str.charAt(_i9) == 0) {
+                n--;
+            }
+        }
+    }
+    var intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     return {
         maxY: maxY,
         minY: minY,
@@ -449,8 +460,8 @@ function computAxis() {
         maxPriceIndex: maxPriceIndex,
         minPrice: minPrice,
         minPriceIndex: minPriceIndex,
-        max: maxY + 2 * intervalY - maxY % intervalY,
-        min: minY - minY % intervalY - intervalY,
+        max: maxY + intervalY - maxY % intervalY,
+        min: minY - minY % intervalY,
         intervalY: intervalY
     };
 }
@@ -856,11 +867,21 @@ function drawVolume(view1, view2) {
     });
     var maxVolume = Math.max.apply(Math, realVolume.concat(realVolumeMa7, realVolumeMa30)) * 1.25;
     this.csiYAxisSector = [maxVolume, 0];
-    var n = (maxVolume * 0.25).toFixed(0).length;
-    var interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    var n = 0;
+    if (maxVolume >= 1) {
+        n = maxVolume.toFixed(0).length;
+    } else {
+        var str = maxVolume.toString().split('.')[1];
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt[1] == 0) {
+                n--;
+            }
+        }
+    }
+    var interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     var yAxis = [];
-    for (var i = interval; i < maxVolume; i += interval) {
-        yAxis.unshift(i);
+    for (var _i = interval; _i < maxVolume; _i += interval) {
+        yAxis.unshift(_i);
     }
 
     ctx.textAlign = 'center';
@@ -869,20 +890,20 @@ function drawVolume(view1, view2) {
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    for (var _i = 0; _i < yAxis.length; _i++) {
-        ctx.fillText(yAxis[_i], view2.x + view2.w * 0.5, view2.y + view2.h - yAxis[_i] / maxVolume * view2.h);
+    for (var _i2 = 0; _i2 < yAxis.length; _i2++) {
+        ctx.fillText(yAxis[_i2], view2.x + view2.w * 0.5, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
         ctx.beginPath();
-        ctx.moveTo(0, view2.y + view2.h - yAxis[_i] / maxVolume * view2.h);
-        ctx.lineTo(view2.x, view2.y + view2.h - yAxis[_i] / maxVolume * view2.h);
+        ctx.moveTo(0, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
+        ctx.lineTo(view2.x, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
         ctx.stroke();
     }
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
-    for (var _i2 = 0; _i2 < yAxis.length; _i2++) {
+    for (var _i3 = 0; _i3 < yAxis.length; _i3++) {
         var x = view2.x;
-        var y = view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h;
+        var y = view2.y + view2.h - yAxis[_i3] / maxVolume * view2.h;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + 10, y);
@@ -890,11 +911,11 @@ function drawVolume(view1, view2) {
     }
 
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i3 = this.state.startIndex, j = 0; _i3 < this.state.endIndex; _i3++, j++) {
-        if (_i3 >= this.state.times.length) {
+    for (var _i4 = this.state.startIndex, j = 0; _i4 < this.state.endIndex; _i4++, j++) {
+        if (_i4 >= this.state.times.length) {
             break;
         }
-        if (this.state.start[_i3] < this.state.close[_i3]) {
+        if (this.state.start[_i4] < this.state.close[_i4]) {
             var _x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
             var w = view1.w / this.state.verticalRectNumber * 0.8;
             var h = -realVolume[j] / maxVolume * view1.h;
@@ -904,11 +925,11 @@ function drawVolume(view1, view2) {
     }
 
     ctx.fillStyle = this.colors.redColor;
-    for (var _i4 = this.state.startIndex, _j = 0; _i4 < this.state.endIndex; _i4++, _j++) {
-        if (_i4 >= this.state.times.length) {
+    for (var _i5 = this.state.startIndex, _j = 0; _i5 < this.state.endIndex; _i5++, _j++) {
+        if (_i5 >= this.state.times.length) {
             break;
         }
-        if (this.state.close[_i4] <= this.state.start[_i4]) {
+        if (this.state.close[_i5] <= this.state.start[_i5]) {
             var _x2 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
             var _w = view1.w / this.state.verticalRectNumber * 0.8;
             var _h = -realVolume[_j] / maxVolume * view1.h;
@@ -917,13 +938,13 @@ function drawVolume(view1, view2) {
         }
     }
     ctx.beginPath();
-    for (var _i5 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i5++, _j2++) {
-        if (_i5 >= this.state.times.length) {
+    for (var _i6 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i6++, _j2++) {
+        if (_i6 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma30Color;
         var _x3 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y3 = (maxVolume - this.state.volumeMa30[_i5]) / maxVolume * view1.h + view1.y;
+        var _y3 = (maxVolume - this.state.volumeMa30[_i6]) / maxVolume * view1.h + view1.y;
         if (_j2 == 0) {
             ctx.moveTo(_x3, _y3);
         }
@@ -932,13 +953,13 @@ function drawVolume(view1, view2) {
     ctx.stroke();
 
     ctx.beginPath();
-    for (var _i6 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i6++, _j3++) {
-        if (_i6 >= this.state.times.length) {
+    for (var _i7 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i7++, _j3++) {
+        if (_i7 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma7Color;
         var _x4 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y4 = (maxVolume - this.state.volumeMa7[_i6]) / maxVolume * view1.h + view1.y;
+        var _y4 = (maxVolume - this.state.volumeMa7[_i7]) / maxVolume * view1.h + view1.y;
         if (_j3 == 0) {
             ctx.moveTo(_x4, _y4);
         }
@@ -987,16 +1008,16 @@ function drawMacd(view1, view2) {
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
-    for (var _i7 = this.state.startIndex, j = 0; _i7 < this.state.endIndex; _i7++, j++) {
-        if (_i7 >= this.state.times.length) {
+    for (var _i8 = this.state.startIndex, j = 0; _i8 < this.state.endIndex; _i8++, j++) {
+        if (_i8 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i7] > 0) {
+        if (this.state.macd[_i8] > 0) {
             var y = view1.y + view1.h * 0.5;
             var w = view1.w / this.state.verticalRectNumber * 0.8;
             var x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
-            var h = -this.state.macd[_i7] / max * view1.h * 0.5;
-            if (Math.abs(this.state.macd[_i7]) > Math.abs(this.state.macd[_i7 - 1])) {
+            var h = -this.state.macd[_i8] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[_i8]) > Math.abs(this.state.macd[_i8 - 1])) {
                 ctx.fillRect(x, y, w, h);
             } else {
                 if (w <= this.dpr * 4) {
@@ -1009,16 +1030,16 @@ function drawMacd(view1, view2) {
     }
     ctx.fillStyle = this.colors.redColor;
     ctx.strokeStyle = this.colors.redColor;
-    for (var _i8 = this.state.startIndex, _j4 = 0; _i8 < this.state.endIndex; _i8++, _j4++) {
-        if (_i8 >= this.state.times.length) {
+    for (var _i9 = this.state.startIndex, _j4 = 0; _i9 < this.state.endIndex; _i9++, _j4++) {
+        if (_i9 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i8] <= 0) {
+        if (this.state.macd[_i9] <= 0) {
             var _y5 = view1.y + view1.h * 0.5;
             var _w2 = view1.w / this.state.verticalRectNumber * 0.8;
             var _x5 = _j4 * view1.w / this.state.verticalRectNumber + view1.x + _w2 * 0.1;
-            var _h2 = -this.state.macd[_i8] / max * view1.h * 0.5;
-            if (Math.abs(this.state.macd[_i8]) > Math.abs(this.state.macd[_i8 - 1])) {
+            var _h2 = -this.state.macd[_i9] / max * view1.h * 0.5;
+            if (Math.abs(this.state.macd[_i9]) > Math.abs(this.state.macd[_i9 - 1])) {
                 ctx.fillRect(_x5, _y5, _w2, _h2);
             } else {
                 if (_w2 <= this.dpr * 4) {
@@ -1033,12 +1054,12 @@ function drawMacd(view1, view2) {
     // dif
     ctx.strokeStyle = this.colors.ma7Color;
     ctx.beginPath();
-    for (var _i9 = this.state.startIndex, _j5 = 0; _i9 < this.state.endIndex; _i9++, _j5++) {
-        if (_i9 >= this.state.times.length) {
+    for (var _i10 = this.state.startIndex, _j5 = 0; _i10 < this.state.endIndex; _i10++, _j5++) {
+        if (_i10 >= this.state.times.length) {
             break;
         }
         var _x6 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y6 = (max - this.state.dif[_i9]) / (2 * max) * view1.h + view1.y;
+        var _y6 = (max - this.state.dif[_i10]) / (2 * max) * view1.h + view1.y;
         if (_j5 === 0) {
             ctx.moveTo(_x6, _y6);
             continue;
@@ -1050,12 +1071,12 @@ function drawMacd(view1, view2) {
     // dea
     ctx.strokeStyle = this.colors.ma30Color;
     ctx.beginPath();
-    for (var _i10 = this.state.startIndex, _j6 = 0; _i10 < this.state.endIndex; _i10++, _j6++) {
-        if (_i10 >= this.state.times.length) {
+    for (var _i11 = this.state.startIndex, _j6 = 0; _i11 < this.state.endIndex; _i11++, _j6++) {
+        if (_i11 >= this.state.times.length) {
             break;
         }
         var _x7 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y7 = (max - this.state.dea[_i10]) / (2 * max) * view1.h + view1.y;
+        var _y7 = (max - this.state.dea[_i11]) / (2 * max) * view1.h + view1.y;
         if (_j6 === 0) {
             ctx.moveTo(_x7, _y7);
             continue;
@@ -1115,6 +1136,10 @@ function operation() {
                 }
                 _this.state.startIndex += num;
                 _this.state.endIndex += num;
+                if (_this.state.startIndex < 0) {
+                    _this.state.startIndex = 0;
+                    _this.state.endIndex = _this.state.startIndex + _this.state.verticalRectNumber;
+                }
                 _this.draw();
             } else {
                 var flag = _this.isInLineView(pos);
@@ -1141,18 +1166,22 @@ function operation() {
         var lastVerticalRectNumber = _this.state.verticalRectNumber;
         _this.state.startIndex -= n;
         _this.state.endIndex += n;
-        if (_this.state.endIndex - _this.state.startIndex > _this.maxKLineNumber) {
-            _this.state.startIndex = lastStartIndex - (_this.maxKLineNumber - lastVerticalRectNumber) / 2;
-            _this.state.endIndex = lastEndIndex + (_this.maxKLineNumber - lastVerticalRectNumber) / 2;
+        if (_this.state.endIndex - _this.state.startIndex > _this.state.maxKLineNumber) {
+            _this.state.startIndex = lastStartIndex - (_this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
+            _this.state.endIndex = lastEndIndex + (_this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
         }
-        if (_this.state.endIndex - _this.state.startIndex < _this.minKLineNumber) {
-            _this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - _this.minKLineNumber) / 2;
-            _this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - _this.minKLineNumber) / 2;
+        if (_this.state.endIndex - _this.state.startIndex < _this.state.minKLineNumber) {
+            _this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - _this.state.minKLineNumber) / 2;
+            _this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - _this.state.minKLineNumber) / 2;
         }
         _this.state.verticalRectNumber = _this.state.endIndex - _this.state.startIndex;
         if (_this.state.startIndex < 0) {
             _this.state.endIndex -= _this.state.startIndex;
             _this.state.startIndex = 0;
+        }
+        if (_this.state.startIndex >= _this.state.times.length) {
+            _this.state.startIndex = _this.state.times.length - 1;
+            _this.state.endIndex = _this.state.startIndex + _this.state.verticalRectNumber;
         }
         _this.draw();
     };
@@ -1464,6 +1493,7 @@ exports.default = setData;
 function setData(data) {
     var _this = this;
 
+    this.data = data;
     var times = [];
     var timeStr = [];
     var start = [];
@@ -1473,9 +1503,7 @@ function setData(data) {
     var volume = [];
     data.forEach(function (d) {
         times.push(d[0]);
-        if (!_this.initial) {
-            timeStr.push(_this.option.timeFilter(d[0]));
-        }
+        timeStr.push(_this.option.timeFilter(d[0]));
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
@@ -1483,9 +1511,9 @@ function setData(data) {
         volume.push(d[5]);
     });
     this.state = {
-        startIndex: data.length - 50,
-        endIndex: data.length,
-        verticalRectNumber: 50,
+        startIndex: data.length > 30 ? data.length - 30 : 0,
+        endIndex: data.length > 30 ? data.length : 30,
+        verticalRectNumber: 30,
         isDown: false,
         times: times,
         timeStr: timeStr,
@@ -1601,10 +1629,12 @@ function setData(data) {
         var val = (el - _this.state.dea[i]) * 2;
         return _this.setDP(val);
     });
-    if (!this.initial) {
-        this.draw();
+    this.state.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
+    this.state.minKLineNumber = 16;
+    if (this.state.maxKLineNumber > times.length * 2) {
+        this.state.maxKLineNumber = times.length * 2;
     }
-    this.initial = true;
+    this.draw(true);
 }
 
 /***/ }),
@@ -1619,19 +1649,150 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = update;
 function update(data) {
+    var _this = this;
+
+    this.data = data;
     var lastState = this.state;
-    this.setData(data);
-    var cha = 0;
-    this.state.timeStr = lastState.timeStr;
-    if (this.state.times.length > lastState.times.length) {
-        this.state.timeStr.push(this.option.timeFilter(this.state.times[this.state.times.length - 1]));
-        if (lastState.endIndex === lastState.times.length) {
-            cha = 1;
+    var times = [];
+    var timeStr = [];
+    var start = [];
+    var hi = [];
+    var lo = [];
+    var close = [];
+    var volume = [];
+    data.forEach(function (d) {
+        times.push(d[0]);
+        timeStr.push(_this.option.timeFilter(d[0]));
+        start.push(d[1]);
+        hi.push(d[2]);
+        lo.push(d[3]);
+        close.push(d[4]);
+        volume.push(d[5]);
+    });
+    this.state = {
+        startIndex: lastState.endIndex !== lastState.times.length ? lastState.startIndex : lastState.startIndex + times.length - lastState.times.length,
+        endIndex: lastState.endIndex !== lastState.times.length ? lastState.endIndex : lastState.endIndex + times.length - lastState.times.length,
+        verticalRectNumber: lastState.verticalRectNumber,
+        isDown: false,
+        times: times,
+        timeStr: timeStr,
+        start: start,
+        hi: hi,
+        lo: lo,
+        close: close,
+        volume: volume,
+        ma30: close.map(function (el, i) {
+            if (i < 29) {
+                return el;
+            } else {
+                var sum = 0;
+                for (var index = i; index > i - 30; index--) {
+                    sum += close[index];
+                }
+                return _this.setDP(sum / 30);
+            }
+        }),
+        ma7: close.map(function (el, i) {
+            if (i < 6) {
+                return el;
+            } else {
+                var sum = 0;
+                for (var index = i; index > i - 7; index--) {
+                    sum += close[index];
+                }
+                return _this.setDP(sum / 7);
+            }
+        }),
+        volumeMa7: volume.map(function (el, i) {
+            if (i < 6) {
+                return el;
+            } else {
+                var sum = 0;
+                for (var index = i; index > i - 7; index--) {
+                    sum += volume[index];
+                }
+                return _this.setDP(sum / 7);
+            }
+        }),
+        volumeMa30: volume.map(function (el, i) {
+            if (i < 29) {
+                return el;
+            } else {
+                var sum = 0;
+                for (var index = i; index > i - 30; index--) {
+                    sum += volume[index];
+                }
+                return _this.setDP(sum / 30);
+            }
+        })
+    };
+    this.state.ema30 = [];
+    this.state.close.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.ema30[i] = el;
+        } else {
+            var val = 2 / 31 * (_this.state.close[i] - _this.state.ema30[i - 1]) + _this.state.ema30[i - 1];
+            _this.state.ema30[i] = _this.setDP(val);
         }
+    });
+    this.state.ema7 = [];
+    this.state.close.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.ema7[i] = el;
+        } else {
+            var val = 2 / 8 * (_this.state.close[i] - _this.state.ema7[i - 1]) + _this.state.ema7[i - 1];
+            _this.state.ema7[i] = _this.setDP(val);
+        }
+    });
+    this.state.ema15 = [];
+    this.state.close.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.ema15[i] = el;
+        } else {
+            var val = 2 / 16 * (_this.state.close[i] - _this.state.ema15[i - 1]) + _this.state.ema15[i - 1];
+            _this.state.ema15[i] = _this.setDP(val);
+        }
+    });
+    this.state.ema26 = [];
+    this.state.close.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.ema26[i] = el;
+        } else {
+            var val = 2 / 27 * (_this.state.close[i] - _this.state.ema26[i - 1]) + _this.state.ema26[i - 1];
+            _this.state.ema26[i] = _this.setDP(val);
+        }
+    });
+    this.state.ema12 = [];
+    this.state.close.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.ema12[i] = el;
+        } else {
+            var val = 2 / 13 * (_this.state.close[i] - _this.state.ema12[i - 1]) + _this.state.ema12[i - 1];
+            _this.state.ema12[i] = _this.setDP(val);
+        }
+    });
+    this.state.dif = this.state.ema12.map(function (el, i) {
+        var val = el - _this.state.ema26[i];
+        return _this.setDP(val);
+    });
+    this.state.dea = [];
+    this.state.dif.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.dea[i] = el;
+        } else {
+            var val = _this.state.dea[i - 1] * 0.8 + el * 0.2;
+            _this.state.dea[i] = _this.setDP(val);
+        }
+    });
+    this.state.macd = this.state.dif.map(function (el, i) {
+        var val = (el - _this.state.dea[i]) * 2;
+        return _this.setDP(val);
+    });
+    this.state.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
+    this.state.minKLineNumber = 16;
+    if (this.state.maxKLineNumber > times.length * 2) {
+        this.state.maxKLineNumber = times.length * 2;
     }
-    this.state.startIndex = lastState.startIndex + cha;
-    this.state.endIndex = lastState.endIndex + cha;
-    this.state.verticalRectNumber = lastState.verticalRectNumber;
     this.draw(true);
 }
 
@@ -1826,7 +1987,7 @@ function init() {
 
     // 上下画图区域高度比
     if (this.option.csi2.length == 1) {
-        this.split = [6, 4];
+        this.split = [7, 3];
     } else {
         this.split = [10, 0];
     }
@@ -1864,9 +2025,6 @@ function init() {
     var views = [view1, view2, view3, view4];
     this.views = views;
 
-    this.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
-    this.minKLineNumber = 16;
-
     // 设置全局色彩
     var isDarkTheme = this.option.theme === 'dark';
     this.colors = {
@@ -1884,7 +2042,7 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)'
     };
     if (flag) {
-        this.draw(true);
+        this.setData(this.data);
     }
 }
 
