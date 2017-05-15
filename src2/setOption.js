@@ -44,8 +44,57 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
 
-    this.setData();
+    const yAxisWidth = this.setData();
 
     this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
     this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+
+    const left = 20;
+    const right = 20;
+    const top = 40 * this.dpr;
+    const bottom = 100;
+    const middle = 20;
+
+    const width = this.width;
+    const height = this.height;
+
+    this.proportion = 0.7;
+
+    let mainView = {
+        x: left,
+        y: top,
+        w: width - yAxisWidth - left - right - middle,
+        h: (height - top - bottom) * this.proportion - middle * 0.5,
+    };
+    let mainYaxisView = {
+        x: mainView.w + mainView.x + middle,
+        y: mainView.y,
+        w: yAxisWidth,
+        h: mainView.h,
+    };
+    let aidView = {
+        x: mainView.x,
+        y: mainView.y + mainView.h + middle,
+        w: mainView.w,
+        h: (height - top - bottom) * (1 - this.proportion) + middle * 0.5,
+    };
+    let aidYaxisView = {
+        x: mainYaxisView.x,
+        y: aidView.y,
+        w: yAxisWidth,
+        h: aidView.h,
+    };
+    let timeView = {
+        x: mainYaxisView.x,
+        y: aidView.y + aidView.h,
+        w: width,
+        h: bottom,
+    };
+    this.mainView = mainView;
+    this.mainYaxisView = mainYaxisView;
+    this.aidView = aidView;
+    this.aidYaxisView = aidYaxisView;
+    this.timeView = timeView;
+
+    this.draw();
 }

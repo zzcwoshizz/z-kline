@@ -1,4 +1,5 @@
 export default function setData() {
+    let maxLength = -1;
     const data = this.option.data;
     let times = [];
     let timeStr = [];
@@ -15,6 +16,7 @@ export default function setData() {
         lo.push(d[3]);
         close.push(d[4]);
         volume.push(d[5]);
+        maxLength = Math.max(maxLength, d[1].toString().length, d[2].toString().length, d[3].toString().length, d[4].toString().length, d[5].toString().length);
     });
     this.state = {
         times,
@@ -131,6 +133,10 @@ export default function setData() {
     });
     this.state.macd = this.state.dif.map((el, i) => {
         let val = (el - this.state.dea[i]) * 2;
-        return this.setDP(val);
+        const macd = this.setDP(val);
+        maxLength = Math.max(maxLength, macd.toString().length);
+        return maxLength;
     });
+    maxLength += 3;
+    return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
 }
