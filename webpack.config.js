@@ -1,6 +1,6 @@
 var path = require('path');
 module.exports = {
-    entry: './src/index.js',
+    entry: './src2/index.js',
     output: {
         path: path.join(__dirname, 'dist'),
         filename: 'KLine.js',
