@@ -8,6 +8,7 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || this.option.timeFilter,
             overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
+            data: option.data || this.option.data,
         };
     } else {
         this.option = {
@@ -18,6 +19,7 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toLocaleDateString()),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,
+            data: option.data || [],
         };
     }
 
@@ -41,4 +43,9 @@ function init() {
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
+
+    this.setData();
+
+    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
 }

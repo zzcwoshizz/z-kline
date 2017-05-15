@@ -25,4 +25,11 @@ overCanvas.height = bodyHeight * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-let chart = new KLine(canvas, overCanvas, {});
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + 60;
+fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
+    return res.json();
+}).then(json => {
+    let chart = new KLine(canvas, overCanvas, {
+        data: json,
+    });
+});
