@@ -1,3 +1,4 @@
+import { KLine } from './KLine';
 var bodyWidth = document.body.clientWidth;
 var bodyHeight = document.body.clientHeight;
 
@@ -23,3 +24,5 @@ overCanvas.height = bodyHeight * 2;
 
 app.appendChild(canvas);
 app.appendChild(overCanvas);
+
+let chart = new KLine(canvas, overCanvas, {});
