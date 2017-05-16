@@ -1,6 +1,8 @@
 export default function drawAid() {
     if (this.option.aidCsi === 'volume') {
         drawVolume.call(this);
+    } else if (this.option.aidCsi === 'macd') {
+        drawMacd.call(this);
     }
 }
 
@@ -124,4 +126,122 @@ function drawVolume() {
     }
     ctx.stroke();
     ctx.closePath();
+}
+
+function drawMacd() {
+    const ctx = this.ctx;
+    const [startIndex, endIndex] = this.state.range;
+    const verticalRectNumber = endIndex - startIndex;
+    const aidView = this.aidView;
+    const aidYaxisView = this.aidYaxisView;
+
+    let max = 0;
+    let min = 0;
+    this.state.macd.forEach((el, i) => {
+        if (i < startIndex || i >= endIndex) {
+            return;
+        }
+        let val = Math.max(el, this.state.dif[i], this.state.dea[i]);
+        max = max > val ? max : val;
+        val = Math.min(el, this.state.dif[i], this.state.dea[i]);
+        min = min < val ? min : val;
+    });
+    max = (max > Math.abs(min) ? max : Math.abs(min)) * 1.25;
+    this.csiYaxisSector = [max, -max];
+    const yAxis = [max, max * 2 / 3, max / 3, -max / 3, -max * 2 / 3, -max];
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = this.colors.textColor;
+    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.lineWidth = this.dpr * 0.5;
+    for (let i = 1; i < yAxis.length - 1; i++) {
+        ctx.fillText(this.setDP(yAxis[i]), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        ctx.beginPath();
+        ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        ctx.stroke();
+    }
+
+    ctx.setLineDash([]);
+    ctx.lineWidth = this.dpr;
+    ctx.fillStyle = this.colors.greenColor;
+    ctx.strokeStyle = this.colors.greenColor;
+    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        if (this.state.macd[i] > 0) {
+            let y = aidView.y + aidView.h * 0.5;
+            let w = aidView.w / verticalRectNumber * 0.8;
+            let x = j * aidView.w / verticalRectNumber + aidView.x + w * 0.1;
+            let h = -this.state.macd[i] / max * aidView.h * 0.5;
+            if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
+                ctx.fillRect(x, y, w, h);
+            } else {
+                if (w <= this.dpr * 4) {
+                    ctx.fillRect(x, y, w, h);
+                } else {
+                    ctx.strokeRect(x, y, w, h);
+                }
+            }
+        }
+    }
+    ctx.fillStyle = this.colors.redColor;
+    ctx.strokeStyle = this.colors.redColor;
+    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        if (this.state.macd[i] <= 0) {
+            let y = aidView.y + aidView.h * 0.5;
+            let w = aidView.w / verticalRectNumber * 0.8;
+            let x = j * aidView.w / verticalRectNumber + aidView.x + w * 0.1;
+            let h = -this.state.macd[i] / max * aidView.h * 0.5;
+            if (Math.abs(this.state.macd[i]) > Math.abs(this.state.macd[i - 1])) {
+                ctx.fillRect(x, y, w, h);
+            } else {
+                if (w <= this.dpr * 4) {
+                    ctx.fillRect(x, y, w, h);
+                } else {
+                    ctx.strokeRect(x, y, w, h);
+                }
+            }
+        }
+    }
+
+    // dif
+    ctx.strokeStyle = this.colors.ma7Color;
+    ctx.beginPath();
+    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        let x = j * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        let y = (max - this.state.dif[i]) / (2 * max) * aidView.h + aidView.y;
+        if (j === 0) {
+            ctx.moveTo(x, y);
+            continue;
+        }
+        ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // dea
+    ctx.strokeStyle = this.colors.ma30Color;
+    ctx.beginPath();
+    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        let x = j * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        let y = (max - this.state.dea[i]) / (2 * max) * aidView.h + aidView.y;
+        if (j === 0) {
+            ctx.moveTo(x, y);
+            continue;
+        }
+        ctx.lineTo(x, y);
+    }
+    ctx.stroke();
 }

@@ -15,7 +15,7 @@ export default function setOption(option = {}) {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
             mainCsi: option.mainCsi || 'ema',
-            aidCsi: option.aidCsi || 'volume',
+            aidCsi: option.aidCsi || 'macd',
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toLocaleDateString()),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,

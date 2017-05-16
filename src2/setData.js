@@ -135,7 +135,7 @@ export default function setData() {
         let val = (el - this.state.dea[i]) * 2;
         const macd = this.setDP(val);
         maxLength = Math.max(maxLength, macd.toString().length);
-        return maxLength;
+        return macd;
     });
     maxLength += 3;
     return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
