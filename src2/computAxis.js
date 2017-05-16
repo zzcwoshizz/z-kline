@@ -12,8 +12,8 @@ export default function computAxis() {
     const endIndex = this.state.range[1];
     let maxY = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
     let minY = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    let maxPrice = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    let minPrice = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    let maxPrice = hi[startIndex];
+    let minPrice = lo[startIndex];
     let maxPriceIndex = startIndex;
     let minPriceIndex = startIndex;
     for (let i = startIndex; i < endIndex; i++) {
