@@ -44,10 +44,10 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
     };
 
-    const yAxisWidth = this.setData();
-
     this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
     this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+
+    const yAxisWidth = this.setData();
 
     const left = 20;
     const right = 20;

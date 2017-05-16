@@ -1,5 +1,8 @@
 import setOption from './setOption';
 import setData from './setData';
+import draw from './draw';
+import drawMain from './drawMain';
+import computAxis from './computAxis';
 
 export function KLine(canvas, overCanvas, option) {
     this.width = canvas.width;
@@ -17,8 +20,11 @@ export function KLine(canvas, overCanvas, option) {
 KLine.prototype = {
     setOption,
     setData,
+    draw,
+    drawMain,
     getMousePos,
     setDP,
+    computAxis,
 };
 
 // 获取鼠标在canvas上的坐标点
