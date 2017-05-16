@@ -42,6 +42,7 @@ function init() {
         ma30Color: isDarkTheme ? 'rgb(234, 177, 103)' : 'rgb(234, 177, 103)',
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
+        hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
     };
 
     this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
@@ -52,7 +53,7 @@ function init() {
     const left = 20;
     const right = 20;
     const top = 40 * this.dpr;
-    const bottom = 100;
+    const bottom = 80;
     const middle = 20;
 
     const width = this.width;
