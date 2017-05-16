@@ -114,6 +114,72 @@ export default function drawMain(yaxis) {
         ctx.stroke();
     }
 
+    if (this.option.mainCsi === 'ma') {
+        // ma30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.ma30[i]) / (max - min) * mainView.h + mainView.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // ma7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= this.state.times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.ma7[i]) / (max - min) * mainView.h + mainView.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    } else if (this.option.mainCsi === 'ema') {
+        // ema30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.ema30[i]) / (max - min) * mainView.h + mainView.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // ema7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.ema7[i]) / (max - min) * mainView.h + mainView.y;
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    }
+
     // 画最高点，最低点
     ctx.fillStyle = this.colors.textColor;
     ctx.textBaseline = 'middle';
