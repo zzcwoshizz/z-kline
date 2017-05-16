@@ -2,6 +2,7 @@ import setOption from './setOption';
 import setData from './setData';
 import draw from './draw';
 import drawMain from './drawMain';
+import drawAid from './drawAid';
 import computAxis from './computAxis';
 
 export function KLine(canvas, overCanvas, option) {
@@ -22,6 +23,7 @@ KLine.prototype = {
     setData,
     draw,
     drawMain,
+    drawAid,
     getMousePos,
     setDP,
     computAxis,

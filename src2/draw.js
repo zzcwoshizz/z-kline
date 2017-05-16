@@ -8,6 +8,8 @@ export default function draw() {
     const yaxis = this.computAxis();
 
     this.drawMain(yaxis);
+
+    this.drawAid();
 }
 
 function drawBackground() {
