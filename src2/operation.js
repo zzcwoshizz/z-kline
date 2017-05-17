@@ -22,6 +22,17 @@ export default function operation(canvas, overCanvas) {
         }
     };
 
+    const scale = n => {
+        if (n > 20) {
+            n = 20;
+        }
+        if (n < -20) {
+            n = -20;
+        }
+        this.scaleRange(n);
+        this.draw();
+    };
+
     if (this.device === 'pc') {
         const mousedown = e => {
             isDown = true;
@@ -43,6 +54,7 @@ export default function operation(canvas, overCanvas) {
         overCanvas.addEventListener('wheel', function(e) {
             e.preventDefault();
             let n = Number(e.deltaY.toFixed(0));
+            scale(n);
         });
     }
 }

@@ -4,7 +4,7 @@ import draw from './draw';
 import drawMain from './drawMain';
 import drawAid from './drawAid';
 import operation from './operation';
-import { moveRange } from './range';
+import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
 
 export function KLine(canvas, overCanvas, option) {
@@ -32,6 +32,7 @@ KLine.prototype = {
     setDP,
     isInLineView,
     moveRange,
+    scaleRange,
     computAxis,
 };
 

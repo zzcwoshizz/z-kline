@@ -97,5 +97,8 @@ function init() {
     this.aidYaxisView = aidYaxisView;
     this.timeView = timeView;
 
+    this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
+    this.minVerticalRectNumber = 30;
+
     this.draw();
 }
