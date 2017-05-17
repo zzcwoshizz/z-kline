@@ -4,21 +4,22 @@ export default function operation(canvas, overCanvas) {
 
     let isDown = false;
     let lastIndex = -1;
+    let lastTouchDistance = 0;
 
     const move = e => {
         const pos = this.getMousePos(e);
         let [startIndex, endIndex] = this.state.range;
         const verticalRectNumber = endIndex - startIndex;
-        if (this.isInLineView(pos)) {
-            drawHairLine.call(this, pos);
-        } else {
-            overCtx.clearRect(0, 0, this.width, this.height);
-        }
         if (isDown) {
             const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
             this.moveRange(currentIndex - lastIndex);
             this.draw();
             lastIndex = currentIndex;
+        }
+        if (this.isInLineView(pos)) {
+            drawHairLine.call(this, pos);
+        } else {
+            overCtx.clearRect(0, 0, this.width, this.height);
         }
     };
 
@@ -56,6 +57,53 @@ export default function operation(canvas, overCanvas) {
             let n = Number(e.deltaY.toFixed(0));
             scale(n);
         });
+    } else {
+        const touchstart = e => {
+            isDown = true;
+            if (e.targetTouches.length == 2) {
+                const touch1 = this.getMousePos(e.targetTouches[0]);
+                const touch2 = this.getMousePos(e.targetTouches[1]);
+                lastTouchDistance = Math.sqrt(Math.pow(touch1.x - touch2.x, 2) + Math.pow(touch1.y - touch2.y, 2));
+            } else if (e.targetTouches.length === 1) {
+                const pos = this.getMousePos(e.targetTouches[0]);
+                let [startIndex, endIndex] = this.state.range;
+                const verticalRectNumber = endIndex - startIndex;
+                const currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
+                lastIndex = currentIndex;
+            }
+        };
+        const touchend = () => {
+            isDown = false;
+        };
+        const touchcancel = () => {
+            isDown = false;
+            overCtx.clearRect(0, 0, this.width, this.height);
+        };
+        const touchmove = e => {
+            e.preventDefault();
+            if (e.targetTouches.length === 2) {
+                const touch1 = this.getMousePos(e.targetTouches[0]);
+                const touch2 = this.getMousePos(e.targetTouches[1]);
+                const currentDistance = Math.sqrt(Math.pow(touch1.x - touch2.x, 2) + Math.pow(touch1.y - touch2.y, 2));
+                let [startIndex, endIndex] = this.state.range;
+                const verticalRectNumber = endIndex - startIndex;
+                let n = (verticalRectNumber - currentDistance / lastTouchDistance * verticalRectNumber);
+                lastTouchDistance = currentDistance;
+                if (n > 0) {
+                    n = Math.ceil(n);
+                } else {
+                    n = Math.floor(n);
+                }
+                drawHairLine.call(this, touch1);
+                scale(n);
+            } else {
+                move(e.targetTouches[0]);
+            }
+        };
+        overCanvas.addEventListener('touchstart', touchstart);
+        overCanvas.addEventListener('touchend', touchend);
+        overCanvas.addEventListener('touchcancel', touchcancel);
+        overCanvas.addEventListener('touchmove', touchmove);
     }
 }
 

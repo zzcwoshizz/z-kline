@@ -67,6 +67,32 @@ export default function(data, flag) {
                 overCtx.fillText(text, x, y);
                 x += overCtx.measureText(text).width + 40;
             }
+        } else {
+            let text = `${this.option.overTimeFilter(data.time)}   开${data.start}   高${data.hi}   低${data.lo}   收${data.close}`;
+            overCtx.textAlign = 'center';
+            overCtx.textBaseline = 'middle';
+            overCtx.fillStyle = '#343f4d';
+            overCtx.fillRect(0, 0, this.width, 32 * this.dpr);
+            overCtx.fillStyle = this.colors.textColor;
+            overCtx.fillText(text, this.width * 0.5, 16 * this.dpr);
+            let x = 5;
+            let y = 32 * this.dpr + 5;
+            overCtx.textAlign = 'left';
+            overCtx.textBaseline = 'top';
+            for (let i = 0; i < Object.keys(data).length; i++) {
+                let key = Object.keys(data)[i];
+                if (/(time|start|hi|lo|end)/g.test(key)) {
+                    continue;
+                }
+                text = transformKey(key) + '：' + data[key];
+                if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
+                    x = 5;
+                    y += 40;
+                }
+                setStyle.call(this, key, overCtx);
+                overCtx.fillText(text, x, y);
+                x += overCtx.measureText(text).width + 40;
+            }
         }
     } else if (flag === 1) {
         let x = 5;
