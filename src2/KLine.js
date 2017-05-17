@@ -4,6 +4,7 @@ import draw from './draw';
 import drawMain from './drawMain';
 import drawAid from './drawAid';
 import operation from './operation';
+import select from './select';
 import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
 
@@ -28,6 +29,7 @@ KLine.prototype = {
     drawMain,
     drawAid,
     operation,
+    select,
     getMousePos,
     setDP,
     isInLineView,

@@ -124,4 +124,30 @@ function drawHairLine(pos) {
             overCtx.fillText(this.setDP(yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
         }
     }
+
+    this.select({
+        time: this.state.times[currentIndex + startIndex],
+        start: this.state.start[currentIndex + startIndex],
+        hi: this.state.hi[currentIndex + startIndex],
+        lo: this.state.lo[currentIndex + startIndex],
+        close: this.state.close[currentIndex + startIndex],
+        volume: this.state.volume[currentIndex + startIndex],
+        [this.option.mainCsi + 7]: this.state[this.option.mainCsi + 7][currentIndex + startIndex],
+        [this.option.mainCsi + 30]: this.state[this.option.mainCsi + 30][currentIndex + startIndex],
+    }, 0);
+
+    if (this.option.aidCsi === 'volume') {
+        this.select({
+            volume: this.state.volume[currentIndex + startIndex],
+            ma7: this.state.volumeMa7[currentIndex + startIndex],
+            ma30: this.state.volumeMa30[currentIndex + startIndex],
+        }, 1);
+    }
+    if (this.option.aidCsi === 'macd') {
+        this.select({
+            dif: this.state.dif[currentIndex + startIndex],
+            dea: this.state.dea[currentIndex + startIndex],
+            macd: this.state.macd[currentIndex + startIndex],
+        }, 1);
+    }
 }
