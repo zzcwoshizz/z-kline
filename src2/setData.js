@@ -16,7 +16,14 @@ export default function setData() {
         lo.push(d[3]);
         close.push(d[4]);
         volume.push(d[5]);
-        maxLength = Math.max(maxLength, d[1].toString().length, d[2].toString().length, d[3].toString().length, d[4].toString().length, d[5].toString().length);
+        maxLength = Math.max(
+            maxLength,
+            d[1].toFixed(this.option.priceDecimal).length,
+            d[2].toFixed(this.option.priceDecimal).length,
+            d[3].toFixed(this.option.priceDecimal).length,
+            d[4].toFixed(this.option.priceDecimal).length,
+            d[5].toFixed(this.option.priceDecimal).length
+        );
     });
     this.state = {
         times,
@@ -35,6 +42,17 @@ export default function setData() {
                     sum += close[index];
                 }
                 return this.setDP(sum / 30);
+            }
+        }),
+        ma20: close.map((el, i) => {
+            if (i < 19) {
+                return el;
+            } else {
+                let sum = 0;
+                for (let index = i; index > i - 20; index--) {
+                    sum += close[index];
+                }
+                return this.setDP(sum / 20);
             }
         }),
         ma7: close.map((el, i) => {
@@ -137,6 +155,28 @@ export default function setData() {
         maxLength = Math.max(maxLength, macd.toString().length);
         return macd;
     });
+
+    // 计算BOLL
+    this.state.up = [];
+    this.state.mb = [];
+    this.state.dn = [];
+    this.state.ma20.forEach((el, i) => {
+        if (i === 0) {
+            this.state.mb.push(this.state.ma20[i]);
+            this.state.up.push(this.state.ma20[i]);
+            this.state.dn.push(this.state.ma20[i]);
+            return;
+        }
+        let sum = 0;
+        for (let index = i < 20 ? 0 : i - 20; index < i; index++) {
+            sum += (this.state.close[index] - this.state.ma20[index]) ** 2;
+        }
+        let md = Math.sqrt(sum / (i < 20 ? i : 20));
+        this.state.mb.push(this.setDP(this.state.ma20[i - 1]));
+        this.state.up.push(this.setDP(this.state.ma20[i - 1] + 2 * md));
+        this.state.dn.push(this.setDP(this.state.ma20[i - 1] - 2 * md));
+    });
+
     maxLength += 3;
     return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
 }

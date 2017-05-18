@@ -173,16 +173,37 @@ function drawHairLine(pos) {
         }
     }
 
-    this.select({
+    const basicSelectOption = {
         time: this.state.times[currentIndex + startIndex],
         start: this.state.start[currentIndex + startIndex],
         hi: this.state.hi[currentIndex + startIndex],
         lo: this.state.lo[currentIndex + startIndex],
         close: this.state.close[currentIndex + startIndex],
         volume: this.state.volume[currentIndex + startIndex],
-        [this.option.mainCsi + 7]: this.state[this.option.mainCsi + 7][currentIndex + startIndex],
-        [this.option.mainCsi + 30]: this.state[this.option.mainCsi + 30][currentIndex + startIndex],
-    }, 0);
+    };
+    let selectOption = { ...basicSelectOption };
+    if (this.option.mainCsi === 'ma') {
+        selectOption = {
+            ...selectOption,
+            ma7: this.state.ma7[currentIndex + startIndex],
+            ma30: this.state.ma30[currentIndex + startIndex],
+        };
+    } else if (this.option.mainCsi === 'ema') {
+        selectOption = {
+            ...selectOption,
+            ema7: this.state.ema7[currentIndex + startIndex],
+            ema30: this.state.ema30[currentIndex + startIndex],
+        };
+    } else if (this.option.mainCsi === 'boll') {
+        selectOption = {
+            ...selectOption,
+            up: this.state.up[currentIndex + startIndex],
+            mb: this.state.mb[currentIndex + startIndex],
+            dn: this.state.dn[currentIndex + startIndex],
+        };
+    }
+
+    this.select(selectOption, 0);
 
     if (this.option.aidCsi === 'volume') {
         this.select({

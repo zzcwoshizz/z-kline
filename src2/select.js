@@ -25,6 +25,12 @@ function transformKey(key) {
         return 'DIF';
     } else if (key === 'dea') {
         return 'DEA';
+    } else if (key === 'up') {
+        return 'UP';
+    } else if (key === 'mb') {
+        return 'MB';
+    } else if (key === 'dn') {
+        return 'DN';
     } else {
         return key;
     }
@@ -32,11 +38,11 @@ function transformKey(key) {
 
 function setStyle(key, ctx) {
     key = key.toLowerCase();
-    if (key === 'ema7' || key === 'ma7' || key === 'dif') {
+    if (key === 'ema7' || key === 'ma7' || key === 'dif' || key === 'mb') {
         ctx.fillStyle = this.colors.ma7Color;
-    } else if (key === 'ema30' || key === 'ma30' || key === 'dea') {
+    } else if (key === 'ema30' || key === 'ma30' || key === 'dea' || key === 'up') {
         ctx.fillStyle = this.colors.ma30Color;
-    } else if (key === 'macd') {
+    } else if (key === 'macd' || key === 'dn') {
         ctx.fillStyle = this.colors.macdColor;
     } else {
         ctx.fillStyle = this.colors.textColorLight;
