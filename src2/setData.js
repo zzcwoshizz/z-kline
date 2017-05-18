@@ -177,6 +177,34 @@ export default function setData() {
         this.state.dn.push(this.setDP(this.state.ma20[i - 1] - 2 * md));
     });
 
+    // 计算kdj
+    this.state.k = [];
+    this.state.d = [];
+    this.state.j = [];
+    this.state.close.forEach((el, i) => {
+        let h = this.state.hi[i - 8 < 0 ? 0 : i - 8];
+        let l = this.state.lo[i - 8 < 0 ? 0 : i - 8];
+        for (let index = (i - 8 < 0 ? 0 : i - 8) + 1; index <= i; index++) {
+            l = Math.min(this.state.lo[index], l);
+            h = Math.max(this.state.hi[index], h);
+        }
+        let rsv;
+        if (h === l) {
+            rsv = 100;
+        } else {
+            rsv = (el - l) / (h - l) * 100;
+        }
+        if (i === 0) {
+            this.state.k.push(this.setDP(100 / 3 + rsv / 3));
+            this.state.d.push(this.setDP(100 / 3 + this.state.k[i] / 3));
+            this.state.j.push(this.setDP(3 * this.state.k[i] - 2 * this.state.d[i]));
+            return;
+        }
+        this.state.k.push(this.setDP(2 / 3 * this.state.k[i - 1] + rsv / 3));
+        this.state.d.push(this.setDP(2 / 3 * this.state.d[i - 1] + this.state.k[i] / 3));
+        this.state.j.push(this.setDP(3 * this.state.k[i] - 2 * this.state.d[i]));
+    });
+
     maxLength += 3;
     return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
 }

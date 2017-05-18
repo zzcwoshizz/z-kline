@@ -31,6 +31,12 @@ function transformKey(key) {
         return 'MB';
     } else if (key === 'dn') {
         return 'DN';
+    } else if (key === 'k') {
+        return 'K';
+    } else if (key === 'd') {
+        return 'D';
+    } else if (key === 'j') {
+        return 'J';
     } else {
         return key;
     }
@@ -38,11 +44,11 @@ function transformKey(key) {
 
 function setStyle(key, ctx) {
     key = key.toLowerCase();
-    if (key === 'ema7' || key === 'ma7' || key === 'dif' || key === 'mb') {
+    if (key === 'ema7' || key === 'ma7' || key === 'dif' || key === 'mb' || key === 'k') {
         ctx.fillStyle = this.colors.ma7Color;
-    } else if (key === 'ema30' || key === 'ma30' || key === 'dea' || key === 'up') {
+    } else if (key === 'ema30' || key === 'ma30' || key === 'dea' || key === 'up' || key === 'd') {
         ctx.fillStyle = this.colors.ma30Color;
-    } else if (key === 'macd' || key === 'dn') {
+    } else if (key === 'macd' || key === 'dn' || key === 'j') {
         ctx.fillStyle = this.colors.macdColor;
     } else {
         ctx.fillStyle = this.colors.textColorLight;

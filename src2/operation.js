@@ -167,7 +167,7 @@ function drawHairLine(pos) {
         if (this.option.aidCsi === 'volume') {
             const yText = (1 - (y - view.y) / view.h) * (this.csiYaxisSector[0] - this.csiYaxisSector[1]);
             overCtx.fillText(this.setDP(yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
-        } else if (this.option.aidCsi === 'macd') {
+        } else if (this.option.aidCsi === 'macd' || this.option.aidCsi === 'kdj') {
             const yText = this.csiYaxisSector[1] * (y - view.y) / view.h + this.csiYaxisSector[0] * (1 - (y - view.y) / view.h);
             overCtx.fillText(this.setDP(yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
         }
@@ -217,6 +217,13 @@ function drawHairLine(pos) {
             dif: this.state.dif[currentIndex + startIndex],
             dea: this.state.dea[currentIndex + startIndex],
             macd: this.state.macd[currentIndex + startIndex],
+        }, 1);
+    }
+    if (this.option.aidCsi === 'kdj') {
+        this.select({
+            k: this.state.k[currentIndex + startIndex],
+            d: this.state.d[currentIndex + startIndex],
+            j: this.state.j[currentIndex + startIndex],
         }, 1);
     }
 }
