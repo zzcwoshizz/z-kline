@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './src/KLine.js',
+    entry: './src2/KLine.js',
     output: {
         filename: 'KLine.js',
         library: 'KLine',
