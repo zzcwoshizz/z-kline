@@ -73,39 +73,34 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var store      = __webpack_require__(29)('wks')
+  , uid        = __webpack_require__(31)
+  , Symbol     = __webpack_require__(2).Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function(name){
+  return store[name] || (store[name] =
+    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+};
+
+$exports.store = store;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(2)(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
-});
-
-/***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-module.exports = function(exec){
-  try {
-    return !!exec();
-  } catch(e){
-    return true;
-  }
-};
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -114,376 +109,108 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports) {
 
+module.exports = {};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(14);
 module.exports = function(it){
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
+  return it;
 };
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = draw;
-exports.computAxis = computAxis;
-var lastStartIndex = -1;
-var lastEndIndex = -1;
-var lastVerticalRectNumber = -1;
-function draw(flag) {
-    if (this.isDraw) {
-        return;
-    }
-    if (lastStartIndex === this.state.startIndex && lastEndIndex === this.state.endIndex && lastVerticalRectNumber === this.state.verticalRectNumber && !flag) {
-        return;
-    }
-    this.isDraw = true;
-    this.state.yaxis = computAxis.call(this);
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    drawBackground.call(this);
-    drawKLine.call(this);
-    if (this.option.csi2.length > 0) {
-        this.drawCsi();
-    }
-    this.isDraw = false;
-    lastStartIndex = this.state.startIndex;
-    lastEndIndex = this.state.endIndex;
-    lastVerticalRectNumber = this.state.verticalRectNumber;
-}
-
-function drawKLine() {
-    var ctx = this.ctx;
-    var theme = this.option.theme;
-
-    var times = this.state.times;
-    var timeStr = this.state.timeStr;
-    var start = this.state.start;
-    var hi = this.state.hi;
-    var lo = this.state.lo;
-    var close = this.state.close;
-
-    var _state$yaxis = this.state.yaxis,
-        max = _state$yaxis.max,
-        min = _state$yaxis.min,
-        maxPrice = _state$yaxis.maxPrice,
-        maxPriceIndex = _state$yaxis.maxPriceIndex,
-        minPrice = _state$yaxis.minPrice,
-        minPriceIndex = _state$yaxis.minPriceIndex,
-        intervalY = _state$yaxis.intervalY;
-
-
-    var view1 = this.views[0];
-    var view2 = this.views[1];
-    var view3 = this.views[2];
-
-    ctx.fillStyle = this.colors.textColor;
-    ctx.strokeStyle = this.colors.splitLine;
-    ctx.lineWidth = this.dpr * 0.5;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    var lengthY = (max - min) / intervalY;
-    for (var i = 0; i < lengthY; i++) {
-        ctx.fillText(this.option.priceFilter(max - i * intervalY), view2.x + view2.w * 0.5, i * intervalY / (max - min) * view2.h + view2.y);
-
-        var x = view2.x;
-        var y = i * intervalY / (max - min) * view2.h + view2.y;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-    }
-
-    ctx.lineWidth = this.dpr;
-    ctx.setLineDash([]);
-    ctx.strokeStyle = this.colors.textColor;
-    for (var _i = 0; _i < lengthY; _i++) {
-        var _x = view2.x;
-        var _y = _i * intervalY / (max - min) * view2.h + view2.y;
-        ctx.beginPath();
-        ctx.moveTo(_x + 10, _y);
-        ctx.lineTo(_x, _y);
-        ctx.stroke();
-    }
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (var _i2 = 1; _i2 < 5; _i2++) {
-        var _index = parseInt(_i2 / 5 * this.state.verticalRectNumber + this.state.startIndex);
-        if (_index >= times.length) {
-            break;
-        }
-        var _x2 = view1.x + view1.w * _i2 / 5;
-        var _y2 = (this.height + view3.y + view3.h) * 0.5;
-        ctx.fillText(timeStr[_index], _x2, _y2);
-
-        ctx.beginPath();
-        ctx.moveTo(_x2, this.height - 2);
-        ctx.lineTo(_x2, this.height - 8);
-        ctx.stroke();
-    }
-
-    ctx.strokeStyle = this.colors.redColor;
-    ctx.fillStyle = this.colors.redColor;
-    for (var _i3 = this.state.startIndex, j = 0; _i3 < this.state.endIndex; _i3++, j++) {
-        if (_i3 >= times.length) {
-            break;
-        }
-        if (close[_i3] <= start[_i3]) {
-            var _x3 = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * view1.h + view1.y;
-            var w = view1.w / this.state.verticalRectNumber * 0.8;
-            var h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * view1.h;
-            ctx.fillRect(_x3, _y3, w, h < this.dpr ? this.dpr : h);
-            var x1 = j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var y1 = (max - hi[_i3]) / (max - min) * view1.h + view1.y;
-            var x2 = x1;
-            var y2 = (max - lo[_i3]) / (max - min) * view1.h + view1.y;
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-        }
-    }
-    ctx.strokeStyle = this.colors.greenColor;
-    ctx.fillStyle = this.colors.greenColor;
-    for (var _i4 = this.state.startIndex, _j = 0; _i4 < this.state.endIndex; _i4++, _j++) {
-        if (_i4 >= times.length) {
-            break;
-        }
-        if (close[_i4] > start[_i4]) {
-            var _x4 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y4 = (max - Math.max(start[_i4], close[_i4])) / (max - min) * view1.h + view1.y;
-            var _w = view1.w / this.state.verticalRectNumber * 0.8;
-            var _h = (Math.max(start[_i4], close[_i4]) - Math.min(start[_i4], close[_i4])) / (max - min) * view1.h;
-            ctx.fillRect(_x4, _y4, _w, _h < this.dpr ? this.dpr : _h);
-            var _x5 = _j * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y5 = (max - hi[_i4]) / (max - min) * view1.h + view1.y;
-            var _x6 = _x5;
-            var _y6 = (max - lo[_i4]) / (max - min) * view1.h + view1.y;
-            ctx.beginPath();
-            ctx.moveTo(_x5, _y5);
-            ctx.lineTo(_x6, _y6);
-            ctx.stroke();
-        }
-    }
-
-    if (this.option.csi === 'ma') {
-        // ma30
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i5 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i5++, _j2++) {
-            if (_i5 >= this.state.times.length) {
-                break;
-            }
-            var _x7 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y7 = (max - this.state.ma30[_i5]) / (max - min) * view1.h + view1.y;
-            if (_j2 == 0) {
-                ctx.moveTo(_x7, _y7);
-            }
-            ctx.lineTo(_x7, _y7);
-        }
-        ctx.stroke();
-
-        // ma7
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i6 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i6++, _j3++) {
-            if (_i6 >= this.state.times.length) {
-                break;
-            }
-            var _x8 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y8 = (max - this.state.ma7[_i6]) / (max - min) * view1.h + view1.y;
-            if (_j3 == 0) {
-                ctx.moveTo(_x8, _y8);
-            }
-            ctx.lineTo(_x8, _y8);
-        }
-        ctx.stroke();
-    } else if (this.option.csi === 'ema') {
-        // ema30
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i7 = this.state.startIndex, _j4 = 0; _j4 < this.state.verticalRectNumber; _i7++, _j4++) {
-            if (_i7 >= this.state.times.length) {
-                break;
-            }
-            var _x9 = _j4 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y9 = (max - this.state.ema30[_i7]) / (max - min) * view1.h + view1.y;
-            if (_j4 == 0) {
-                ctx.moveTo(_x9, _y9);
-            }
-            ctx.lineTo(_x9, _y9);
-        }
-        ctx.stroke();
-
-        // ema7
-        ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i8 = this.state.startIndex, _j5 = 0; _j5 < this.state.verticalRectNumber; _i8++, _j5++) {
-            if (_i8 >= this.state.times.length) {
-                break;
-            }
-            var _x10 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-            var _y10 = (max - this.state.ema7[_i8]) / (max - min) * view1.h + view1.y;
-            if (_j5 == 0) {
-                ctx.moveTo(_x10, _y10);
-            }
-            ctx.lineTo(_x10, _y10);
-        }
-        ctx.stroke();
-    }
-
-    // 画最高点，最低点
-    ctx.fillStyle = this.colors.textColor;
-    ctx.textBaseline = 'middle';
-    var index = maxPriceIndex - this.state.startIndex;
-    var index1 = minPriceIndex - this.state.startIndex;
-    var maxX = view1.w / this.state.verticalRectNumber * 0.5 + (index + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-    var maxY = (max - maxPrice) / (max - min) * view1.h + view1.y;
-    var minX = view1.w / this.state.verticalRectNumber * 0.5 + (index1 + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-    var minY = (max - minPrice) / (max - min) * view1.h + view1.y;
-    if (index < this.state.verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + maxPrice, maxX, maxY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(maxPrice + ' → ', maxX, maxY);
-    }
-    if (index1 < this.state.verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + minPrice, minX, minY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(minPrice + ' → ', minX, minY);
-    }
-
-    // 当前价格
-    ctx.textAlign = 'left';
-    ctx.fillStyle = this.colors.currentTextColor;
-    ctx.fillText(' ← ' + close[close.length - 1], view1.x + view1.w, (max - close[close.length - 1]) / (max - min) * view1.h + view1.y);
-}
-
-function drawBackground() {
-    var ctx = this.ctx;
-    var theme = this.option.theme;
-    ctx.lineWidth = this.dpr;
-    ctx.fillStyle = this.colors.background;
-    ctx.fillRect(0, 0, this.width, this.height);
-
-    var marginTop = 0;
-    // 垂直分割线
-    ctx.strokeStyle = this.colors.splitLine;
-    ctx.beginPath();
-    ctx.moveTo(this.views[1].x, 0);
-    ctx.lineTo(this.views[3].x, this.views[3].y + this.views[3].h + marginTop);
-    ctx.stroke();
-    if (theme === 'dark') {
-        ctx.fillStyle = this.colors.timeBackground;
-        ctx.fillRect(0, this.views[2].y + marginTop + this.views[2].h, this.width, this.height);
-    } else {
-        ctx.beginPath();
-        ctx.moveTo(0, this.views[2].y + this.views[2].h + marginTop);
-        ctx.lineTo(this.views[3].x + this.views[3].w, this.views[2].y + this.views[2].h + marginTop);
-        ctx.stroke();
-    }
-
-    // 画分割线
-    if (this.option.csi2.length > 0) {
-        ctx.strokeStyle = this.colors.splitLine;
-        ctx.beginPath();
-        ctx.moveTo(0, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
-        ctx.lineTo(this.width, (this.views[0].h + this.views[0].y + this.views[2].y) * 0.5);
-        ctx.stroke();
-    }
-}
-
-function computAxis() {
-    var start = this.state.start;
-    var hi = this.state.hi;
-    var lo = this.state.lo;
-    var close = this.state.close;
-    var ma30 = this.state.ma30;
-    var ma7 = this.state.ma7;
-    var ema30 = this.state.ema30;
-    var ema7 = this.state.ema7;
-    var startIndex = this.state.startIndex;
-    var endIndex = this.state.endIndex;
-    var maxY = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    var minY = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    var maxPrice = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    var minPrice = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
-    var maxPriceIndex = startIndex;
-    var minPriceIndex = startIndex;
-    for (var i = startIndex; i < endIndex; i++) {
-        if (i >= this.state.times.length) {
-            break;
-        }
-        var maxVal = Math.max(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
-        var minVal = Math.min(start[i], hi[i], lo[i], close[i], ma30[i], ma7[i], ema30[i], ema7[i]);
-        maxY = maxVal > maxY ? maxVal : maxY;
-        minY = minVal < minY ? minVal : minY;
-        var maxPriceVal = hi[i];
-        var minPriceVal = lo[i];
-        if (maxPriceVal > maxPrice) {
-            maxPriceIndex = i;
-            maxPrice = maxPriceVal;
-        }
-        if (minPriceVal < minPrice) {
-            minPriceIndex = i;
-            minPrice = minPriceVal;
-        }
-    }
-    var cha = maxY - minY;
-    var n = 0;
-    if (cha >= 1) {
-        n = cha.toFixed(0).length;
-    } else {
-        var str = cha.toString().split('.')[1];
-        for (var _i9 = 0; _i9 < str.length; _i9++) {
-            if (str.charAt(_i9) == 0) {
-                n--;
-            }
-        }
-    }
-    var intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
-    return {
-        maxY: maxY,
-        minY: minY,
-        maxPrice: maxPrice,
-        maxPriceIndex: maxPriceIndex,
-        minPrice: minPrice,
-        minPriceIndex: minPriceIndex,
-        max: maxY + intervalY - maxY % intervalY,
-        min: minY - minY % intervalY,
-        intervalY: intervalY
-    };
-}
+var dP         = __webpack_require__(11)
+  , createDesc = __webpack_require__(16);
+module.exports = __webpack_require__(7) ? function(object, key, value){
+  return dP.f(object, key, createDesc(1, value));
+} : function(object, key, value){
+  object[key] = value;
+  return object;
+};
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
-  return it;
-};
+"use strict";
+
+
+exports.__esModule = true;
+
+var _isIterable2 = __webpack_require__(48);
+
+var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+var _getIterator2 = __webpack_require__(47);
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if ((0, _isIterable3.default)(Object(arr))) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global    = __webpack_require__(3)
-  , core      = __webpack_require__(0)
-  , ctx       = __webpack_require__(27)
-  , hide      = __webpack_require__(31)
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(9)(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global    = __webpack_require__(2)
+  , core      = __webpack_require__(1)
+  , ctx       = __webpack_require__(23)
+  , hide      = __webpack_require__(5)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -543,15 +270,36 @@ $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
 /***/ }),
-/* 8 */
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = function(exec){
+  try {
+    return !!exec();
+  } catch(e){
+    return true;
+  }
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function(it, key){
+  return hasOwnProperty.call(it, key);
+};
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject       = __webpack_require__(24)
-  , IE8_DOM_DEFINE = __webpack_require__(32)
-  , toPrimitive    = __webpack_require__(43)
+var anObject       = __webpack_require__(4)
+  , IE8_DOM_DEFINE = __webpack_require__(63)
+  , toPrimitive    = __webpack_require__(81)
   , dP             = Object.defineProperty;
 
-exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+exports.f = __webpack_require__(7) ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -564,7 +312,70 @@ exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProp
 };
 
 /***/ }),
-/* 9 */
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(13);
+module.exports = function(it){
+  return Object(defined(it));
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = function(it){
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys       = __webpack_require__(75)
+  , enumBugKeys = __webpack_require__(25);
+
+module.exports = Object.keys || function keys(O){
+  return $keys(O, enumBugKeys);
+};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = function(bitmap, value){
+  return {
+    enumerable  : !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable    : !(bitmap & 4),
+    value       : value
+  };
+};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var shared = __webpack_require__(29)('keys')
+  , uid    = __webpack_require__(31);
+module.exports = function(key){
+  return shared[key] || (shared[key] = uid(key));
+};
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -575,18 +386,286 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 10 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(33)
-  , defined = __webpack_require__(6);
+var IObject = __webpack_require__(26)
+  , defined = __webpack_require__(13);
 module.exports = function(it){
   return IObject(defined(it));
 };
 
 /***/ }),
-/* 11 */
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $at  = __webpack_require__(79)(true);
+
+// 21.1.3.27 String.prototype[@@iterator]()
+__webpack_require__(27)(String, 'String', function(iterated){
+  this._t = String(iterated); // target
+  this._i = 0;                // next index
+// 21.1.5.2.1 %StringIteratorPrototype%.next()
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
+  point = $at(O, index);
+  this._i += point.length;
+  return {value: point, done: false};
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// getting tag from 19.1.3.6 Object.prototype.toString()
+var cof = __webpack_require__(22)
+  , TAG = __webpack_require__(0)('toStringTag')
+  // ES3 wrong here
+  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+// fallback for IE11 Script Access Denied error
+var tryGet = function(it, key){
+  try {
+    return it[key];
+  } catch(e){ /* empty */ }
+};
+
+module.exports = function(it){
+  var O, T, B;
+  return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+    // builtinTag case
+    : ARG ? cof(O)
+    // ES3 arguments fallback
+    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = function(it){
+  return toString.call(it).slice(8, -1);
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// optional / simple context binding
+var aFunction = __webpack_require__(58);
+module.exports = function(fn, that, length){
+  aFunction(fn);
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
+      return fn.call(that, a);
+    };
+    case 2: return function(a, b){
+      return fn.call(that, a, b);
+    };
+    case 3: return function(a, b, c){
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function(/* ...args */){
+    return fn.apply(that, arguments);
+  };
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(14)
+  , document = __webpack_require__(2).document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
+  return is ? document.createElement(it) : {};
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+// IE 8- don't enum bug keys
+module.exports = (
+  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+).split(',');
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+var cof = __webpack_require__(22);
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+  return cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var LIBRARY        = __webpack_require__(69)
+  , $export        = __webpack_require__(8)
+  , redefine       = __webpack_require__(78)
+  , hide           = __webpack_require__(5)
+  , has            = __webpack_require__(10)
+  , Iterators      = __webpack_require__(3)
+  , $iterCreate    = __webpack_require__(66)
+  , setToStringTag = __webpack_require__(28)
+  , getPrototypeOf = __webpack_require__(74)
+  , ITERATOR       = __webpack_require__(0)('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
+
+var returnThis = function(){ return this; };
+
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+  $iterCreate(Constructor, NAME, next);
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
+  };
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
+  // Fix native
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
+      // Set @@toStringTag to native iterators
+      setToStringTag(IteratorPrototype, TAG, true);
+      // fix for some old engines
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+    }
+  }
+  // fix Array#{values, @@iterator}.name in V8 / FF
+  if(DEF_VALUES && $native && $native.name !== VALUES){
+    VALUES_BUG = true;
+    $default = function values(){ return $native.call(this); };
+  }
+  // Define iterator
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+    hide(proto, ITERATOR, $default);
+  }
+  // Plug for library
+  Iterators[NAME] = $default;
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
+    methods = {
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
+      entries: $entries
+    };
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
+    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+  }
+  return methods;
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var def = __webpack_require__(11).f
+  , has = __webpack_require__(10)
+  , TAG = __webpack_require__(0)('toStringTag');
+
+module.exports = function(it, tag, stat){
+  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(2)
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
+  return store[key] || (store[key] = {});
+};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.15 ToLength
+var toInteger = __webpack_require__(18)
+  , min       = Math.min;
+module.exports = function(it){
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof   = __webpack_require__(21)
+  , ITERATOR  = __webpack_require__(0)('iterator')
+  , Iterators = __webpack_require__(3);
+module.exports = __webpack_require__(1).getIteratorMethod = function(it){
+  if(it != undefined)return it[ITERATOR]
+    || it['@@iterator']
+    || Iterators[classof(it)];
+};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(85);
+var global        = __webpack_require__(2)
+  , hide          = __webpack_require__(5)
+  , Iterators     = __webpack_require__(3)
+  , TO_STRING_TAG = __webpack_require__(0)('toStringTag');
+
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype;
+  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
+  Iterators[NAME] = Iterators.Array;
+}
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -654,12 +733,12 @@ Depth.prototype.setData = function (data) {
     var buyVolume = [];
     var sellVolume = [];
     buy.forEach(function (el) {
-        buyPrice.push(el[0]);
-        buyVolume.push(el[1]);
+        buyPrice.push(parseFloat(el[0]));
+        buyVolume.push(parseFloat(el[1]));
     });
     sell.forEach(function (el) {
-        sellPrice.push(el[0]);
-        sellVolume.push(el[1]);
+        sellPrice.push(parseFloat(el[0]));
+        sellVolume.push(parseFloat(el[1]));
     });
     var buyDepth = [];
     for (var i = 0; i < buyVolume.length; i++) {
@@ -768,17 +847,17 @@ Depth.prototype.setData = function (data) {
     ctx.strokeRect(0, 0, this.contentWidth, this.contentHeight);
 
     if (this.pos && this.pos.x < this.contentWidth && this.pos.y < this.contentHeight) {
-        var num = buy.length * 2;
-        var currentIndex = parseInt(this.pos.x / this.contentWidth * num);
         var x = void 0;
         var _y = void 0;
         var rectH = 90;
         var text = void 0;
-        if (currentIndex >= buy.length) {
-            var _i8 = currentIndex - buy.length;
+        var title = '';
+        if (this.pos.x >= this.contentWidth * (1 - p2)) {
+            var _i8 = parseInt((this.pos.x - this.contentWidth * (1 - p2)) / (this.contentWidth * p2) * sell.length);
+            title = '卖单：';
             text = [sell[_i8][0], sellDepth[_i8]];
             ctx.beginPath();
-            x = this.contentWidth * (1 - p2) + this.contentWidth * p2 * _i8 / sellDepth.length;
+            x = this.pos.x;
             _y = this.contentHeight - sellDepth[_i8] / maxVolume * this.contentHeight;
             ctx.arc(x, _y, 8, 0, Math.PI * 2, true);
             ctx.closePath();
@@ -786,11 +865,12 @@ Depth.prototype.setData = function (data) {
             ctx.fill();
             ctx.strokeStyle = 'white';
             ctx.stroke();
-        } else {
-            var _i9 = currentIndex;
+        } else if (this.pos.x <= this.contentWidth * p1) {
+            var _i9 = parseInt(this.pos.x / (this.contentWidth * p1) * buy.length);
+            title = '买单：';
             text = [buy[buy.length - 1 - _i9][0], buyDepth[buyDepth.length - 1 - _i9]];
             ctx.beginPath();
-            x = this.contentWidth * p1 * _i9 / buyDepth.length;
+            x = this.pos.x;
             _y = this.contentHeight - buyDepth[buyDepth.length - 1 - _i9] / maxVolume * this.contentHeight;
             ctx.arc(x, _y, 8, 0, Math.PI * 2, true);
             ctx.closePath();
@@ -798,6 +878,8 @@ Depth.prototype.setData = function (data) {
             ctx.fill();
             ctx.strokeStyle = 'white';
             ctx.stroke();
+        } else {
+            return;
         }
         ctx.strokeStyle = 'white';
 
@@ -821,12 +903,12 @@ Depth.prototype.setData = function (data) {
         var textY = _y > this.contentHeight * 0.5 ? _y + rectH * 2 / 3 : _y + rectH / 3;
         ctx.fillText('￥' + text[0], textX, textY);
         textY = _y > this.contentHeight * 0.5 ? _y + rectH / 3 : _y + rectH * 2 / 3;
-        ctx.fillText((currentIndex < buy.length ? '买单：' : '卖单：') + this.setDP(text[1]), textX, textY);
+        ctx.fillText(title, textX, textY);
     }
 };
 
 /***/ }),
-/* 12 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -835,38 +917,220 @@ Depth.prototype.setData = function (data) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = drawCsi;
-function drawCsi() {
-    var csi = this.option.csi2;
-    var views = this.views;
-    var volumeIndex = csi.indexOf('volume');
-    if (volumeIndex > -1) {
-        drawVolume.call(this, views[(volumeIndex + 1) * 2], views[(volumeIndex + 1) * 2 + 1]);
+exports.default = append;
+function append(data) {
+    var lastRange = this.state.range;
+    if (this.option.data.length === data.length) {
+        this.setOption({ data: data });
+    } else if (data.length > this.option.data.length) {
+        var d = data.slice(data.length - this.option.data.length, data.length);
+        this.setOption({ data: d });
     }
-    var macdIndex = csi.indexOf('macd');
-    if (macdIndex > -1) {
-        drawMacd.call(this, views[(macdIndex + 1) * 2], views[(macdIndex + 1) * 2 + 1]);
+    this.state.range = lastRange;
+    this.draw();
+}
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _toConsumableArray2 = __webpack_require__(52);
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+exports.default = computAxis;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// 计算最大价格，最小价格，y轴显示的价格差
+function computAxis() {
+    var start = this.state.start;
+    var hi = this.state.hi;
+    var lo = this.state.lo;
+    var close = this.state.close;
+    var ma30 = this.state.ma30;
+    var ma7 = this.state.ma7;
+    var ema30 = this.state.ema30;
+    var ema7 = this.state.ema7;
+    var up = this.state.up;
+    var mb = this.state.mb;
+    var dn = this.state.dn;
+    var startIndex = this.state.range[0];
+    var endIndex = this.state.range[1];
+    var maxY = Math.max(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var minY = Math.min(start[startIndex], hi[startIndex], lo[startIndex], close[startIndex], ma30[startIndex], ma7[startIndex], ema30[startIndex], ema7[startIndex]);
+    var maxPrice = hi[startIndex];
+    var minPrice = lo[startIndex];
+    var maxPriceIndex = startIndex;
+    var minPriceIndex = startIndex;
+    var mainCsi = this.option.mainCsi;
+    for (var i = startIndex; i < endIndex; i++) {
+        if (i >= this.state.times.length) {
+            break;
+        }
+        var csi = [];
+        if (mainCsi === 'ma') {
+            csi = [ma30[i], ma7[i]];
+        } else if (mainCsi === 'ema') {
+            csi = [ema30[i], ema7[i]];
+        } else if (mainCsi === 'boll') {
+            csi = [up[i], mb[i], dn[i]];
+        }
+        var maxVal = Math.max.apply(Math, [start[i], hi[i], lo[i], close[i]].concat((0, _toConsumableArray3.default)(csi)));
+        var minVal = Math.min.apply(Math, [start[i], hi[i], lo[i], close[i]].concat((0, _toConsumableArray3.default)(csi)));
+        maxY = maxVal > maxY ? maxVal : maxY;
+        minY = minVal < minY ? minVal : minY;
+        var maxPriceVal = hi[i];
+        var minPriceVal = lo[i];
+        if (maxPriceVal > maxPrice) {
+            maxPriceIndex = i;
+            maxPrice = maxPriceVal;
+        }
+        if (minPriceVal < minPrice) {
+            minPriceIndex = i;
+            minPrice = minPriceVal;
+        }
+    }
+    var cha = maxY - minY;
+    var n = 0;
+    if (cha >= 1) {
+        n = cha.toFixed(0).length;
+    } else {
+        var str = cha.toString().split('.')[1];
+        for (var _i = 0; _i < str.length; _i++) {
+            if (str.charAt(_i) == 0) {
+                n--;
+            }
+        }
+    }
+    var intervalY = Math.ceil((maxY - minY) * 0.2 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
+    return {
+        maxY: maxY,
+        minY: minY,
+        maxPrice: maxPrice,
+        maxPriceIndex: maxPriceIndex,
+        minPrice: minPrice,
+        minPriceIndex: minPriceIndex,
+        max: maxY + intervalY - maxY % intervalY,
+        min: minY - minY % intervalY,
+        intervalY: intervalY
+    };
+}
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = draw;
+function draw() {
+    var ctx = this.ctx;
+    ctx.clearRect(0, 0, this.width, this.height);
+
+    drawBackground.call(this);
+    drawTime.call(this);
+    drawSplitLine.call(this);
+
+    var yaxis = this.computAxis();
+
+    this.drawMain(yaxis);
+
+    this.drawAid();
+}
+
+function drawBackground() {
+    var ctx = this.ctx;
+    ctx.fillStyle = this.colors.background;
+    ctx.fillRect(0, 0, this.width, this.height);
+}
+
+function drawTime() {
+    var ctx = this.ctx;
+    ctx.fillStyle = this.colors.timeBackground;
+    ctx.fillRect(0, this.timeView.y, this.width, this.timeView.h);
+}
+
+function drawSplitLine() {
+    var ctx = this.ctx;
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.beginPath();
+    ctx.moveTo(0, (this.mainView.h + this.mainView.y + this.aidView.y) * 0.5);
+    ctx.lineTo(this.width, (this.mainView.h + this.mainView.y + this.aidView.y) * 0.5);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(this.mainYaxisView.x, 0);
+    ctx.lineTo(this.aidYaxisView.x, this.aidYaxisView.y + this.aidYaxisView.h);
+    ctx.stroke();
+}
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(6);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = drawAid;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function drawAid() {
+    if (this.option.aidCsi === 'volume') {
+        drawVolume.call(this);
+    } else if (this.option.aidCsi === 'macd') {
+        drawMacd.call(this);
+    } else if (this.option.aidCsi === 'kdj') {
+        drawKdj.call(this);
     }
 }
 
-function drawVolume(view1, view2) {
+function drawVolume() {
     var _this = this;
 
     var ctx = this.ctx;
-    var theme = this.option.theme;
+    var aidView = this.aidView;
+    var aidYaxisView = this.aidYaxisView;
+
+    var _state$range = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range[0],
+        endIndex = _state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
 
     var realVolume = [];
     var realVolumeMa7 = [];
     var realVolumeMa30 = [];
     this.state.volume.forEach(function (el, i) {
-        if (i >= _this.state.startIndex && i < _this.state.endIndex) {
+        if (i >= startIndex && i < endIndex) {
             realVolume.push(el);
             realVolumeMa7.push(_this.state.volumeMa7[i]);
             realVolumeMa30.push(_this.state.volumeMa30[i]);
         }
     });
     var maxVolume = Math.max.apply(Math, realVolume.concat(realVolumeMa7, realVolumeMa30)) * 1.25;
-    this.csiYAxisSector = [maxVolume, 0];
+    this.csiYaxisSector = [maxVolume, 0];
+
     var n = 0;
     if (maxVolume >= 1) {
         n = maxVolume.toFixed(0).length;
@@ -891,10 +1155,10 @@ function drawVolume(view1, view2) {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var _i2 = 0; _i2 < yAxis.length; _i2++) {
-        ctx.fillText(yAxis[_i2], view2.x + view2.w * 0.5, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
+        ctx.fillText(yAxis[_i2], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
         ctx.beginPath();
-        ctx.moveTo(0, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
-        ctx.lineTo(view2.x, view2.y + view2.h - yAxis[_i2] / maxVolume * view2.h);
+        ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
         ctx.stroke();
     }
 
@@ -902,8 +1166,8 @@ function drawVolume(view1, view2) {
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
     for (var _i3 = 0; _i3 < yAxis.length; _i3++) {
-        var x = view2.x;
-        var y = view2.y + view2.h - yAxis[_i3] / maxVolume * view2.h;
+        var x = aidYaxisView.x;
+        var y = aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + 10, y);
@@ -911,40 +1175,40 @@ function drawVolume(view1, view2) {
     }
 
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i4 = this.state.startIndex, j = 0; _i4 < this.state.endIndex; _i4++, j++) {
+    for (var _i4 = startIndex, j = 0; _i4 < endIndex; _i4++, j++) {
         if (_i4 >= this.state.times.length) {
             break;
         }
         if (this.state.start[_i4] < this.state.close[_i4]) {
-            var _x = (j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var w = view1.w / this.state.verticalRectNumber * 0.8;
-            var h = -realVolume[j] / maxVolume * view1.h;
-            var _y = view1.y + view1.h;
+            var _x = (j + 0.1) * aidView.w / verticalRectNumber + aidView.x;
+            var w = aidView.w / verticalRectNumber * 0.8;
+            var h = -realVolume[j] / maxVolume * aidView.h;
+            var _y = aidView.y + aidView.h;
             ctx.fillRect(_x, _y, w, h);
         }
     }
 
     ctx.fillStyle = this.colors.redColor;
-    for (var _i5 = this.state.startIndex, _j = 0; _i5 < this.state.endIndex; _i5++, _j++) {
+    for (var _i5 = startIndex, _j = 0; _i5 < endIndex; _i5++, _j++) {
         if (_i5 >= this.state.times.length) {
             break;
         }
         if (this.state.close[_i5] <= this.state.start[_i5]) {
-            var _x2 = (_j + 0.1) * view1.w / this.state.verticalRectNumber + view1.x;
-            var _w = view1.w / this.state.verticalRectNumber * 0.8;
-            var _h = -realVolume[_j] / maxVolume * view1.h;
-            var _y2 = view1.y + view1.h;
+            var _x2 = (_j + 0.1) * aidView.w / verticalRectNumber + aidView.x;
+            var _w = aidView.w / verticalRectNumber * 0.8;
+            var _h = -realVolume[_j] / maxVolume * aidView.h;
+            var _y2 = aidView.y + aidView.h;
             ctx.fillRect(_x2, _y2, _w, _h);
         }
     }
     ctx.beginPath();
-    for (var _i6 = this.state.startIndex, _j2 = 0; _j2 < this.state.verticalRectNumber; _i6++, _j2++) {
+    for (var _i6 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i6++, _j2++) {
         if (_i6 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma30Color;
-        var _x3 = _j2 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y3 = (maxVolume - this.state.volumeMa30[_i6]) / maxVolume * view1.h + view1.y;
+        var _x3 = _j2 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y3 = (maxVolume - this.state.volumeMa30[_i6]) / maxVolume * aidView.h + aidView.y;
         if (_j2 == 0) {
             ctx.moveTo(_x3, _y3);
         }
@@ -953,13 +1217,13 @@ function drawVolume(view1, view2) {
     ctx.stroke();
 
     ctx.beginPath();
-    for (var _i7 = this.state.startIndex, _j3 = 0; _j3 < this.state.verticalRectNumber; _i7++, _j3++) {
+    for (var _i7 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i7++, _j3++) {
         if (_i7 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma7Color;
-        var _x4 = _j3 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y4 = (maxVolume - this.state.volumeMa7[_i7]) / maxVolume * view1.h + view1.y;
+        var _x4 = _j3 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y4 = (maxVolume - this.state.volumeMa7[_i7]) / maxVolume * aidView.h + aidView.y;
         if (_j3 == 0) {
             ctx.moveTo(_x4, _y4);
         }
@@ -969,16 +1233,23 @@ function drawVolume(view1, view2) {
     ctx.closePath();
 }
 
-function drawMacd(view1, view2) {
+function drawMacd() {
     var _this2 = this;
 
     var ctx = this.ctx;
-    var theme = this.option.theme;
+
+    var _state$range2 = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range2[0],
+        endIndex = _state$range2[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+    var aidView = this.aidView;
+    var aidYaxisView = this.aidYaxisView;
 
     var max = 0;
     var min = 0;
     this.state.macd.forEach(function (el, i) {
-        if (i < _this2.state.startIndex || i >= _this2.state.endIndex) {
+        if (i < startIndex || i >= endIndex) {
             return;
         }
         var val = Math.max(el, _this2.state.dif[i], _this2.state.dea[i]);
@@ -986,8 +1257,8 @@ function drawMacd(view1, view2) {
         val = Math.min(el, _this2.state.dif[i], _this2.state.dea[i]);
         min = min < val ? min : val;
     });
-    max = (max > Math.abs(min) ? max : Math.abs(min)) * 1.5;
-    this.csiYAxisSector = [max, -max];
+    max = (max > Math.abs(min) ? max : Math.abs(min)) * 1.25;
+    this.csiYaxisSector = [max, -max];
     var yAxis = [max, max * 2 / 3, max / 3, -max / 3, -max * 2 / 3, -max];
 
     ctx.textAlign = 'center';
@@ -997,10 +1268,10 @@ function drawMacd(view1, view2) {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var i = 1; i < yAxis.length - 1; i++) {
-        ctx.fillText(this.setDP(yAxis[i]), view2.x + view2.w * 0.5, view2.y + i / (yAxis.length - 1) * view2.h);
+        ctx.fillText(this.setDP(yAxis[i]), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
         ctx.beginPath();
-        ctx.moveTo(0, view2.y + i / (yAxis.length - 1) * view2.h);
-        ctx.lineTo(view2.x, view2.y + i / (yAxis.length - 1) * view2.h);
+        ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
         ctx.stroke();
     }
 
@@ -1008,15 +1279,15 @@ function drawMacd(view1, view2) {
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
-    for (var _i8 = this.state.startIndex, j = 0; _i8 < this.state.endIndex; _i8++, j++) {
+    for (var _i8 = startIndex, j = 0; _i8 < endIndex; _i8++, j++) {
         if (_i8 >= this.state.times.length) {
             break;
         }
         if (this.state.macd[_i8] > 0) {
-            var y = view1.y + view1.h * 0.5;
-            var w = view1.w / this.state.verticalRectNumber * 0.8;
-            var x = j * view1.w / this.state.verticalRectNumber + view1.x + w * 0.1;
-            var h = -this.state.macd[_i8] / max * view1.h * 0.5;
+            var y = aidView.y + aidView.h * 0.5;
+            var w = aidView.w / verticalRectNumber * 0.8;
+            var x = j * aidView.w / verticalRectNumber + aidView.x + w * 0.1;
+            var h = -this.state.macd[_i8] / max * aidView.h * 0.5;
             if (Math.abs(this.state.macd[_i8]) > Math.abs(this.state.macd[_i8 - 1])) {
                 ctx.fillRect(x, y, w, h);
             } else {
@@ -1030,15 +1301,15 @@ function drawMacd(view1, view2) {
     }
     ctx.fillStyle = this.colors.redColor;
     ctx.strokeStyle = this.colors.redColor;
-    for (var _i9 = this.state.startIndex, _j4 = 0; _i9 < this.state.endIndex; _i9++, _j4++) {
+    for (var _i9 = startIndex, _j4 = 0; _i9 < endIndex; _i9++, _j4++) {
         if (_i9 >= this.state.times.length) {
             break;
         }
         if (this.state.macd[_i9] <= 0) {
-            var _y5 = view1.y + view1.h * 0.5;
-            var _w2 = view1.w / this.state.verticalRectNumber * 0.8;
-            var _x5 = _j4 * view1.w / this.state.verticalRectNumber + view1.x + _w2 * 0.1;
-            var _h2 = -this.state.macd[_i9] / max * view1.h * 0.5;
+            var _y5 = aidView.y + aidView.h * 0.5;
+            var _w2 = aidView.w / verticalRectNumber * 0.8;
+            var _x5 = _j4 * aidView.w / verticalRectNumber + aidView.x + _w2 * 0.1;
+            var _h2 = -this.state.macd[_i9] / max * aidView.h * 0.5;
             if (Math.abs(this.state.macd[_i9]) > Math.abs(this.state.macd[_i9 - 1])) {
                 ctx.fillRect(_x5, _y5, _w2, _h2);
             } else {
@@ -1054,12 +1325,12 @@ function drawMacd(view1, view2) {
     // dif
     ctx.strokeStyle = this.colors.ma7Color;
     ctx.beginPath();
-    for (var _i10 = this.state.startIndex, _j5 = 0; _i10 < this.state.endIndex; _i10++, _j5++) {
+    for (var _i10 = startIndex, _j5 = 0; _i10 < endIndex; _i10++, _j5++) {
         if (_i10 >= this.state.times.length) {
             break;
         }
-        var _x6 = _j5 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y6 = (max - this.state.dif[_i10]) / (2 * max) * view1.h + view1.y;
+        var _x6 = _j5 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y6 = (max - this.state.dif[_i10]) / (2 * max) * aidView.h + aidView.y;
         if (_j5 === 0) {
             ctx.moveTo(_x6, _y6);
             continue;
@@ -1071,12 +1342,12 @@ function drawMacd(view1, view2) {
     // dea
     ctx.strokeStyle = this.colors.ma30Color;
     ctx.beginPath();
-    for (var _i11 = this.state.startIndex, _j6 = 0; _i11 < this.state.endIndex; _i11++, _j6++) {
+    for (var _i11 = startIndex, _j6 = 0; _i11 < endIndex; _i11++, _j6++) {
         if (_i11 >= this.state.times.length) {
             break;
         }
-        var _x7 = _j6 * view1.w / this.state.verticalRectNumber + 0.5 * view1.w / this.state.verticalRectNumber + view1.x;
-        var _y7 = (max - this.state.dea[_i11]) / (2 * max) * view1.h + view1.y;
+        var _x7 = _j6 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y7 = (max - this.state.dea[_i11]) / (2 * max) * aidView.h + aidView.y;
         if (_j6 === 0) {
             ctx.moveTo(_x7, _y7);
             continue;
@@ -1086,8 +1357,126 @@ function drawMacd(view1, view2) {
     ctx.stroke();
 }
 
+function drawKdj() {
+    var _this3 = this;
+
+    var ctx = this.ctx;
+
+    var _state$range3 = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range3[0],
+        endIndex = _state$range3[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+    var aidView = this.aidView;
+    var aidYaxisView = this.aidYaxisView;
+
+    var max = 0;
+    var min = 0;
+    this.state.k.forEach(function (el, i) {
+        if (i < startIndex || i >= endIndex) {
+            return;
+        }
+        var val = Math.max(el, _this3.state.d[i], _this3.state.j[i]);
+        max = max > val ? max : val;
+        val = Math.min(el, _this3.state.d[i], _this3.state.j[i]);
+        min = min < val ? min : val;
+    });
+    this.csiYaxisSector = [max, min];
+
+    max *= 1.1;
+    var cha = max - min;
+
+    var n = 0;
+    if (cha >= 1) {
+        n = cha.toFixed(0).length;
+    } else {
+        var str = cha.toString().split('.')[1];
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt[1] == 0) {
+                n--;
+            }
+        }
+    }
+    var interval = Math.ceil(cha * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
+    var yAxis = [];
+    for (var _i12 = 0; _i12 < max; _i12 += interval) {
+        yAxis.unshift(_i12);
+    }
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = this.colors.textColor;
+    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.lineWidth = this.dpr * 0.5;
+    for (var _i13 = 0; _i13 < yAxis.length; _i13++) {
+        ctx.fillText(yAxis[_i13], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
+        ctx.beginPath();
+        ctx.moveTo(0, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
+        ctx.stroke();
+    }
+
+    ctx.setLineDash([]);
+    ctx.lineWidth = this.dpr;
+    ctx.strokeStyle = this.colors.textColor;
+    for (var _i14 = 0; _i14 < yAxis.length; _i14++) {
+        var x = aidYaxisView.x;
+        var y = aidYaxisView.y + (max - yAxis[_i14]) / cha * aidYaxisView.h;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 10, y);
+        ctx.stroke();
+    }
+
+    ctx.strokeStyle = this.colors.ma7Color;
+    ctx.beginPath();
+    for (var _i15 = startIndex, j = 0; _i15 < endIndex; _i15++, j++) {
+        if (_i15 >= this.state.times.length) {
+            break;
+        }
+        var _x8 = j * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y8 = (max - this.state.k[_i15]) / cha * aidView.h + aidView.y;
+        if (j == 0) {
+            ctx.moveTo(_x8, _y8);
+        }
+        ctx.lineTo(_x8, _y8);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = this.colors.ma30Color;
+    ctx.beginPath();
+    for (var _i16 = startIndex, _j7 = 0; _i16 < endIndex; _i16++, _j7++) {
+        if (_i16 >= this.state.times.length) {
+            break;
+        }
+        var _x9 = _j7 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y9 = (max - this.state.d[_i16]) / cha * aidView.h + aidView.y;
+        if (_j7 == 0) {
+            ctx.moveTo(_x9, _y9);
+        }
+        ctx.lineTo(_x9, _y9);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = this.colors.macdColor;
+    ctx.beginPath();
+    for (var _i17 = startIndex, _j8 = 0; _i17 < endIndex; _i17++, _j8++) {
+        if (_i17 >= this.state.times.length) {
+            break;
+        }
+        var _x10 = _j8 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
+        var _y10 = (max - this.state.j[_i17]) / cha * aidView.h + aidView.y;
+        if (_j8 == 0) {
+            ctx.moveTo(_x10, _y10);
+        }
+        ctx.lineTo(_x10, _y10);
+    }
+    ctx.stroke();
+}
+
 /***/ }),
-/* 13 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,99 +1486,370 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _defineProperty2 = __webpack_require__(20);
+var _slicedToArray2 = __webpack_require__(6);
 
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
-exports.default = operation;
-
-var _draw = __webpack_require__(5);
+exports.default = drawMain;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function operation() {
+function drawMain(yaxis) {
+    var ctx = this.ctx;
+
+    var times = this.state.times;
+    var timeStr = this.state.timeStr;
+    var start = this.state.start;
+    var hi = this.state.hi;
+    var lo = this.state.lo;
+    var close = this.state.close;
+
+    var max = yaxis.max,
+        min = yaxis.min,
+        maxPrice = yaxis.maxPrice,
+        maxPriceIndex = yaxis.maxPriceIndex,
+        minPrice = yaxis.minPrice,
+        minPriceIndex = yaxis.minPriceIndex,
+        intervalY = yaxis.intervalY;
+
+
+    var mainView = this.mainView;
+    var mainYaxisView = this.mainYaxisView;
+    var timeView = this.timeView;
+
+    var _state$range = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range[0],
+        endIndex = _state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    // y轴刻度数值 y轴刻度线
+    ctx.fillStyle = this.colors.textColor;
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.lineWidth = this.dpr * 0.5;
+    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var lengthY = (max - min) / intervalY;
+    for (var i = 0; i < lengthY; i++) {
+        ctx.fillText((max - i * intervalY).toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y);
+
+        var x = mainYaxisView.x;
+        var y = i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+    ctx.lineWidth = this.dpr;
+    ctx.setLineDash([]);
+    ctx.strokeStyle = this.colors.textColor;
+    for (var _i = 0; _i < lengthY; _i++) {
+        var _x = mainYaxisView.x;
+        var _y = _i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
+        ctx.beginPath();
+        ctx.moveTo(_x + 10, _y);
+        ctx.lineTo(_x, _y);
+        ctx.stroke();
+    }
+
+    // 时间轴
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var _i2 = 1; _i2 < 5; _i2++) {
+        var _index = parseInt(_i2 / 5 * verticalRectNumber + startIndex);
+        if (_index >= times.length) {
+            break;
+        }
+        var _x2 = mainView.x + mainView.w * _i2 / 5;
+        var _y2 = timeView.y + timeView.h * 0.5;
+        ctx.fillText(timeStr[_index], _x2, _y2);
+
+        ctx.beginPath();
+        ctx.moveTo(_x2, this.height - 2);
+        ctx.lineTo(_x2, this.height - 8);
+        ctx.stroke();
+    }
+
+    // 蜡烛线
+    ctx.strokeStyle = this.colors.redColor;
+    ctx.fillStyle = this.colors.redColor;
+    for (var _i3 = startIndex, j = 0; _i3 < endIndex; _i3++, j++) {
+        if (_i3 >= times.length) {
+            break;
+        }
+        if (close[_i3] > start[_i3]) {
+            continue;
+        }
+        var _x3 = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * mainView.h + mainView.y;
+        var w = mainView.w / verticalRectNumber * 0.8;
+        var h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * mainView.h;
+        ctx.fillRect(_x3, _y3, w, h < this.dpr ? this.dpr : h);
+        var x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+        var y1 = (max - hi[_i3]) / (max - min) * mainView.h + mainView.y;
+        var x2 = x1;
+        var y2 = (max - lo[_i3]) / (max - min) * mainView.h + mainView.y;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+    ctx.strokeStyle = this.colors.greenColor;
+    ctx.fillStyle = this.colors.greenColor;
+    for (var _i4 = startIndex, _j = 0; _i4 < endIndex; _i4++, _j++) {
+        if (_i4 >= times.length) {
+            break;
+        }
+        if (close[_i4] <= start[_i4]) {
+            continue;
+        }
+        var _x4 = (_j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var _y4 = (max - Math.max(start[_i4], close[_i4])) / (max - min) * mainView.h + mainView.y;
+        var _w = mainView.w / verticalRectNumber * 0.8;
+        var _h = (Math.max(start[_i4], close[_i4]) - Math.min(start[_i4], close[_i4])) / (max - min) * mainView.h;
+        ctx.fillRect(_x4, _y4, _w, _h < this.dpr ? this.dpr : _h);
+        var _x5 = _j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+        var _y5 = (max - hi[_i4]) / (max - min) * mainView.h + mainView.y;
+        var _x6 = _x5;
+        var _y6 = (max - lo[_i4]) / (max - min) * mainView.h + mainView.y;
+        ctx.beginPath();
+        ctx.moveTo(_x5, _y5);
+        ctx.lineTo(_x6, _y6);
+        ctx.stroke();
+    }
+
+    if (this.option.mainCsi === 'ma') {
+        // ma30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (var _i5 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i5++, _j2++) {
+            if (_i5 >= times.length) {
+                break;
+            }
+            var _x7 = _j2 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y7 = (max - this.state.ma30[_i5]) / (max - min) * mainView.h + mainView.y;
+            if (_j2 == 0) {
+                ctx.moveTo(_x7, _y7);
+            }
+            ctx.lineTo(_x7, _y7);
+        }
+        ctx.stroke();
+
+        // ma7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (var _i6 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i6++, _j3++) {
+            if (_i6 >= this.state.times.length) {
+                break;
+            }
+            var _x8 = _j3 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y8 = (max - this.state.ma7[_i6]) / (max - min) * mainView.h + mainView.y;
+            if (_j3 == 0) {
+                ctx.moveTo(_x8, _y8);
+            }
+            ctx.lineTo(_x8, _y8);
+        }
+        ctx.stroke();
+    } else if (this.option.mainCsi === 'ema') {
+        // ema30
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (var _i7 = startIndex, _j4 = 0; _j4 < verticalRectNumber; _i7++, _j4++) {
+            if (_i7 >= times.length) {
+                break;
+            }
+            var _x9 = _j4 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y9 = (max - this.state.ema30[_i7]) / (max - min) * mainView.h + mainView.y;
+            if (_j4 == 0) {
+                ctx.moveTo(_x9, _y9);
+            }
+            ctx.lineTo(_x9, _y9);
+        }
+        ctx.stroke();
+
+        // ema7
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (var _i8 = startIndex, _j5 = 0; _j5 < verticalRectNumber; _i8++, _j5++) {
+            if (_i8 >= times.length) {
+                break;
+            }
+            var _x10 = _j5 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y10 = (max - this.state.ema7[_i8]) / (max - min) * mainView.h + mainView.y;
+            if (_j5 == 0) {
+                ctx.moveTo(_x10, _y10);
+            }
+            ctx.lineTo(_x10, _y10);
+        }
+        ctx.stroke();
+    } else if (this.option.mainCsi === 'boll') {
+        // UP
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma30Color;
+        for (var _i9 = startIndex, _j6 = 0; _j6 < verticalRectNumber; _i9++, _j6++) {
+            if (_i9 >= times.length) {
+                break;
+            }
+            var _x11 = _j6 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y11 = (max - this.state.up[_i9]) / (max - min) * mainView.h + mainView.y;
+            if (_j6 == 0) {
+                ctx.moveTo(_x11, _y11);
+            }
+            ctx.lineTo(_x11, _y11);
+        }
+        ctx.stroke();
+
+        // MB
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.ma7Color;
+        for (var _i10 = startIndex, _j7 = 0; _j7 < verticalRectNumber; _i10++, _j7++) {
+            if (_i10 >= times.length) {
+                break;
+            }
+            var _x12 = _j7 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y12 = (max - this.state.mb[_i10]) / (max - min) * mainView.h + mainView.y;
+            if (_j7 == 0) {
+                ctx.moveTo(_x12, _y12);
+            }
+            ctx.lineTo(_x12, _y12);
+        }
+        ctx.stroke();
+
+        // DN
+        ctx.beginPath();
+        ctx.strokeStyle = this.colors.macdColor;
+        for (var _i11 = startIndex, _j8 = 0; _j8 < verticalRectNumber; _i11++, _j8++) {
+            if (_i11 >= times.length) {
+                break;
+            }
+            var _x13 = _j8 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y13 = (max - this.state.dn[_i11]) / (max - min) * mainView.h + mainView.y;
+            if (_j8 == 0) {
+                ctx.moveTo(_x13, _y13);
+            }
+            ctx.lineTo(_x13, _y13);
+        }
+        ctx.stroke();
+    } else if (this.option.mainCsi === 'sar') {
+        ctx.strokeStyle = this.colors.macdColor;
+        for (var _i12 = startIndex, _j9 = 0; _j9 < verticalRectNumber; _i12++, _j9++) {
+            if (_i12 >= times.length) {
+                break;
+            }
+            var _x14 = _j9 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y14 = (max - this.state.sar[_i12]) / (max - min) * mainView.h + mainView.y;
+            ctx.beginPath();
+            ctx.arc(_x14, _y14, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+    }
+
+    // 画最高点，最低点
+    ctx.fillStyle = this.colors.textColor;
+    ctx.textBaseline = 'middle';
+    var index = maxPriceIndex - startIndex;
+    var index1 = minPriceIndex - startIndex;
+    var maxX = mainView.w / verticalRectNumber * 0.5 + (index + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+    var maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
+    var minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+    var minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
+    if (index < verticalRectNumber * 0.5) {
+        ctx.textAlign = 'left';
+        ctx.fillText(' ← ' + maxPrice, maxX, maxY);
+    } else {
+        ctx.textAlign = 'right';
+        ctx.fillText(maxPrice + ' → ', maxX, maxY);
+    }
+    if (index1 < verticalRectNumber * 0.5) {
+        ctx.textAlign = 'left';
+        ctx.fillText(' ← ' + minPrice, minX, minY);
+    } else {
+        ctx.textAlign = 'right';
+        ctx.fillText(minPrice + ' → ', minX, minY);
+    }
+
+    // 当前价格
+    ctx.textAlign = 'left';
+    ctx.fillStyle = this.colors.currentTextColor;
+    ctx.fillText(' ← ' + close[close.length - 1], mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
+}
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = __webpack_require__(51);
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _slicedToArray2 = __webpack_require__(6);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = operation;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function operation(canvas, overCanvas) {
     var _this = this;
 
     var overCtx = this.overCtx;
-    var overCanvas = this.overCanvas;
+    var mainView = this.mainView,
+        mainYaxisView = this.mainYaxisView,
+        aidView = this.aidView,
+        aidYaxisView = this.aidYaxisView;
+
 
     var isDown = false;
-    var lastIndex = 0;
-    var lastPos = { x: -1, y: -1 };
+    var lastIndex = -1;
     var lastTouchDistance = 0;
-
-    var lock = false;
 
     var move = function move(e) {
         var pos = _this.getMousePos(e);
-        var currentIndex = Math.floor((pos.x - _this.views[0].x) / _this.views[0].w * _this.state.verticalRectNumber);
-        var x = currentIndex * _this.views[0].w / _this.state.verticalRectNumber + 0.5 * _this.views[0].w / _this.state.verticalRectNumber + _this.views[0].x;
-        if (x != lastPos.x || pos.y != lastPos.y) {
-            overCtx.clearRect(0, 0, _this.width, _this.height);
-            if (isDown) {
-                var num = lastIndex - currentIndex;
-                if (_this.state.startIndex + num < 0) {
-                    num = -_this.state.startIndex;
-                }
-                if (_this.state.endIndex + num > _this.state.times.length + _this.state.verticalRectNumber * 0.5) {
-                    num = _this.state.times.length + _this.state.verticalRectNumber * 0.5 - _this.state.endIndex;
-                }
-                _this.state.startIndex += num;
-                _this.state.endIndex += num;
-                if (_this.state.startIndex < 0) {
-                    _this.state.startIndex = 0;
-                    _this.state.endIndex = _this.state.startIndex + _this.state.verticalRectNumber;
-                }
-                _this.draw();
-            } else {
-                var flag = _this.isInLineView(pos);
-                if (flag !== false && currentIndex + _this.state.startIndex < _this.state.times.length) {
-                    _this.overCanvas.style.cursor = 'none';
-                    drawHairline.call(_this, x, pos.y, currentIndex);
-                } else {
-                    _this.overCanvas.style.cursor = 'default';
-                }
-            }
+
+        var _state$range = (0, _slicedToArray3.default)(_this.state.range, 2),
+            startIndex = _state$range[0],
+            endIndex = _state$range[1];
+
+        var verticalRectNumber = endIndex - startIndex;
+        if (isDown) {
+            var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+            _this.moveRange(currentIndex - lastIndex);
+            _this.draw();
             lastIndex = currentIndex;
-            lastPos = { x: x, y: pos.y };
+        }
+        if (_this.isInLineView(pos)) {
+            drawHairLine.call(_this, pos);
+        } else {
+            overCtx.clearRect(0, 0, _this.width, _this.height);
         }
     };
+
     var scale = function scale(n) {
-        if (n > 10) {
-            n = 10;
+        if (n > 20) {
+            n = 20;
         }
-        if (n < -10) {
-            n = -10;
+        if (n < -20) {
+            n = -20;
         }
-        var lastStartIndex = _this.state.startIndex;
-        var lastEndIndex = _this.state.endIndex;
-        var lastVerticalRectNumber = _this.state.verticalRectNumber;
-        _this.state.startIndex -= n;
-        _this.state.endIndex += n;
-        if (_this.state.endIndex - _this.state.startIndex > _this.state.maxKLineNumber) {
-            _this.state.startIndex = lastStartIndex - (_this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
-            _this.state.endIndex = lastEndIndex + (_this.state.maxKLineNumber - lastVerticalRectNumber) / 2;
-        }
-        if (_this.state.endIndex - _this.state.startIndex < _this.state.minKLineNumber) {
-            _this.state.startIndex = lastStartIndex + (lastVerticalRectNumber - _this.state.minKLineNumber) / 2;
-            _this.state.endIndex = lastEndIndex - (lastVerticalRectNumber - _this.state.minKLineNumber) / 2;
-        }
-        _this.state.verticalRectNumber = _this.state.endIndex - _this.state.startIndex;
-        if (_this.state.startIndex < 0) {
-            _this.state.endIndex -= _this.state.startIndex;
-            _this.state.startIndex = 0;
-        }
-        if (_this.state.startIndex >= _this.state.times.length) {
-            _this.state.startIndex = _this.state.times.length - 1;
-            _this.state.endIndex = _this.state.startIndex + _this.state.verticalRectNumber;
-        }
+        _this.scaleRange(n);
         _this.draw();
     };
-    if (this.device == 'pc') {
+
+    if (this.device === 'pc') {
         var mousedown = function mousedown(e) {
             isDown = true;
             var pos = _this.getMousePos(e);
-            var currentIndex = Math.floor((pos.x - _this.views[0].x) / _this.views[0].w * _this.state.verticalRectNumber);
+            var verticalRectNumber = _this.state.range[1] - _this.state.range[0];
+            var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
             lastIndex = currentIndex;
         };
         var mouseup = function mouseup() {
@@ -1197,7 +1857,6 @@ function operation() {
         };
         var mouseout = function mouseout() {
             isDown = false;
-            overCtx.clearRect(0, 0, _this.width, _this.height);
         };
         overCanvas.addEventListener('mousedown', mousedown);
         overCanvas.addEventListener('mouseup', mouseup);
@@ -1208,23 +1867,23 @@ function operation() {
             var n = Number(e.deltaY.toFixed(0));
             scale(n);
         });
-    }
-    if (this.device == 'mb') {
+    } else {
         var touchstart = function touchstart(e) {
             isDown = true;
             if (e.targetTouches.length == 2) {
                 var touch1 = _this.getMousePos(e.targetTouches[0]);
                 var touch2 = _this.getMousePos(e.targetTouches[1]);
                 lastTouchDistance = Math.sqrt(Math.pow(touch1.x - touch2.x, 2) + Math.pow(touch1.y - touch2.y, 2));
-            }
-            var pos = _this.getMousePos(e.targetTouches[0]);
-            var currentIndex = Math.floor((pos.x - _this.views[0].x) / _this.views[0].w * _this.state.verticalRectNumber);
-            lastIndex = currentIndex;
-            var x = currentIndex * _this.views[0].w / _this.state.verticalRectNumber + 0.5 * _this.views[0].w / _this.state.verticalRectNumber + _this.views[0].x;
-            var flag = _this.isInLineView(pos);
-            if (flag !== false && currentIndex + _this.state.startIndex < _this.state.times.length) {
-                overCtx.clearRect(0, 0, _this.width, _this.height);
-                drawHairline.call(_this, x, pos.y, currentIndex);
+            } else if (e.targetTouches.length === 1) {
+                var pos = _this.getMousePos(e.targetTouches[0]);
+
+                var _state$range2 = (0, _slicedToArray3.default)(_this.state.range, 2),
+                    startIndex = _state$range2[0],
+                    endIndex = _state$range2[1];
+
+                var verticalRectNumber = endIndex - startIndex;
+                var currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
+                lastIndex = currentIndex;
             }
         };
         var touchend = function touchend() {
@@ -1240,13 +1899,20 @@ function operation() {
                 var touch1 = _this.getMousePos(e.targetTouches[0]);
                 var touch2 = _this.getMousePos(e.targetTouches[1]);
                 var currentDistance = Math.sqrt(Math.pow(touch1.x - touch2.x, 2) + Math.pow(touch1.y - touch2.y, 2));
-                var n = _this.state.verticalRectNumber - currentDistance / lastTouchDistance * _this.state.verticalRectNumber;
+
+                var _state$range3 = (0, _slicedToArray3.default)(_this.state.range, 2),
+                    startIndex = _state$range3[0],
+                    endIndex = _state$range3[1];
+
+                var verticalRectNumber = endIndex - startIndex;
+                var n = verticalRectNumber - currentDistance / lastTouchDistance * verticalRectNumber;
                 lastTouchDistance = currentDistance;
                 if (n > 0) {
                     n = Math.ceil(n);
                 } else {
                     n = Math.floor(n);
                 }
+                drawHairLine.call(_this, touch1);
                 scale(n);
             } else {
                 move(e.targetTouches[0]);
@@ -1259,44 +1925,60 @@ function operation() {
     }
 }
 
-function drawHairline(x, y, currentIndex) {
-    var _select$call;
-
-    x = x || this.lastPos.x;
-    y = y || this.lastPos.y;
+function drawHairLine(pos) {
     var overCtx = this.overCtx;
+    var mainView = this.mainView,
+        mainYaxisView = this.mainYaxisView,
+        aidView = this.aidView,
+        aidYaxisView = this.aidYaxisView,
+        timeView = this.timeView;
+
+    var _state$range4 = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range4[0],
+        endIndex = _state$range4[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+    var x = currentIndex * aidView.w / verticalRectNumber + aidView.w / verticalRectNumber * 0.5 + mainView.x;
+    var y = pos.y;
+
+    overCtx.clearRect(0, 0, this.width, this.height);
+    if (currentIndex + startIndex >= this.state.times.length || currentIndex + startIndex < 0) {
+        return;
+    }
+
     overCtx.lineWidth = this.dpr;
-    overCtx.strokeStyle = this.colors.subline;
+    overCtx.strokeStyle = this.colors.hairLine;
+
     overCtx.beginPath();
-    // 画横线
+    overCtx.moveTo(x, this.height);
+    overCtx.lineTo(x, 0);
+    overCtx.stroke();
+
+    overCtx.beginPath();
     overCtx.moveTo(0, y);
     overCtx.lineTo(this.width, y);
     overCtx.stroke();
-    // 画竖线
-    overCtx.moveTo(x, 0);
-    overCtx.lineTo(x, this.height);
-    overCtx.stroke();
-    overCtx.closePath();
 
-    // 画x轴的坐标
-    var currentTime = this.state.times[this.state.startIndex + currentIndex];
+    // x轴坐标
+    var currentTime = this.state.times[startIndex + currentIndex];
     overCtx.textAlign = 'center';
-    overCtx.textBaseline = 'bottom';
-    overCtx.fillStyle = this.colors.background;
-    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
+    overCtx.textBaseline = 'middle';
+    overCtx.fillStyle = this.colors.timeBackground;
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10 * this.dpr, this.height - 50, overCtx.measureText(currentTime).width + 20 * this.dpr, 50 - this.dpr);
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
     overCtx.fillStyle = this.colors.textColor;
-    overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - 7);
+    overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
 
     // 画y轴坐标
-    // 根据intervalY计算y轴显示的最大和最小的数值
 
-    var _computAxis$call = _draw.computAxis.call(this),
-        max = _computAxis$call.max,
-        min = _computAxis$call.min;
+    var _computAxis = this.computAxis(),
+        max = _computAxis.max,
+        min = _computAxis.min;
 
-    var view = this.views[1];
+    var view = mainYaxisView;
     var w = this.width - view.x;
     overCtx.textAlign = 'right';
     overCtx.textBaseline = 'middle';
@@ -1306,51 +1988,75 @@ function drawHairline(x, y, currentIndex) {
     overCtx.strokeRect(view.x, y - 16, w, 32);
     overCtx.fillStyle = this.colors.textColor;
 
-    var csiStr = this.option.csi2[0];
-    var flag = this.isInLineView({ x: x, y: y });
-    if (flag === 0) {
+    overCtx.textAlign = 'center';
+    if (this.isInLineView(pos) === mainView) {
         var yText = max - (max - min) * (y - view.y) / view.h;
-        overCtx.fillText(this.option.overYFilter(yText), view.x + view.w, y);
-    } else if (flag === 1) {
-        view = this.views[3];
-        if (csiStr === 'volume') {
-            var _yText = (1 - (y - view.y) / view.h) * (this.csiYAxisSector[0] - this.csiYAxisSector[1]);
-            overCtx.fillText(this.setDP(_yText), view.x + view.w, y);
-        }
-        if (csiStr === 'macd') {
-            var _yText2 = this.csiYAxisSector[1] * (y - view.y) / view.h + this.csiYAxisSector[0] * (1 - (y - view.y) / view.h);
-            overCtx.fillText(this.setDP(_yText2), view.x + view.w, y);
+        overCtx.fillText(yText.toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, y);
+    } else {
+        view = aidYaxisView;
+        if (this.option.aidCsi === 'volume') {
+            var _yText = (1 - (y - view.y) / view.h) * (this.csiYaxisSector[0] - this.csiYaxisSector[1]);
+            overCtx.fillText(this.setDP(_yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
+        } else if (this.option.aidCsi === 'macd' || this.option.aidCsi === 'kdj') {
+            var _yText2 = this.csiYaxisSector[1] * (y - view.y) / view.h + this.csiYaxisSector[0] * (1 - (y - view.y) / view.h);
+            overCtx.fillText(this.setDP(_yText2), mainYaxisView.x + mainYaxisView.w * 0.5, y);
         }
     }
-    this.select.call(this, (_select$call = {
-        time: this.state.times[currentIndex + this.state.startIndex],
-        start: this.state.start[currentIndex + this.state.startIndex],
-        hi: this.state.hi[currentIndex + this.state.startIndex],
-        lo: this.state.lo[currentIndex + this.state.startIndex],
-        close: this.state.close[currentIndex + this.state.startIndex],
-        volume: this.state.volume[currentIndex + this.state.startIndex]
-    }, (0, _defineProperty3.default)(_select$call, this.option.csi + 7, this.state[this.option.csi + 7][currentIndex + this.state.startIndex]), (0, _defineProperty3.default)(_select$call, this.option.csi + 30, this.state[this.option.csi + 30][currentIndex + this.state.startIndex]), _select$call), 0);
 
-    var ma7Color = this.colors.ma7Color;
-    var ma30Color = this.colors.ma30Color;
-    if (csiStr === 'volume') {
-        this.select.call(this, {
-            volume: this.state.volume[currentIndex + this.state.startIndex],
-            ma7: this.state.volumeMa7[currentIndex + this.state.startIndex],
-            ma30: this.state.volumeMa30[currentIndex + this.state.startIndex]
+    var basicSelectOption = {
+        time: this.state.times[currentIndex + startIndex],
+        start: this.state.start[currentIndex + startIndex],
+        hi: this.state.hi[currentIndex + startIndex],
+        lo: this.state.lo[currentIndex + startIndex],
+        close: this.state.close[currentIndex + startIndex],
+        volume: this.state.volume[currentIndex + startIndex]
+    };
+    var selectOption = (0, _extends3.default)({}, basicSelectOption);
+    if (this.option.mainCsi === 'ma') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            ma7: this.state.ma7[currentIndex + startIndex],
+            ma30: this.state.ma30[currentIndex + startIndex]
+        });
+    } else if (this.option.mainCsi === 'ema') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            ema7: this.state.ema7[currentIndex + startIndex],
+            ema30: this.state.ema30[currentIndex + startIndex]
+        });
+    } else if (this.option.mainCsi === 'boll') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            up: this.state.up[currentIndex + startIndex],
+            mb: this.state.mb[currentIndex + startIndex],
+            dn: this.state.dn[currentIndex + startIndex]
+        });
+    }
+
+    this.select(selectOption, 0);
+
+    if (this.option.aidCsi === 'volume') {
+        this.select({
+            volume: this.state.volume[currentIndex + startIndex],
+            ma7: this.state.volumeMa7[currentIndex + startIndex],
+            ma30: this.state.volumeMa30[currentIndex + startIndex]
         }, 1);
     }
-    if (csiStr === 'macd') {
-        this.select.call(this, {
-            dif: this.state.dif[currentIndex + this.state.startIndex],
-            dea: this.state.dea[currentIndex + this.state.startIndex],
-            macd: this.state.macd[currentIndex + this.state.startIndex]
+    if (this.option.aidCsi === 'macd') {
+        this.select({
+            dif: this.state.dif[currentIndex + startIndex],
+            dea: this.state.dea[currentIndex + startIndex],
+            macd: this.state.macd[currentIndex + startIndex]
+        }, 1);
+    }
+    if (this.option.aidCsi === 'kdj') {
+        this.select({
+            k: this.state.k[currentIndex + startIndex],
+            d: this.state.d[currentIndex + startIndex],
+            j: this.state.j[currentIndex + startIndex]
         }, 1);
     }
 }
 
 /***/ }),
-/* 14 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1360,7 +2066,80 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(19);
+var _slicedToArray2 = __webpack_require__(6);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.moveRange = moveRange;
+exports.scaleRange = scaleRange;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function moveRange(distance) {
+    var _state$range = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range[0],
+        endIndex = _state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+    var newStartIndex = startIndex - distance;
+    var newEndIndex = endIndex - distance;
+    if (newStartIndex >= this.state.times.length) {
+        newStartIndex = this.state.times.length - 1;
+        newEndIndex = newStartIndex + verticalRectNumber;
+    }
+    if (newStartIndex < 0) {
+        newStartIndex = 0;
+        newEndIndex = verticalRectNumber;
+    }
+    this.state.range = [newStartIndex, newEndIndex];
+}
+
+function scaleRange(n) {
+    var _state$range2 = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range2[0],
+        endIndex = _state$range2[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+    var newStartIndex = startIndex - n;
+    var newEndIndex = endIndex + n;
+    if ((endIndex - startIndex) * 0.5 > this.state.times.length - startIndex) {
+        newStartIndex += n;
+        newEndIndex += n;
+    }
+    var newVerticalRectNumber = newEndIndex - newStartIndex;
+    if (newVerticalRectNumber < this.minVerticalRectNumber) {
+        newStartIndex = startIndex - (this.minVerticalRectNumber - verticalRectNumber) * 0.5;
+        newEndIndex = endIndex + (this.minVerticalRectNumber - verticalRectNumber) * 0.5;
+    }
+    if (newVerticalRectNumber > this.maxVerticalRectNumber) {
+        newStartIndex = startIndex - (this.maxVerticalRectNumber - verticalRectNumber) * 0.5;
+        newEndIndex = endIndex + (this.maxVerticalRectNumber - verticalRectNumber) * 0.5;
+    }
+    newVerticalRectNumber = newEndIndex - newStartIndex;
+
+    if (newStartIndex >= this.state.times.length) {
+        newStartIndex = this.state.times.length - 1;
+        newEndIndex = newStartIndex + newVerticalRectNumber;
+    }
+    if (newStartIndex < 0) {
+        newStartIndex = 0;
+        newEndIndex = newVerticalRectNumber;
+    }
+    this.state.range = [newStartIndex, newEndIndex];
+}
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _keys = __webpack_require__(50);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -1380,7 +2159,7 @@ exports.default = function (data, flag) {
                 } else {
                     text = transformKey(key) + '：' + data[key];
                 }
-                if (overCtx.measureText(text).width + x + 40 > this.views[0].x + this.views[0].w) {
+                if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
                     x = 5;
                     y += 40;
                 }
@@ -1406,7 +2185,7 @@ exports.default = function (data, flag) {
                     continue;
                 }
                 _text = transformKey(_key) + '：' + data[_key];
-                if (overCtx.measureText(_text).width + _x + 40 > this.views[0].x + this.views[0].w) {
+                if (overCtx.measureText(_text).width + _x + 40 > this.mainView.x + this.mainView.w) {
                     _x = 5;
                     _y += 40;
                 }
@@ -1417,11 +2196,11 @@ exports.default = function (data, flag) {
         }
     } else if (flag === 1) {
         var _x2 = 5;
-        var _y2 = this.views[2].y;
+        var _y2 = this.aidView.y;
         for (var _i2 = 0; _i2 < (0, _keys2.default)(data).length; _i2++) {
             var _key2 = (0, _keys2.default)(data)[_i2];
             var _text2 = transformKey(_key2) + '：' + data[_key2];
-            if (overCtx.measureText(_text2).width + _x2 + 40 > this.views[0].x + this.views[0].w) {
+            if (overCtx.measureText(_text2).width + _x2 + 40 > this.mainView.x + this.mainView.w) {
                 _x2 = 5;
                 _y2 += 40;
             }
@@ -1461,6 +2240,18 @@ function transformKey(key) {
         return 'DIF';
     } else if (key === 'dea') {
         return 'DEA';
+    } else if (key === 'up') {
+        return 'UP';
+    } else if (key === 'mb') {
+        return 'MB';
+    } else if (key === 'dn') {
+        return 'DN';
+    } else if (key === 'k') {
+        return 'K';
+    } else if (key === 'd') {
+        return 'D';
+    } else if (key === 'j') {
+        return 'J';
     } else {
         return key;
     }
@@ -1468,11 +2259,11 @@ function transformKey(key) {
 
 function setStyle(key, ctx) {
     key = key.toLowerCase();
-    if (key === 'ema7' || key === 'ma7' || key === 'dif') {
+    if (key === 'ema7' || key === 'ma7' || key === 'dif' || key === 'mb' || key === 'k') {
         ctx.fillStyle = this.colors.ma7Color;
-    } else if (key === 'ema30' || key === 'ma30' || key === 'dea') {
+    } else if (key === 'ema30' || key === 'ma30' || key === 'dea' || key === 'up' || key === 'd') {
         ctx.fillStyle = this.colors.ma30Color;
-    } else if (key === 'macd') {
+    } else if (key === 'macd' || key === 'dn' || key === 'j') {
         ctx.fillStyle = this.colors.macdColor;
     } else {
         ctx.fillStyle = this.colors.textColorLight;
@@ -1480,7 +2271,7 @@ function setStyle(key, ctx) {
 }
 
 /***/ }),
-/* 15 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1490,10 +2281,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = setData;
-function setData(data) {
+function setData() {
     var _this = this;
 
-    this.data = data;
+    var maxLength = -1;
+    var data = this.option.data;
     var times = [];
     var timeStr = [];
     var start = [];
@@ -1509,12 +2301,9 @@ function setData(data) {
         lo.push(d[3]);
         close.push(d[4]);
         volume.push(d[5]);
+        maxLength = Math.max(maxLength, d[1].toFixed(_this.option.priceDecimal).length, d[2].toFixed(_this.option.priceDecimal).length, d[3].toFixed(_this.option.priceDecimal).length, d[4].toFixed(_this.option.priceDecimal).length, d[5].toFixed(_this.option.priceDecimal).length);
     });
     this.state = {
-        startIndex: data.length > 30 ? data.length - 30 : 0,
-        endIndex: data.length > 30 ? data.length : 30,
-        verticalRectNumber: 30,
-        isDown: false,
         times: times,
         timeStr: timeStr,
         start: start,
@@ -1531,6 +2320,17 @@ function setData(data) {
                     sum += close[index];
                 }
                 return _this.setDP(sum / 30);
+            }
+        }),
+        ma20: close.map(function (el, i) {
+            if (i < 19) {
+                return el;
+            } else {
+                var sum = 0;
+                for (var index = i; index > i - 20; index--) {
+                    sum += close[index];
+                }
+                return _this.setDP(sum / 20);
             }
         }),
         ma7: close.map(function (el, i) {
@@ -1565,7 +2365,9 @@ function setData(data) {
                 }
                 return _this.setDP(sum / 30);
             }
-        })
+        }),
+        isDown: false,
+        range: data.length > 44 ? [data.length - 44, data.length + 44] : [0, 88]
     };
     this.state.ema30 = [];
     this.state.close.forEach(function (el, i) {
@@ -1627,18 +2429,110 @@ function setData(data) {
     });
     this.state.macd = this.state.dif.map(function (el, i) {
         var val = (el - _this.state.dea[i]) * 2;
-        return _this.setDP(val);
+        var macd = _this.setDP(val);
+        maxLength = Math.max(maxLength, macd.toString().length);
+        return macd;
     });
-    this.state.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
-    this.state.minKLineNumber = 16;
-    if (this.state.maxKLineNumber > times.length * 2) {
-        this.state.maxKLineNumber = times.length * 2;
+
+    // 计算BOLL
+    this.state.up = [];
+    this.state.mb = [];
+    this.state.dn = [];
+    this.state.ma20.forEach(function (el, i) {
+        if (i === 0) {
+            _this.state.mb.push(_this.state.ma20[i]);
+            _this.state.up.push(_this.state.ma20[i]);
+            _this.state.dn.push(_this.state.ma20[i]);
+            return;
+        }
+        var sum = 0;
+        for (var index = i < 20 ? 0 : i - 20; index < i; index++) {
+            sum += Math.pow(_this.state.close[index] - _this.state.ma20[index], 2);
+        }
+        var md = Math.sqrt(sum / (i < 20 ? i : 20));
+        _this.state.mb.push(_this.setDP(_this.state.ma20[i - 1]));
+        _this.state.up.push(_this.setDP(_this.state.ma20[i - 1] + 2 * md));
+        _this.state.dn.push(_this.setDP(_this.state.ma20[i - 1] - 2 * md));
+    });
+
+    // 计算kdj
+    this.state.k = [];
+    this.state.d = [];
+    this.state.j = [];
+    this.state.close.forEach(function (el, i) {
+        var h = _this.state.hi[i - 8 < 0 ? 0 : i - 8];
+        var l = _this.state.lo[i - 8 < 0 ? 0 : i - 8];
+        var defaultIndex = i - 8 < 0 ? 0 : i - 8;
+        for (var index = defaultIndex; index <= i; index++) {
+            l = Math.min(_this.state.lo[index], l);
+            h = Math.max(_this.state.hi[index], h);
+        }
+        var rsv = void 0;
+        if (h === l) {
+            rsv = 100;
+        } else {
+            rsv = (el - l) / (h - l) * 100;
+        }
+        if (i === 0) {
+            _this.state.k.push(_this.setDP(100 / 3 + rsv / 3));
+            _this.state.d.push(_this.setDP(100 / 3 + _this.state.k[i] / 3));
+            _this.state.j.push(_this.setDP(3 * _this.state.k[i] - 2 * _this.state.d[i]));
+            return;
+        }
+        _this.state.k.push(_this.setDP(2 / 3 * _this.state.k[i - 1] + rsv / 3));
+        _this.state.d.push(_this.setDP(2 / 3 * _this.state.d[i - 1] + _this.state.k[i] / 3));
+        _this.state.j.push(_this.setDP(3 * _this.state.k[i] - 2 * _this.state.d[i]));
+    });
+
+    // 计算sar
+    this.state.sar = [];
+    var af = 0.02;
+    for (var i = 0; i < times.length; i++) {
+        if (i === 0) {
+            this.state.sar.push(this.state.lo[i]);
+            continue;
+        }
+        if (i === 1) {
+            this.state.sar.push(this.state.hi[i]);
+            continue;
+        }
+        var ep = void 0;
+        if (this.state.close[i] > this.state.close[i - 1]) {
+            ep = Math.max(this.state.hi[i - 1], this.state.hi[i - 2]);
+        } else {
+            ep = Math.min(this.state.lo[i - 1], this.state.lo[i - 2]);
+        }
+        if (this.state.close[i] > this.state.close[i - 1] && this.state.close[i - 1] > this.state.close[i - 2]) {
+            if (Math.max(this.state.hi[i], this.state.hi[i - 1]) > Math.max(this.state.hi[i - 1], this.state.hi[i - 2])) {
+                af = af + 0.02 > 0.2 ? 0.2 : af + 0.02;
+            }
+        } else if (this.state.close[i] <= this.state.close[i - 1] && this.state.close[i - 1] <= this.state.close[i - 2]) {
+            if (Math.min(this.state.lo[i], this.state.lo[i - 1]) < Math.min(this.state.lo[i - 1], this.state.lo[i - 2])) {
+                af = af + 0.02 > 0.2 ? 0.2 : af + 0.02;
+            }
+        } else {
+            af = 0.02;
+        }
+        var preSar = this.state.sar[i - 1];
+        var sar = preSar + af * (ep - preSar);
+        if (this.state.close[i] > this.state.close[i - 1]) {
+            if (sar > this.state.lo[i] || sar > this.state.lo[i - 1] || sar > this.state.lo[i - 2]) {
+                sar = Math.min(this.state.lo[i], this.state.lo[i - 1], this.state.lo[i - 2]);
+            }
+        } else {
+            if (sar < this.state.hi[i] || sar < this.state.hi[i - 1] || sar < this.state.hi[i - 2]) {
+                sar = Math.max(this.state.hi[i], this.state.hi[i - 1], this.state.hi[i - 2]);
+            }
+        }
+        this.state.sar.push(sar);
     }
-    this.draw(true);
+
+    maxLength += 3;
+    return Math.ceil(this.ctx.measureText(Math.pow(10, maxLength)).width);
 }
 
 /***/ }),
-/* 16 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1647,157 +2541,126 @@ function setData(data) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = update;
-function update(data) {
-    var _this = this;
+exports.default = setOption;
+function setOption() {
+    var option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    this.data = data;
-    var lastState = this.state;
-    var times = [];
-    var timeStr = [];
-    var start = [];
-    var hi = [];
-    var lo = [];
-    var close = [];
-    var volume = [];
-    data.forEach(function (d) {
-        times.push(d[0]);
-        timeStr.push(_this.option.timeFilter(d[0]));
-        start.push(d[1]);
-        hi.push(d[2]);
-        lo.push(d[3]);
-        close.push(d[4]);
-        volume.push(d[5]);
-    });
-    this.state = {
-        startIndex: lastState.endIndex !== lastState.times.length ? lastState.startIndex : lastState.startIndex + times.length - lastState.times.length,
-        endIndex: lastState.endIndex !== lastState.times.length ? lastState.endIndex : lastState.endIndex + times.length - lastState.times.length,
-        verticalRectNumber: lastState.verticalRectNumber,
-        isDown: false,
-        times: times,
-        timeStr: timeStr,
-        start: start,
-        hi: hi,
-        lo: lo,
-        close: close,
-        volume: volume,
-        ma30: close.map(function (el, i) {
-            if (i < 29) {
-                return el;
-            } else {
-                var sum = 0;
-                for (var index = i; index > i - 30; index--) {
-                    sum += close[index];
-                }
-                return _this.setDP(sum / 30);
-            }
-        }),
-        ma7: close.map(function (el, i) {
-            if (i < 6) {
-                return el;
-            } else {
-                var sum = 0;
-                for (var index = i; index > i - 7; index--) {
-                    sum += close[index];
-                }
-                return _this.setDP(sum / 7);
-            }
-        }),
-        volumeMa7: volume.map(function (el, i) {
-            if (i < 6) {
-                return el;
-            } else {
-                var sum = 0;
-                for (var index = i; index > i - 7; index--) {
-                    sum += volume[index];
-                }
-                return _this.setDP(sum / 7);
-            }
-        }),
-        volumeMa30: volume.map(function (el, i) {
-            if (i < 29) {
-                return el;
-            } else {
-                var sum = 0;
-                for (var index = i; index > i - 30; index--) {
-                    sum += volume[index];
-                }
-                return _this.setDP(sum / 30);
-            }
-        })
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+    if (this.option) {
+        this.option = {
+            theme: option.theme || this.option.theme,
+            fontSize: option.fontSize || this.option.fontSize,
+            mainCsi: option.mainCsi || this.option.mainCsi,
+            aidCsi: option.aidCsi || this.option.aidCsi,
+            timeFilter: option.timeFilter || this.option.timeFilter,
+            overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
+            priceDecimal: option.priceDecimal || this.option.priceDecimal,
+            data: (option.data || this.option.data).map(function (d) {
+                return d;
+            })
+        };
+    } else {
+        this.option = {
+            theme: option.theme || 'dark',
+            fontSize: option.fontSize || 12,
+            mainCsi: option.mainCsi || 'ma',
+            aidCsi: option.aidCsi || 'volume',
+            timeFilter: option.timeFilter || function (t) {
+                return new Date(t * 1000).toLocaleDateString();
+            },
+            overTimeFilter: option.overTimeFilter || function (t) {
+                return new Date(t * 1000).toLocaleTimeString();
+            },
+            priceDecimal: option.priceDecimal || 2,
+            data: (option.data || []).map(function (d) {
+                return d;
+            })
+        };
+    }
+
+    init.call(this, option);
+}
+
+function init() {
+    this.device = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) ? 'mb' : 'pc';
+    // 设置全局色彩
+    var isDarkTheme = this.option.theme === 'dark';
+    this.colors = {
+        background: isDarkTheme ? '#2e3947' : 'white',
+        timeBackground: isDarkTheme ? '#343f4d' : '#fff',
+        splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
+        textColor: isDarkTheme ? '#fff' : '#333',
+        currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
+        textFrameColor: isDarkTheme ? 'white' : 'black',
+        greenColor: isDarkTheme ? '#3bd181' : '#48b484',
+        redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
+        ma30Color: isDarkTheme ? 'rgb(234, 177, 103)' : 'rgb(234, 177, 103)',
+        ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
+        macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
+        hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)'
     };
-    this.state.ema30 = [];
-    this.state.close.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.ema30[i] = el;
-        } else {
-            var val = 2 / 31 * (_this.state.close[i] - _this.state.ema30[i - 1]) + _this.state.ema30[i - 1];
-            _this.state.ema30[i] = _this.setDP(val);
-        }
-    });
-    this.state.ema7 = [];
-    this.state.close.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.ema7[i] = el;
-        } else {
-            var val = 2 / 8 * (_this.state.close[i] - _this.state.ema7[i - 1]) + _this.state.ema7[i - 1];
-            _this.state.ema7[i] = _this.setDP(val);
-        }
-    });
-    this.state.ema15 = [];
-    this.state.close.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.ema15[i] = el;
-        } else {
-            var val = 2 / 16 * (_this.state.close[i] - _this.state.ema15[i - 1]) + _this.state.ema15[i - 1];
-            _this.state.ema15[i] = _this.setDP(val);
-        }
-    });
-    this.state.ema26 = [];
-    this.state.close.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.ema26[i] = el;
-        } else {
-            var val = 2 / 27 * (_this.state.close[i] - _this.state.ema26[i - 1]) + _this.state.ema26[i - 1];
-            _this.state.ema26[i] = _this.setDP(val);
-        }
-    });
-    this.state.ema12 = [];
-    this.state.close.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.ema12[i] = el;
-        } else {
-            var val = 2 / 13 * (_this.state.close[i] - _this.state.ema12[i - 1]) + _this.state.ema12[i - 1];
-            _this.state.ema12[i] = _this.setDP(val);
-        }
-    });
-    this.state.dif = this.state.ema12.map(function (el, i) {
-        var val = el - _this.state.ema26[i];
-        return _this.setDP(val);
-    });
-    this.state.dea = [];
-    this.state.dif.forEach(function (el, i) {
-        if (i === 0) {
-            _this.state.dea[i] = el;
-        } else {
-            var val = _this.state.dea[i - 1] * 0.8 + el * 0.2;
-            _this.state.dea[i] = _this.setDP(val);
-        }
-    });
-    this.state.macd = this.state.dif.map(function (el, i) {
-        var val = (el - _this.state.dea[i]) * 2;
-        return _this.setDP(val);
-    });
-    this.state.maxKLineNumber = parseInt(this.width / 2 / this.dpr) % 2 === 0 ? parseInt(this.width / 2 / this.dpr) : parseInt(this.width / 2 / this.dpr) - 1;
-    this.state.minKLineNumber = 16;
-    if (this.state.maxKLineNumber > times.length * 2) {
-        this.state.maxKLineNumber = times.length * 2;
-    }
-    this.draw(true);
+
+    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+
+    var yAxisWidth = this.setData();
+
+    var left = 20;
+    var right = 20;
+    var top = 40 * this.dpr;
+    var bottom = 80;
+    var middle = 20;
+
+    var width = this.width;
+    var height = this.height;
+
+    this.proportion = 0.7;
+
+    var mainView = {
+        x: left,
+        y: top,
+        w: width - yAxisWidth - left - right - middle,
+        h: (height - top - bottom) * this.proportion - middle * 0.5
+    };
+    var mainYaxisView = {
+        x: mainView.w + mainView.x + middle,
+        y: mainView.y,
+        w: yAxisWidth,
+        h: mainView.h
+    };
+    var aidView = {
+        x: mainView.x,
+        y: mainView.y + mainView.h + middle,
+        w: mainView.w,
+        h: (height - top - bottom) * (1 - this.proportion) + middle * 0.5
+    };
+    var aidYaxisView = {
+        x: mainYaxisView.x,
+        y: aidView.y,
+        w: yAxisWidth,
+        h: aidView.h
+    };
+    var timeView = {
+        x: mainYaxisView.x,
+        y: aidView.y + aidView.h,
+        w: width,
+        h: bottom
+    };
+    this.mainView = mainView;
+    this.mainYaxisView = mainYaxisView;
+    this.aidView = aidView;
+    this.aidYaxisView = aidYaxisView;
+    this.timeView = timeView;
+
+    this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
+    this.minVerticalRectNumber = 30;
+
+    this.draw();
 }
 
 /***/ }),
-/* 17 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1806,59 +2669,82 @@ function update(data) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Depth = exports.KLine = undefined;
+exports.Depth = undefined;
+exports.KLine = KLine;
 
-var _setData = __webpack_require__(15);
+var _setOption = __webpack_require__(44);
+
+var _setOption2 = _interopRequireDefault(_setOption);
+
+var _setData = __webpack_require__(43);
 
 var _setData2 = _interopRequireDefault(_setData);
 
-var _draw = __webpack_require__(5);
+var _draw = __webpack_require__(37);
 
 var _draw2 = _interopRequireDefault(_draw);
 
-var _operation = __webpack_require__(13);
+var _drawMain = __webpack_require__(39);
+
+var _drawMain2 = _interopRequireDefault(_drawMain);
+
+var _drawAid = __webpack_require__(38);
+
+var _drawAid2 = _interopRequireDefault(_drawAid);
+
+var _operation = __webpack_require__(40);
 
 var _operation2 = _interopRequireDefault(_operation);
 
-var _select = __webpack_require__(14);
+var _select = __webpack_require__(42);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _drawCsi = __webpack_require__(12);
+var _append = __webpack_require__(35);
 
-var _drawCsi2 = _interopRequireDefault(_drawCsi);
+var _append2 = _interopRequireDefault(_append);
 
-var _update = __webpack_require__(16);
+var _range = __webpack_require__(41);
 
-var _update2 = _interopRequireDefault(_update);
+var _computAxis = __webpack_require__(36);
 
-var _Depth = __webpack_require__(11);
+var _computAxis2 = _interopRequireDefault(_computAxis);
+
+var _Depth = __webpack_require__(34);
 
 var _Depth2 = _interopRequireDefault(_Depth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function KLine(ele, option) {
-    if (option === undefined || option === null) {
-        option = {};
+function KLine(canvas, overCanvas, option) {
+    this.canvas = canvas;
+    this.overCanvas = overCanvas;
+    if (canvas.width !== overCanvas.width || canvas.height !== overCanvas.height) {
+        console.log('Two canvas\'s width and height must equal');
+        return;
     }
-    this.ele = ele;
+    this.ctx = canvas.getContext('2d');
+    this.overCtx = overCanvas.getContext('2d');
+    this.dpr = canvas.width / canvas.getBoundingClientRect().width;
     this.setOption(option);
-    this.operation();
+    this.operation(canvas, overCanvas);
 }
 
 KLine.prototype = {
-    setOption: setOption,
-    init: init,
-    operation: _operation2.default,
+    setOption: _setOption2.default,
     setData: _setData2.default,
     draw: _draw2.default,
-    drawCsi: _drawCsi2.default,
+    drawMain: _drawMain2.default,
+    drawAid: _drawAid2.default,
+    operation: _operation2.default,
     select: _select2.default,
-    setDP: setDP,
+    append: _append2.default,
     getMousePos: getMousePos,
+    setDP: setDP,
     isInLineView: isInLineView,
-    update: _update2.default
+    moveRange: _range.moveRange,
+    scaleRange: _range.scaleRange,
+    computAxis: _computAxis2.default
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -1870,202 +2756,64 @@ function getMousePos(e) {
     };
 }
 
+// 控制小数位数
+function setDP(num) {
+    return Math.abs(num) > 0.01 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+}
+
 // 判断鼠标是否在${this.views}中
 function isInLineView(pos) {
     var x = pos.x,
         y = pos.y;
 
-    var view1 = this.views[0];
-    var view2 = this.views[2];
+    var view1 = this.mainView;
+    var view2 = this.aidView;
     if (x >= view1.x && x < view1.x + view1.w && y >= view1.y && y < view1.y + view1.h) {
-        return 0;
+        return view1;
     } else if (x >= view2.x && x < view2.x + view2.w && y >= view2.y && y < view2.y + view2.h) {
-        return 1;
+        return view2;
     } else {
         return false;
     }
 }
 
-// 控制小数位数
-function setDP(num) {
-    return Math.abs(num) > 1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
-}
-
-function setOption(option) {
-    // 配置项
-    if (this.option) {
-        this.option = {
-            theme: option.theme || this.option.theme,
-            width: option.width || this.option.width,
-            height: option.height || this.option.height,
-            yAxisWidth: option.yAxisWidth || this.option.yAxisWidth,
-            fontSize: option.fontSize || this.option.fontSize,
-            csi: option.csi || this.option.csi,
-            csi2: option.csi2 || this.option.csi2,
-            timeFilter: option.timeFilter || this.option.timeFilter,
-            priceFilter: option.priceFilter || this.option.priceFilter,
-            overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
-            overYFilter: option.overYFilter || this.option.overYFilter
-        };
-    } else {
-        this.option = {
-            theme: option.theme || 'dark',
-            width: option.width,
-            height: option.height,
-            yAxisWidth: option.yAxisWidth || 140,
-            fontSize: option.fontSize || 12,
-            csi: option.csi || 'ema',
-            csi2: option.csi2 || ['volume'],
-            timeFilter: option.timeFilter || function (t) {
-                return new Date(t * 1000).toLocaleDateString();
-            },
-            priceFilter: option.priceFilter || function (d) {
-                return Number(d.toFixed(2));
-            },
-            overTimeFilter: option.overTimeFilter || function (t) {
-                return new Date(t * 1000).toLocaleTimeString();
-            },
-            overYFilter: option.overYFilter || function (d) {
-                return Number(d.toFixed(2));
-            }
-        };
-    }
-    this.init();
-}
-
-function init() {
-    var flag = true;
-    this.device = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) ? 'mb' : 'pc';
-    this.dpr = 2;
-    var ele = this.ele;
-    ele.style.fontSize = this.option.fontSize + 'px';
-    this.ele = ele;
-
-    var width = this.option.width * this.dpr;
-    var height = this.option.height * this.dpr;
-    // canvas宽度
-    this.width = width;
-    // canvas高度
-    this.height = height;
-    ele.style.width = width / this.dpr + 'px';
-    ele.style.height = height / this.dpr + 'px';
-    ele.style.position = 'relative';
-
-    var canvas = this.canvas || document.createElement('canvas');
-    if (!this.canvas) {
-        ele.appendChild(canvas);
-        flag = false;
-    }
-    // 渲染canvas
-    this.canvas = canvas;
-    canvas.width = width;
-    canvas.height = height;
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.position = 'absolute';
-
-    var overCanvas = this.overCanvas || document.createElement('canvas');
-    if (!this.overCanvas) {
-        ele.appendChild(overCanvas);
-    }
-    // 覆盖层canvas
-    this.overCanvas = overCanvas;
-    overCanvas.width = width;
-    overCanvas.height = height;
-    overCanvas.style.width = '100%';
-    overCanvas.style.height = '100%';
-    overCanvas.style.position = 'absolute';
-
-    // 渲染上下文对象
-    var ctx = canvas.getContext('2d');
-    this.ctx = ctx;
-    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-    // 覆盖层的渲染上下文对象
-    var overCtx = overCanvas.getContext('2d');
-    this.overCtx = overCtx;
-    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-
-    // 上下画图区域高度比
-    if (this.option.csi2.length == 1) {
-        this.split = [7, 3];
-    } else {
-        this.split = [10, 0];
-    }
-    var yAxisWidth = this.option.yAxisWidth;
-
-    var left = 20;
-    var right = 20;
-    var top = 40 * this.dpr;
-    var bottom = 100;
-    var middle = 20;
-    var view1 = {
-        x: left,
-        y: top,
-        w: width - yAxisWidth - left - right - middle,
-        h: (height - top - bottom) * (this.split[0] / (this.split[0] + this.split[1])) - middle * 0.5
-    };
-    var view2 = {
-        x: view1.w + view1.x + middle,
-        y: view1.y,
-        w: yAxisWidth,
-        h: view1.h
-    };
-    var view3 = {
-        x: view1.x,
-        y: view1.y + view1.h + middle,
-        w: view1.w,
-        h: (height - top - bottom) * (this.split[1] / (this.split[0] + this.split[1])) + middle * 0.5
-    };
-    var view4 = {
-        x: view2.x,
-        y: view3.y,
-        w: yAxisWidth,
-        h: view3.h
-    };
-    var views = [view1, view2, view3, view4];
-    this.views = views;
-
-    // 设置全局色彩
-    var isDarkTheme = this.option.theme === 'dark';
-    this.colors = {
-        background: isDarkTheme ? '#2e3947' : 'white',
-        timeBackground: isDarkTheme ? '#343f4d' : '#fff',
-        splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
-        subline: isDarkTheme ? 'rgb(86, 93, 102)' : '#ddd',
-        textColor: isDarkTheme ? '#fff' : '#333',
-        currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
-        textFrameColor: isDarkTheme ? 'white' : 'black',
-        greenColor: isDarkTheme ? '#3bd181' : '#48b484',
-        redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
-        ma30Color: isDarkTheme ? 'rgb(234, 177, 103)' : 'rgb(234, 177, 103)',
-        ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
-        macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)'
-    };
-    if (flag) {
-        this.setData(this.data);
-    }
-}
-
-exports.KLine = KLine;
-exports.Depth = _Depth2.default;
-
 _Depth2.default.prototype.getMousePos = getMousePos;
 _Depth2.default.prototype.setDP = setDP;
 
+exports.Depth = _Depth2.default;
+
 /***/ }),
-/* 18 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(21), __esModule: true };
+module.exports = { "default": __webpack_require__(53), __esModule: true };
 
 /***/ }),
-/* 19 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(22), __esModule: true };
+module.exports = { "default": __webpack_require__(54), __esModule: true };
 
 /***/ }),
-/* 20 */
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(55), __esModule: true };
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(56), __esModule: true };
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(57), __esModule: true };
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2073,46 +2821,93 @@ module.exports = { "default": __webpack_require__(22), __esModule: true };
 
 exports.__esModule = true;
 
-var _defineProperty = __webpack_require__(18);
+var _assign = __webpack_require__(49);
 
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
+var _assign2 = _interopRequireDefault(_assign);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
+exports.default = _assign2.default || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
   }
 
-  return obj;
+  return target;
 };
 
 /***/ }),
-/* 21 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(45);
-var $Object = __webpack_require__(0).Object;
-module.exports = function defineProperty(it, key, desc){
-  return $Object.defineProperty(it, key, desc);
+"use strict";
+
+
+exports.__esModule = true;
+
+var _from = __webpack_require__(46);
+
+var _from2 = _interopRequireDefault(_from);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  } else {
+    return (0, _from2.default)(arr);
+  }
 };
 
 /***/ }),
-/* 22 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(46);
-module.exports = __webpack_require__(0).Object.keys;
+__webpack_require__(20);
+__webpack_require__(84);
+module.exports = __webpack_require__(1).Array.from;
 
 /***/ }),
-/* 23 */
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33);
+__webpack_require__(20);
+module.exports = __webpack_require__(82);
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33);
+__webpack_require__(20);
+module.exports = __webpack_require__(83);
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(86);
+module.exports = __webpack_require__(1).Object.assign;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(87);
+module.exports = __webpack_require__(1).Object.keys;
+
+/***/ }),
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -2121,24 +2916,20 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 59 */
+/***/ (function(module, exports) {
 
-var isObject = __webpack_require__(4);
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
-  return it;
-};
+module.exports = function(){ /* empty */ };
 
 /***/ }),
-/* 25 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(10)
-  , toLength  = __webpack_require__(41)
-  , toIndex   = __webpack_require__(40);
+var toIObject = __webpack_require__(19)
+  , toLength  = __webpack_require__(30)
+  , toIndex   = __webpack_require__(80);
 module.exports = function(IS_INCLUDES){
   return function($this, el, fromIndex){
     var O      = toIObject($this)
@@ -2157,109 +2948,258 @@ module.exports = function(IS_INCLUDES){
 };
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function(it){
-  return toString.call(it).slice(8, -1);
-};
-
-/***/ }),
-/* 27 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// optional / simple context binding
-var aFunction = __webpack_require__(23);
-module.exports = function(fn, that, length){
-  aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
-      return fn.call(that, a);
-    };
-    case 2: return function(a, b){
-      return fn.call(that, a, b);
-    };
-    case 3: return function(a, b, c){
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function(/* ...args */){
-    return fn.apply(that, arguments);
-  };
+"use strict";
+
+var $defineProperty = __webpack_require__(11)
+  , createDesc      = __webpack_require__(16);
+
+module.exports = function(object, index, value){
+  if(index in object)$defineProperty.f(object, index, createDesc(0, value));
+  else object[index] = value;
 };
 
 /***/ }),
-/* 28 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4)
-  , document = __webpack_require__(3).document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
-  return is ? document.createElement(it) : {};
-};
+module.exports = __webpack_require__(2).document && document.documentElement;
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function(it, key){
-  return hasOwnProperty.call(it, key);
-};
-
-/***/ }),
-/* 31 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP         = __webpack_require__(8)
-  , createDesc = __webpack_require__(37);
-module.exports = __webpack_require__(1) ? function(object, key, value){
-  return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
-  object[key] = value;
-  return object;
-};
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = !__webpack_require__(1) && !__webpack_require__(2)(function(){
-  return Object.defineProperty(__webpack_require__(28)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !__webpack_require__(7) && !__webpack_require__(9)(function(){
+  return Object.defineProperty(__webpack_require__(24)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
 /***/ }),
-/* 33 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(26);
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-  return cof(it) == 'String' ? it.split('') : Object(it);
+// check on default Array iterator
+var Iterators  = __webpack_require__(3)
+  , ITERATOR   = __webpack_require__(0)('iterator')
+  , ArrayProto = Array.prototype;
+
+module.exports = function(it){
+  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
 /***/ }),
-/* 34 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has          = __webpack_require__(30)
-  , toIObject    = __webpack_require__(10)
-  , arrayIndexOf = __webpack_require__(25)(false)
-  , IE_PROTO     = __webpack_require__(38)('IE_PROTO');
+// call something on iterator step with safe closing on error
+var anObject = __webpack_require__(4);
+module.exports = function(iterator, fn, value, entries){
+  try {
+    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
+  // 7.4.6 IteratorClose(iterator, completion)
+  } catch(e){
+    var ret = iterator['return'];
+    if(ret !== undefined)anObject(ret.call(iterator));
+    throw e;
+  }
+};
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var create         = __webpack_require__(71)
+  , descriptor     = __webpack_require__(16)
+  , setToStringTag = __webpack_require__(28)
+  , IteratorPrototype = {};
+
+// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+__webpack_require__(5)(IteratorPrototype, __webpack_require__(0)('iterator'), function(){ return this; });
+
+module.exports = function(Constructor, NAME, next){
+  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
+  setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ITERATOR     = __webpack_require__(0)('iterator')
+  , SAFE_CLOSING = false;
+
+try {
+  var riter = [7][ITERATOR]();
+  riter['return'] = function(){ SAFE_CLOSING = true; };
+  Array.from(riter, function(){ throw 2; });
+} catch(e){ /* empty */ }
+
+module.exports = function(exec, skipClosing){
+  if(!skipClosing && !SAFE_CLOSING)return false;
+  var safe = false;
+  try {
+    var arr  = [7]
+      , iter = arr[ITERATOR]();
+    iter.next = function(){ return {done: safe = true}; };
+    arr[ITERATOR] = function(){ return iter; };
+    exec(arr);
+  } catch(e){ /* empty */ }
+  return safe;
+};
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+module.exports = function(done, value){
+  return {value: value, done: !!done};
+};
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports) {
+
+module.exports = true;
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 19.1.2.1 Object.assign(target, source, ...)
+var getKeys  = __webpack_require__(15)
+  , gOPS     = __webpack_require__(73)
+  , pIE      = __webpack_require__(76)
+  , toObject = __webpack_require__(12)
+  , IObject  = __webpack_require__(26)
+  , $assign  = Object.assign;
+
+// should work with symbols and should have deterministic property order (V8 bug)
+module.exports = !$assign || __webpack_require__(9)(function(){
+  var A = {}
+    , B = {}
+    , S = Symbol()
+    , K = 'abcdefghijklmnopqrst';
+  A[S] = 7;
+  K.split('').forEach(function(k){ B[k] = k; });
+  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+  var T     = toObject(target)
+    , aLen  = arguments.length
+    , index = 1
+    , getSymbols = gOPS.f
+    , isEnum     = pIE.f;
+  while(aLen > index){
+    var S      = IObject(arguments[index++])
+      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+      , length = keys.length
+      , j      = 0
+      , key;
+    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+  } return T;
+} : $assign;
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+var anObject    = __webpack_require__(4)
+  , dPs         = __webpack_require__(72)
+  , enumBugKeys = __webpack_require__(25)
+  , IE_PROTO    = __webpack_require__(17)('IE_PROTO')
+  , Empty       = function(){ /* empty */ }
+  , PROTOTYPE   = 'prototype';
+
+// Create object with fake `null` prototype: use iframe Object with cleared prototype
+var createDict = function(){
+  // Thrash, waste and sodomy: IE GC bug
+  var iframe = __webpack_require__(24)('iframe')
+    , i      = enumBugKeys.length
+    , lt     = '<'
+    , gt     = '>'
+    , iframeDocument;
+  iframe.style.display = 'none';
+  __webpack_require__(62).appendChild(iframe);
+  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+  // createDict = iframe.contentWindow.Object;
+  // html.removeChild(iframe);
+  iframeDocument = iframe.contentWindow.document;
+  iframeDocument.open();
+  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+  iframeDocument.close();
+  createDict = iframeDocument.F;
+  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+  return createDict();
+};
+
+module.exports = Object.create || function create(O, Properties){
+  var result;
+  if(O !== null){
+    Empty[PROTOTYPE] = anObject(O);
+    result = new Empty;
+    Empty[PROTOTYPE] = null;
+    // add "__proto__" for Object.getPrototypeOf polyfill
+    result[IE_PROTO] = O;
+  } else result = createDict();
+  return Properties === undefined ? result : dPs(result, Properties);
+};
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var dP       = __webpack_require__(11)
+  , anObject = __webpack_require__(4)
+  , getKeys  = __webpack_require__(15);
+
+module.exports = __webpack_require__(7) ? Object.defineProperties : function defineProperties(O, Properties){
+  anObject(O);
+  var keys   = getKeys(Properties)
+    , length = keys.length
+    , i = 0
+    , P;
+  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
+  return O;
+};
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports) {
+
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has         = __webpack_require__(10)
+  , toObject    = __webpack_require__(12)
+  , IE_PROTO    = __webpack_require__(17)('IE_PROTO')
+  , ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function(O){
+  O = toObject(O);
+  if(has(O, IE_PROTO))return O[IE_PROTO];
+  if(typeof O.constructor == 'function' && O instanceof O.constructor){
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var has          = __webpack_require__(10)
+  , toIObject    = __webpack_require__(19)
+  , arrayIndexOf = __webpack_require__(60)(false)
+  , IE_PROTO     = __webpack_require__(17)('IE_PROTO');
 
 module.exports = function(object, names){
   var O      = toIObject(object)
@@ -2275,25 +3215,19 @@ module.exports = function(object, names){
 };
 
 /***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 76 */
+/***/ (function(module, exports) {
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = __webpack_require__(34)
-  , enumBugKeys = __webpack_require__(29);
-
-module.exports = Object.keys || function keys(O){
-  return $keys(O, enumBugKeys);
-};
+exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
-/* 36 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
-var $export = __webpack_require__(7)
-  , core    = __webpack_require__(0)
-  , fails   = __webpack_require__(2);
+var $export = __webpack_require__(8)
+  , core    = __webpack_require__(1)
+  , fails   = __webpack_require__(9);
 module.exports = function(KEY, exec){
   var fn  = (core.Object || {})[KEY] || Object[KEY]
     , exp = {};
@@ -2302,44 +3236,38 @@ module.exports = function(KEY, exec){
 };
 
 /***/ }),
-/* 37 */
-/***/ (function(module, exports) {
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function(bitmap, value){
-  return {
-    enumerable  : !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
+module.exports = __webpack_require__(5);
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toInteger = __webpack_require__(18)
+  , defined   = __webpack_require__(13);
+// true  -> String#at
+// false -> String#codePointAt
+module.exports = function(TO_STRING){
+  return function(that, pos){
+    var s = String(defined(that))
+      , i = toInteger(pos)
+      , l = s.length
+      , a, b;
+    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
+    a = s.charCodeAt(i);
+    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+      ? TO_STRING ? s.charAt(i) : a
+      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
 
 /***/ }),
-/* 38 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(39)('keys')
-  , uid    = __webpack_require__(44);
-module.exports = function(key){
-  return shared[key] || (shared[key] = uid(key));
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__(3)
-  , SHARED = '__core-js_shared__'
-  , store  = global[SHARED] || (global[SHARED] = {});
-module.exports = function(key){
-  return store[key] || (store[key] = {});
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toInteger = __webpack_require__(9)
+var toInteger = __webpack_require__(18)
   , max       = Math.max
   , min       = Math.min;
 module.exports = function(index, length){
@@ -2348,32 +3276,11 @@ module.exports = function(index, length){
 };
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.15 ToLength
-var toInteger = __webpack_require__(9)
-  , min       = Math.min;
-module.exports = function(it){
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(6);
-module.exports = function(it){
-  return Object(defined(it));
-};
-
-/***/ }),
-/* 43 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(4);
+var isObject = __webpack_require__(14);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function(it, S){
@@ -2386,32 +3293,133 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 44 */
-/***/ (function(module, exports) {
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var id = 0
-  , px = Math.random();
-module.exports = function(key){
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+var anObject = __webpack_require__(4)
+  , get      = __webpack_require__(32);
+module.exports = __webpack_require__(1).getIterator = function(it){
+  var iterFn = get(it);
+  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+  return anObject(iterFn.call(it));
 };
 
 /***/ }),
-/* 45 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(7);
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(1), 'Object', {defineProperty: __webpack_require__(8).f});
+var classof   = __webpack_require__(21)
+  , ITERATOR  = __webpack_require__(0)('iterator')
+  , Iterators = __webpack_require__(3);
+module.exports = __webpack_require__(1).isIterable = function(it){
+  var O = Object(it);
+  return O[ITERATOR] !== undefined
+    || '@@iterator' in O
+    || Iterators.hasOwnProperty(classof(O));
+};
 
 /***/ }),
-/* 46 */
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ctx            = __webpack_require__(23)
+  , $export        = __webpack_require__(8)
+  , toObject       = __webpack_require__(12)
+  , call           = __webpack_require__(65)
+  , isArrayIter    = __webpack_require__(64)
+  , toLength       = __webpack_require__(30)
+  , createProperty = __webpack_require__(61)
+  , getIterFn      = __webpack_require__(32);
+
+$export($export.S + $export.F * !__webpack_require__(67)(function(iter){ Array.from(iter); }), 'Array', {
+  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
+    var O       = toObject(arrayLike)
+      , C       = typeof this == 'function' ? this : Array
+      , aLen    = arguments.length
+      , mapfn   = aLen > 1 ? arguments[1] : undefined
+      , mapping = mapfn !== undefined
+      , index   = 0
+      , iterFn  = getIterFn(O)
+      , length, result, step, iterator;
+    if(mapping)mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    // if object isn't iterable or it's array with default iterator - use simple case
+    if(iterFn != undefined && !(C == Array && isArrayIter(iterFn))){
+      for(iterator = iterFn.call(O), result = new C; !(step = iterator.next()).done; index++){
+        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
+      }
+    } else {
+      length = toLength(O.length);
+      for(result = new C(length); length > index; index++){
+        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
+      }
+    }
+    result.length = index;
+    return result;
+  }
+});
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var addToUnscopables = __webpack_require__(59)
+  , step             = __webpack_require__(68)
+  , Iterators        = __webpack_require__(3)
+  , toIObject        = __webpack_require__(19);
+
+// 22.1.3.4 Array.prototype.entries()
+// 22.1.3.13 Array.prototype.keys()
+// 22.1.3.29 Array.prototype.values()
+// 22.1.3.30 Array.prototype[@@iterator]()
+module.exports = __webpack_require__(27)(Array, 'Array', function(iterated, kind){
+  this._t = toIObject(iterated); // target
+  this._i = 0;                   // next index
+  this._k = kind;                // kind
+// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+}, function(){
+  var O     = this._t
+    , kind  = this._k
+    , index = this._i++;
+  if(!O || index >= O.length){
+    this._t = undefined;
+    return step(1);
+  }
+  if(kind == 'keys'  )return step(0, index);
+  if(kind == 'values')return step(0, O[index]);
+  return step(0, [index, O[index]]);
+}, 'values');
+
+// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+Iterators.Arguments = Iterators.Array;
+
+addToUnscopables('keys');
+addToUnscopables('values');
+addToUnscopables('entries');
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.1 Object.assign(target, source)
+var $export = __webpack_require__(8);
+
+$export($export.S + $export.F, 'Object', {assign: __webpack_require__(70)});
+
+/***/ }),
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(42)
-  , $keys    = __webpack_require__(35);
+var toObject = __webpack_require__(12)
+  , $keys    = __webpack_require__(15);
 
-__webpack_require__(36)('keys', function(){
+__webpack_require__(77)('keys', function(){
   return function keys(it){
     return $keys(toObject(it));
   };
