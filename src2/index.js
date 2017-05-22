@@ -1,6 +1,6 @@
-import { KLine } from './KLine';
+import { KLine, Depth } from './KLine';
 var bodyWidth = document.body.clientWidth;
-var bodyHeight = document.body.clientHeight;
+var bodyHeight = document.body.clientHeight * 0.5;
 
 var app = document.getElementById('app');
 app.style.width = bodyWidth + 'px';
@@ -26,7 +26,7 @@ app.appendChild(canvas);
 app.appendChild(overCanvas);
 
 const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + 60;
-fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
+fetch('http://192.168.1.125:8080/infoCenter/market/kline?symbol=btctrade_btc_cny&type=' + 60).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
@@ -34,7 +34,7 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
     });
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;
-        var bodyHeight = document.body.clientHeight;
+        var bodyHeight = document.body.clientHeight * 0.5;
         app.style.width = bodyWidth + 'px';
         app.style.height = bodyHeight + 'px';
         canvas.style.width = bodyWidth + 'px';
@@ -47,11 +47,12 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         overCanvas.height = bodyHeight * 2;
         chart.setOption({});
     });
-    const socket = window.io.connect('http://45.248.68.30:3000');
+    const socket = window.io.connect('http://192.168.1.125:9092');
     socket.on('connect', function() {
-        socket.emit('market.subscribe', 'btc:okcoin');
+        socket.emit('subscribe:market', 'btctrade:btc');
     });
-    socket.on('update:trades', function(d) {
+    socket.on('trade', function(d) {
+        d = JSON.parse(d);
         for (let data of d) {
             let newTime = parseFloat(data.date);
             let newPrice = parseFloat(data.price);
@@ -68,5 +69,20 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
             }
         }
         chart.append(json);
+    });
+
+    var ele = document.getElementById('depth');
+    var depth = new Depth(ele, { width: document.body.clientWidth, height: document.body.clientHeight * 0.5 });
+    socket.on('depth', function(data) {
+        data = JSON.parse(data);
+        const buy = [];
+        const sell = [];
+        data.asks.forEach(el => {
+            sell.push(el);
+        });
+        data.bids.forEach(el => {
+            buy.push(el);
+        });
+        depth.setData({ buy, sell: sell.reverse() });
     });
 });

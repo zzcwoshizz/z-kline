@@ -8,6 +8,7 @@ import select from './select';
 import append from './append';
 import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
+import Depth from './Depth';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -67,3 +68,10 @@ function isInLineView(pos) {
         return false;
     }
 }
+
+Depth.prototype.getMousePos = getMousePos;
+Depth.prototype.setDP = setDP;
+
+export {
+    Depth
+};
