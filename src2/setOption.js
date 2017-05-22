@@ -1,4 +1,6 @@
 export default function setOption(option = {}) {
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
     if (this.option) {
         this.option = {
             theme: option.theme || this.option.theme,
@@ -8,18 +10,18 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || this.option.timeFilter,
             overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
-            data: option.data.map(d => d) || this.option.data.map(d => d),
+            data: (option.data || this.option.data).map(d => d),
         };
     } else {
         this.option = {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
-            mainCsi: option.mainCsi || 'boll',
-            aidCsi: option.aidCsi || 'kdj',
+            mainCsi: option.mainCsi || 'ma',
+            aidCsi: option.aidCsi || 'volume',
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toLocaleDateString()),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,
-            data: option.data.map(d => d) || [],
+            data: (option.data || []).map(d => d),
         };
     }
 

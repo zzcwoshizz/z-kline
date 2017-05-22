@@ -10,9 +10,9 @@ import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
 
 export function KLine(canvas, overCanvas, option) {
-    this.width = canvas.width;
-    this.height = canvas.height;
-    if (this.width !== overCanvas.width || this.height !== overCanvas.height) {
+    this.canvas = canvas;
+    this.overCanvas = overCanvas;
+    if (canvas.width !== overCanvas.width || canvas.height !== overCanvas.height) {
         console.log('Two canvas\'s width and height must equal');
         return;
     }

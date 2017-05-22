@@ -32,6 +32,21 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
     let chart = new KLine(canvas, overCanvas, {
         data: json,
     });
+    window.addEventListener('resize', function(e) {
+        var bodyWidth = document.body.clientWidth;
+        var bodyHeight = document.body.clientHeight;
+        app.style.width = bodyWidth + 'px';
+        app.style.height = bodyHeight + 'px';
+        canvas.style.width = bodyWidth + 'px';
+        canvas.style.height = bodyHeight + 'px';
+        canvas.width = bodyWidth * 2;
+        canvas.height = bodyHeight * 2;
+        overCanvas.style.width = bodyWidth + 'px';
+        overCanvas.style.height = bodyHeight + 'px';
+        overCanvas.width = bodyWidth * 2;
+        overCanvas.height = bodyHeight * 2;
+        chart.setOption({});
+    });
     const socket = window.io.connect('http://45.248.68.30:3000');
     socket.on('connect', function() {
         socket.emit('market.subscribe', 'btc:okcoin');
