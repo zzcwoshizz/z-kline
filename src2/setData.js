@@ -184,7 +184,8 @@ export default function setData() {
     this.state.close.forEach((el, i) => {
         let h = this.state.hi[i - 8 < 0 ? 0 : i - 8];
         let l = this.state.lo[i - 8 < 0 ? 0 : i - 8];
-        for (let index = (i - 8 < 0 ? 0 : i - 8) + 1; index <= i; index++) {
+        let defaultIndex = i - 8 < 0 ? 0 : i - 8;
+        for (let index = defaultIndex; index <= i; index++) {
             l = Math.min(this.state.lo[index], l);
             h = Math.max(this.state.hi[index], h);
         }
@@ -204,6 +205,49 @@ export default function setData() {
         this.state.d.push(this.setDP(2 / 3 * this.state.d[i - 1] + this.state.k[i] / 3));
         this.state.j.push(this.setDP(3 * this.state.k[i] - 2 * this.state.d[i]));
     });
+
+    // 计算sar
+    this.state.sar = [];
+    let af = 0.02;
+    for (let i = 0; i < times.length; i++) {
+        if (i === 0) {
+            this.state.sar.push(this.state.lo[i]);
+            continue;
+        }
+        if (i === 1) {
+            this.state.sar.push(this.state.hi[i]);
+            continue;
+        }
+        let ep;
+        if (this.state.close[i] > this.state.close[i - 1]) {
+            ep = Math.max(this.state.hi[i - 1], this.state.hi[i - 2]);
+        } else {
+            ep = Math.min(this.state.lo[i - 1], this.state.lo[i - 2]);
+        }
+        if (this.state.close[i] > this.state.close[i - 1] && this.state.close[i - 1] > this.state.close[i - 2]) {
+            if (Math.max(this.state.hi[i], this.state.hi[i - 1]) > Math.max(this.state.hi[i - 1], this.state.hi[i - 2])) {
+                af = af + 0.02 > 0.2 ? 0.2 : af + 0.02;
+            }
+        } else if (this.state.close[i] <= this.state.close[i - 1] && this.state.close[i - 1] <= this.state.close[i - 2]) {
+            if (Math.min(this.state.lo[i], this.state.lo[i - 1]) < Math.min(this.state.lo[i - 1], this.state.lo[i - 2])) {
+                af = af + 0.02 > 0.2 ? 0.2 : af + 0.02;
+            }
+        } else {
+            af = 0.02;
+        }
+        let preSar = this.state.sar[i - 1];
+        let sar = preSar + af * (ep - preSar);
+        if (this.state.close[i] > this.state.close[i - 1]) {
+            if (sar > this.state.lo[i] || sar > this.state.lo[i - 1] || sar > this.state.lo[i - 2]) {
+                sar = Math.min(this.state.lo[i], this.state.lo[i - 1], this.state.lo[i - 2]);
+            }
+        } else {
+            if (sar < this.state.hi[i] || sar < this.state.hi[i - 1] || sar < this.state.hi[i - 2]) {
+                sar = Math.max(this.state.hi[i], this.state.hi[i - 1], this.state.hi[i - 2]);
+            }
+        }
+        this.state.sar.push(sar);
+    }
 
     maxLength += 3;
     return Math.ceil(this.ctx.measureText(10 ** maxLength).width);

@@ -8,7 +8,7 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || this.option.timeFilter,
             overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
-            data: option.data || this.option.data,
+            data: option.data.map(d => d) || this.option.data.map(d => d),
         };
     } else {
         this.option = {
@@ -19,7 +19,7 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toLocaleDateString()),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,
-            data: option.data || [],
+            data: option.data.map(d => d) || [],
         };
     }
 

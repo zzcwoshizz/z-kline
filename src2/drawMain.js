@@ -226,6 +226,18 @@ export default function drawMain(yaxis) {
             ctx.lineTo(x, y);
         }
         ctx.stroke();
+    } else if (this.option.mainCsi === 'sar') {
+        ctx.strokeStyle = this.colors.macdColor;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.sar[i]) / (max - min) * mainView.h + mainView.y;
+            ctx.beginPath();
+            ctx.arc(x, y, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
+            ctx.stroke();
+        }
     }
 
     // 画最高点，最低点
