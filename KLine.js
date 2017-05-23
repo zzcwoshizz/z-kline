@@ -2526,9 +2526,7 @@ function setOption() {
     this.height = this.canvas.height;
     var data = option.data;
     if (this.option) {
-        if (option.data && option.data.length > this.option.data.length) {
-            data = option.data.slice(option.data.length - this.option.data.length);
-        }
+        var lastPeriod = this.option.period;
         this.option = {
             theme: option.theme || this.option.theme,
             fontSize: option.fontSize || this.option.fontSize,
@@ -2539,14 +2537,13 @@ function setOption() {
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
             data: (data || this.option.data).map(function (d) {
                 return d;
-            })
+            }),
+            period: option.period || this.option.period
         };
         var lastRange = this.state.range;
         init.call(this, option);
-        if (lastRange[0] >= data.length) {
-            this.state.range = [parseInt(data.length * 0.5), parseInt(data.length * 0.5) + lastRange[1] - lastRange[0]];
-        } else {
-            this.state.range = lastRange;
+        if (lastPeriod === this.option.period) {
+            this.state.lastRange = lastRange;
         }
         this.draw();
     } else {
@@ -2564,7 +2561,8 @@ function setOption() {
             priceDecimal: option.priceDecimal || 2,
             data: (data || []).map(function (d) {
                 return d;
-            })
+            }),
+            period: option.period || 60 * 60
         };
 
         init.call(this, option);

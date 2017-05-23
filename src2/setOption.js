@@ -3,9 +3,7 @@ export default function setOption(option = {}) {
     this.height = this.canvas.height;
     let data = option.data;
     if (this.option) {
-        if (option.data && option.data.length > this.option.data.length) {
-            data = option.data.slice(option.data.length - this.option.data.length);
-        }
+        const lastPeriod = this.option.period;
         this.option = {
             theme: option.theme || this.option.theme,
             fontSize: option.fontSize || this.option.fontSize,
@@ -15,13 +13,12 @@ export default function setOption(option = {}) {
             overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
             data: (data || this.option.data).map(d => d),
+            period: option.period || this.option.period,
         };
         const lastRange = this.state.range;
         init.call(this, option);
-        if (lastRange[0] >= data.length) {
-            this.state.range = [parseInt(data.length * 0.5), parseInt(data.length * 0.5) + lastRange[1] - lastRange[0]];
-        } else {
-            this.state.range = lastRange;
+        if (lastPeriod === this.option.period) {
+            this.state.lastRange = lastRange;
         }
         this.draw();
     } else {
@@ -34,6 +31,7 @@ export default function setOption(option = {}) {
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,
             data: (data || []).map(d => d),
+            period: option.period || 60 * 60,
         };
 
         init.call(this, option);
