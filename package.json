@@ -1,6 +1,6 @@
 {
   "name": "z-kline",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "k线，分时图，深度图",
   "main": "KLine.js",
   "scripts": {

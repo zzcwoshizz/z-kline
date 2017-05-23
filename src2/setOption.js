@@ -1,7 +1,11 @@
 export default function setOption(option = {}) {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    let data = option.data;
     if (this.option) {
+        if (option.data && option.data.length > this.option.data.length) {
+            data = option.data.slice(option.data.length - this.option.data.length);
+        }
         this.option = {
             theme: option.theme || this.option.theme,
             fontSize: option.fontSize || this.option.fontSize,
@@ -10,22 +14,31 @@ export default function setOption(option = {}) {
             timeFilter: option.timeFilter || this.option.timeFilter,
             overTimeFilter: option.overTimeFilter || this.option.overTimeFilter,
             priceDecimal: option.priceDecimal || this.option.priceDecimal,
-            data: (option.data || this.option.data).map(d => d),
+            data: (data || this.option.data).map(d => d),
         };
+        const lastRange = this.state.range;
+        init.call(this, option);
+        if (lastRange[0] >= data.length) {
+            this.state.range = [parseInt(data.length * 0.5), parseInt(data.length * 0.5) + lastRange[1] - lastRange[0]];
+        } else {
+            this.state.range = lastRange;
+        }
+        this.draw();
     } else {
         this.option = {
-            theme: option.theme || 'dark',
+            theme: option.theme || 'light',
             fontSize: option.fontSize || 12,
             mainCsi: option.mainCsi || 'ma',
             aidCsi: option.aidCsi || 'volume',
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toLocaleDateString()),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toLocaleTimeString()),
             priceDecimal: option.priceDecimal || 2,
-            data: (option.data || []).map(d => d),
+            data: (data || []).map(d => d),
         };
-    }
 
-    init.call(this, option);
+        init.call(this, option);
+        this.draw();
+    }
 }
 
 function init() {
@@ -45,6 +58,7 @@ function init() {
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
         hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+        mobileBar: isDarkTheme ? '#343f4d' : '#fafafa',
     };
 
     this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
@@ -101,6 +115,4 @@ function init() {
 
     this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
     this.minVerticalRectNumber = 30;
-
-    this.draw();
 }

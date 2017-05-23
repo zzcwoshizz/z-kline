@@ -26,7 +26,7 @@ app.appendChild(canvas);
 app.appendChild(overCanvas);
 
 const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + 60;
-fetch('http://192.168.1.125:8080/infoCenter/market/kline?symbol=btctrade_btc_cny&type=' + 60).then(res => {
+fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {

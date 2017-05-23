@@ -83,7 +83,7 @@ export default function(data, flag) {
             let text = `${this.option.overTimeFilter(data.time)}   开${data.start}   高${data.hi}   低${data.lo}   收${data.close}`;
             overCtx.textAlign = 'center';
             overCtx.textBaseline = 'middle';
-            overCtx.fillStyle = '#343f4d';
+            overCtx.fillStyle = this.colors.mobileBar;
             overCtx.fillRect(0, 0, this.width, 32 * this.dpr);
             overCtx.fillStyle = this.colors.textColor;
             overCtx.fillText(text, this.width * 0.5, 16 * this.dpr);
