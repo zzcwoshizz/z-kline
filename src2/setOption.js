@@ -18,7 +18,7 @@ export default function setOption(option = {}) {
         const lastRange = this.state.range;
         init.call(this, option);
         if (lastPeriod === this.option.period) {
-            this.state.lastRange = lastRange;
+            this.state.range = lastRange;
         }
         this.draw();
     } else {
