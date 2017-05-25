@@ -951,7 +951,8 @@ function canDraw() {
     if (this.state.range[0] != this.lastState.range[0] || this.state.range[1] != this.lastState.range[1]) {
         return true;
     }
-    if (this.option != this.lastOption) {
+    if (this.force) {
+        this.force = false;
         return true;
     }
     return false;
@@ -1076,12 +1077,13 @@ function draw() {
 
         var yaxis = this.computAxis();
 
+        this.drawHairLine();
+
         this.drawMain(yaxis);
 
         this.drawAid();
     }
 
-    this.lastOption = this.option;
     this.lastState = this.state;
 
     requestAnimationFrame(this.draw.bind(this));
@@ -1880,6 +1882,7 @@ var _slicedToArray2 = __webpack_require__(6);
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
 exports.default = operation;
+exports.drawHairLine = drawHairLine;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1897,8 +1900,6 @@ function operation(canvas, overCanvas) {
     var lastIndex = -1;
     var lastTouchDistance = 0;
 
-    drawHairLine.call(this);
-
     var move = function move(e) {
         var pos = _this.getMousePos(e);
 
@@ -1907,16 +1908,19 @@ function operation(canvas, overCanvas) {
             endIndex = _state$range[1];
 
         var verticalRectNumber = endIndex - startIndex;
+        var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
         if (isDown) {
-            var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
             _this.moveRange(currentIndex - lastIndex);
-            lastIndex = currentIndex;
         }
         if (_this.isInLineView(pos)) {
             _this.pos = pos;
+            if (lastIndex != currentIndex) {
+                _this.forceUpdate();
+            }
         } else {
             overCtx.clearRect(0, 0, _this.width, _this.height);
         }
+        lastIndex = currentIndex;
     };
 
     var scale = function scale(n) {
@@ -1969,7 +1973,8 @@ function operation(canvas, overCanvas) {
                 var verticalRectNumber = endIndex - startIndex;
                 var currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
                 lastIndex = currentIndex;
-                move(e.targetTouches[0]);
+                _this.pos = pos;
+                _this.forceUpdate();
             }
         };
         var touchend = function touchend() {
@@ -2013,144 +2018,136 @@ function operation(canvas, overCanvas) {
 
 function drawHairLine() {
     var pos = this.pos;
-    if (!this.lastPos) {
-        this.lastPos = {};
+    if (!pos) {
+        return;
     }
-    if (pos) {
-        if (pos.x != this.lastPos.x || pos.y != this.lastPos.y) {
-            var overCtx = this.overCtx;
-            var mainView = this.mainView,
-                mainYaxisView = this.mainYaxisView,
-                aidView = this.aidView,
-                aidYaxisView = this.aidYaxisView,
-                timeView = this.timeView;
+    var overCtx = this.overCtx;
+    var mainView = this.mainView,
+        mainYaxisView = this.mainYaxisView,
+        aidView = this.aidView,
+        aidYaxisView = this.aidYaxisView,
+        timeView = this.timeView;
 
-            var _state$range4 = (0, _slicedToArray3.default)(this.state.range, 2),
-                startIndex = _state$range4[0],
-                endIndex = _state$range4[1];
+    var _state$range4 = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range4[0],
+        endIndex = _state$range4[1];
 
-            var verticalRectNumber = endIndex - startIndex;
+    var verticalRectNumber = endIndex - startIndex;
 
-            var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
-            var x = currentIndex * aidView.w / verticalRectNumber + aidView.w / verticalRectNumber * 0.5 + mainView.x;
-            var y = pos.y;
+    var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+    var x = currentIndex * aidView.w / verticalRectNumber + aidView.w / verticalRectNumber * 0.5 + mainView.x;
+    var y = pos.y;
 
-            overCtx.clearRect(0, 0, this.width, this.height);
-            if (currentIndex + startIndex >= this.state.times.length || currentIndex + startIndex < 0) {
-                this.lastPos = pos;
-                requestAnimationFrame(drawHairLine.bind(this));
-                return;
-            }
+    overCtx.clearRect(0, 0, this.width, this.height);
+    if (currentIndex + startIndex >= this.state.times.length || currentIndex + startIndex < 0) {
+        return;
+    }
 
-            overCtx.lineWidth = this.dpr;
-            overCtx.strokeStyle = this.colors.hairLine;
+    overCtx.lineWidth = this.dpr;
+    overCtx.strokeStyle = this.colors.hairLine;
 
-            overCtx.beginPath();
-            overCtx.moveTo(x, this.height);
-            overCtx.lineTo(x, 0);
-            overCtx.stroke();
+    overCtx.beginPath();
+    overCtx.moveTo(x, this.height);
+    overCtx.lineTo(x, 0);
+    overCtx.stroke();
 
-            overCtx.beginPath();
-            overCtx.moveTo(0, y);
-            overCtx.lineTo(this.width, y);
-            overCtx.stroke();
+    overCtx.beginPath();
+    overCtx.moveTo(0, y);
+    overCtx.lineTo(this.width, y);
+    overCtx.stroke();
 
-            // x轴坐标
-            var currentTime = this.state.times[startIndex + currentIndex];
-            overCtx.textAlign = 'center';
-            overCtx.textBaseline = 'middle';
-            overCtx.fillStyle = this.colors.timeBackground;
-            overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
-            overCtx.strokeStyle = this.colors.textFrameColor;
-            overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
-            overCtx.fillStyle = this.colors.textColor;
-            overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
+    // x轴坐标
+    var currentTime = this.state.times[startIndex + currentIndex];
+    overCtx.textAlign = 'center';
+    overCtx.textBaseline = 'middle';
+    overCtx.fillStyle = this.colors.timeBackground;
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
+    overCtx.strokeStyle = this.colors.textFrameColor;
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
+    overCtx.fillStyle = this.colors.textColor;
+    overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
 
-            // 画y轴坐标
+    // 画y轴坐标
 
-            var _computAxis = this.computAxis(),
-                max = _computAxis.max,
-                min = _computAxis.min;
+    var _computAxis = this.computAxis(),
+        max = _computAxis.max,
+        min = _computAxis.min;
 
-            var view = mainYaxisView;
-            var w = this.width - view.x;
-            overCtx.textAlign = 'right';
-            overCtx.textBaseline = 'middle';
-            overCtx.fillStyle = this.colors.background;
-            overCtx.fillRect(view.x, y - 16, w, 32);
-            overCtx.strokeStyle = this.colors.textFrameColor;
-            overCtx.strokeRect(view.x, y - 16, w, 32);
-            overCtx.fillStyle = this.colors.textColor;
+    var view = mainYaxisView;
+    var w = this.width - view.x;
+    overCtx.textAlign = 'right';
+    overCtx.textBaseline = 'middle';
+    overCtx.fillStyle = this.colors.background;
+    overCtx.fillRect(view.x, y - 16, w, 32);
+    overCtx.strokeStyle = this.colors.textFrameColor;
+    overCtx.strokeRect(view.x, y - 16, w, 32);
+    overCtx.fillStyle = this.colors.textColor;
 
-            overCtx.textAlign = 'center';
-            if (this.isInLineView(pos) === mainView) {
-                var yText = max - (max - min) * (y - view.y) / view.h;
-                overCtx.fillText(yText.toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, y);
-            } else {
-                view = aidYaxisView;
-                if (this.option.aidCsi === 'volume') {
-                    var _yText = (1 - (y - view.y) / view.h) * (this.csiYaxisSector[0] - this.csiYaxisSector[1]);
-                    overCtx.fillText(this.setDP(_yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
-                } else if (this.option.aidCsi === 'macd' || this.option.aidCsi === 'kdj') {
-                    var _yText2 = this.csiYaxisSector[1] * (y - view.y) / view.h + this.csiYaxisSector[0] * (1 - (y - view.y) / view.h);
-                    overCtx.fillText(this.setDP(_yText2), mainYaxisView.x + mainYaxisView.w * 0.5, y);
-                }
-            }
-
-            var basicSelectOption = {
-                time: this.state.times[currentIndex + startIndex],
-                start: this.state.start[currentIndex + startIndex],
-                hi: this.state.hi[currentIndex + startIndex],
-                lo: this.state.lo[currentIndex + startIndex],
-                close: this.state.close[currentIndex + startIndex],
-                volume: this.state.volume[currentIndex + startIndex]
-            };
-            var selectOption = (0, _extends3.default)({}, basicSelectOption);
-            if (this.option.mainCsi === 'ma') {
-                selectOption = (0, _extends3.default)({}, selectOption, {
-                    ma7: this.state.ma7[currentIndex + startIndex],
-                    ma30: this.state.ma30[currentIndex + startIndex]
-                });
-            } else if (this.option.mainCsi === 'ema') {
-                selectOption = (0, _extends3.default)({}, selectOption, {
-                    ema7: this.state.ema7[currentIndex + startIndex],
-                    ema30: this.state.ema30[currentIndex + startIndex]
-                });
-            } else if (this.option.mainCsi === 'boll') {
-                selectOption = (0, _extends3.default)({}, selectOption, {
-                    up: this.state.up[currentIndex + startIndex],
-                    mb: this.state.mb[currentIndex + startIndex],
-                    dn: this.state.dn[currentIndex + startIndex]
-                });
-            }
-
-            this.select(selectOption, 0);
-
-            if (this.option.aidCsi === 'volume') {
-                this.select({
-                    volume: this.state.volume[currentIndex + startIndex],
-                    ma7: this.state.volumeMa7[currentIndex + startIndex],
-                    ma30: this.state.volumeMa30[currentIndex + startIndex]
-                }, 1);
-            }
-            if (this.option.aidCsi === 'macd') {
-                this.select({
-                    dif: this.state.dif[currentIndex + startIndex],
-                    dea: this.state.dea[currentIndex + startIndex],
-                    macd: this.state.macd[currentIndex + startIndex]
-                }, 1);
-            }
-            if (this.option.aidCsi === 'kdj') {
-                this.select({
-                    k: this.state.k[currentIndex + startIndex],
-                    d: this.state.d[currentIndex + startIndex],
-                    j: this.state.j[currentIndex + startIndex]
-                }, 1);
-            }
+    overCtx.textAlign = 'center';
+    if (this.isInLineView(pos) === mainView) {
+        var yText = max - (max - min) * (y - view.y) / view.h;
+        overCtx.fillText(yText.toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, y);
+    } else {
+        view = aidYaxisView;
+        if (this.option.aidCsi === 'volume') {
+            var _yText = (1 - (y - view.y) / view.h) * (this.csiYaxisSector[0] - this.csiYaxisSector[1]);
+            overCtx.fillText(this.setDP(_yText), mainYaxisView.x + mainYaxisView.w * 0.5, y);
+        } else if (this.option.aidCsi === 'macd' || this.option.aidCsi === 'kdj') {
+            var _yText2 = this.csiYaxisSector[1] * (y - view.y) / view.h + this.csiYaxisSector[0] * (1 - (y - view.y) / view.h);
+            overCtx.fillText(this.setDP(_yText2), mainYaxisView.x + mainYaxisView.w * 0.5, y);
         }
     }
-    this.lastPos = pos;
-    requestAnimationFrame(drawHairLine.bind(this));
+
+    var basicSelectOption = {
+        time: this.state.times[currentIndex + startIndex],
+        start: this.state.start[currentIndex + startIndex],
+        hi: this.state.hi[currentIndex + startIndex],
+        lo: this.state.lo[currentIndex + startIndex],
+        close: this.state.close[currentIndex + startIndex],
+        volume: this.state.volume[currentIndex + startIndex]
+    };
+    var selectOption = (0, _extends3.default)({}, basicSelectOption);
+    if (this.option.mainCsi === 'ma') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            ma7: this.state.ma7[currentIndex + startIndex],
+            ma30: this.state.ma30[currentIndex + startIndex]
+        });
+    } else if (this.option.mainCsi === 'ema') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            ema7: this.state.ema7[currentIndex + startIndex],
+            ema30: this.state.ema30[currentIndex + startIndex]
+        });
+    } else if (this.option.mainCsi === 'boll') {
+        selectOption = (0, _extends3.default)({}, selectOption, {
+            up: this.state.up[currentIndex + startIndex],
+            mb: this.state.mb[currentIndex + startIndex],
+            dn: this.state.dn[currentIndex + startIndex]
+        });
+    }
+
+    this.select(selectOption, 0);
+
+    if (this.option.aidCsi === 'volume') {
+        this.select({
+            volume: this.state.volume[currentIndex + startIndex],
+            ma7: this.state.volumeMa7[currentIndex + startIndex],
+            ma30: this.state.volumeMa30[currentIndex + startIndex]
+        }, 1);
+    }
+    if (this.option.aidCsi === 'macd') {
+        this.select({
+            dif: this.state.dif[currentIndex + startIndex],
+            dea: this.state.dea[currentIndex + startIndex],
+            macd: this.state.macd[currentIndex + startIndex]
+        }, 1);
+    }
+    if (this.option.aidCsi === 'kdj') {
+        this.select({
+            k: this.state.k[currentIndex + startIndex],
+            d: this.state.d[currentIndex + startIndex],
+            j: this.state.j[currentIndex + startIndex]
+        }, 1);
+    }
 }
 
 /***/ }),
@@ -2750,8 +2747,6 @@ function init() {
     var width = this.width;
     var height = this.height;
 
-    this.overCtx.clearRect(0, 0, width, height);
-
     this.proportion = 0.7;
 
     var mainView = {
@@ -2792,6 +2787,7 @@ function init() {
 
     this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
     this.minVerticalRectNumber = 30;
+    this.force = true;
 }
 
 /***/ }),
@@ -2872,6 +2868,7 @@ KLine.prototype = {
     draw: _draw2.default,
     drawMain: _drawMain2.default,
     drawAid: _drawAid2.default,
+    drawHairLine: _operation.drawHairLine,
     operation: _operation2.default,
     select: _select2.default,
     getMousePos: getMousePos,
@@ -2880,7 +2877,10 @@ KLine.prototype = {
     moveRange: _range.moveRange,
     scaleRange: _range.scaleRange,
     canDraw: _canDraw2.default,
-    computAxis: _computAxis2.default
+    computAxis: _computAxis2.default,
+    forceUpdate: function forceUpdate() {
+        this.force = true;
+    }
 };
 
 // 获取鼠标在canvas上的坐标点

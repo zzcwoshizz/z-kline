@@ -74,6 +74,9 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         }
         chart.setOption({ data: json, period: 60 });
     });
+    setTimeout(function() {
+        chart.setOption({ theme: 'light', data: json });
+    }, 3000);
 
     // var ele = document.getElementById('depth');
     // var depth = new Depth(ele, { width: document.body.clientWidth, height: document.body.clientHeight * 0.5 });

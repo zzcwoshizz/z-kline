@@ -97,8 +97,6 @@ function init() {
     const width = this.width;
     const height = this.height;
 
-    this.overCtx.clearRect(0, 0, width, height);
-
     this.proportion = 0.7;
 
     let mainView = {
@@ -139,4 +137,5 @@ function init() {
 
     this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
     this.minVerticalRectNumber = 30;
+    this.force = true;
 }

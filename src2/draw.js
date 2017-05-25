@@ -12,12 +12,13 @@ export default function draw() {
 
         const yaxis = this.computAxis();
 
+        this.drawHairLine();
+
         this.drawMain(yaxis);
 
         this.drawAid();
     }
 
-    this.lastOption = this.option;
     this.lastState = this.state;
 
     requestAnimationFrame(this.draw.bind(this));

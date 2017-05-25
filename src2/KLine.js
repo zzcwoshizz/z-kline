@@ -3,7 +3,7 @@ import setData from './setData';
 import draw from './draw';
 import drawMain from './drawMain';
 import drawAid from './drawAid';
-import operation from './operation';
+import operation, { drawHairLine } from './operation';
 import select from './select';
 import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
@@ -31,6 +31,7 @@ KLine.prototype = {
     draw,
     drawMain,
     drawAid,
+    drawHairLine,
     operation,
     select,
     getMousePos,
@@ -40,6 +41,9 @@ KLine.prototype = {
     scaleRange,
     canDraw,
     computAxis,
+    forceUpdate: function() {
+        this.force = true;
+    },
 };
 
 // 获取鼠标在canvas上的坐标点
