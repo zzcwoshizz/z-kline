@@ -53,7 +53,7 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    return Math.abs(num) > 0.01 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+    return Math.abs(num) > 0.1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
 }
 
 // 判断鼠标是否在${this.views}中

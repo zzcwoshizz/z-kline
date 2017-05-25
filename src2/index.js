@@ -27,13 +27,14 @@ overCanvas.height = bodyHeight * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + 60;
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=btc38dogecny&step=' + 60;
 fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
         data: json,
         period: 60,
+        priceDecimal: 4,
     });
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;
@@ -52,7 +53,7 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
     });
     var socket = window.io('http://45.248.68.30:3000');
     socket.on('connect', function() {
-        socket.emit('market.subscribe', 'btc:okcoin');
+        socket.emit('market.subscribe', 'doge:btc38');
     });
     socket.on('update:trades', function(d) {
         // d = JSON.parse(d);

@@ -1969,6 +1969,7 @@ function operation(canvas, overCanvas) {
                 var verticalRectNumber = endIndex - startIndex;
                 var currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
                 lastIndex = currentIndex;
+                move(e.targetTouches[0]);
             }
         };
         var touchend = function touchend() {
@@ -2468,7 +2469,7 @@ function setData() {
             }
         }),
         isDown: false,
-        range: data.length > 44 ? [data.length - 44, data.length + 44] : [0, 88]
+        range: data.length > 44 ? [data.length - 70, data.length + 18] : [0, 88]
     };
     this.state.ema30 = [];
     this.state.close.forEach(function (el, i) {
@@ -2648,13 +2649,13 @@ Date.prototype.format = function (fmt) {
         return '';
     }
     var o = {
-        'M+': this.getMonth() + 1, //月份
-        'D+': this.getDate(), //日
-        'h+': this.getHours(), //小时
-        'm+': this.getMinutes(), //分
-        's+': this.getSeconds(), //秒
-        'q+': Math.floor((this.getMonth() + 3) / 3), //季度
-        'S': this.getMilliseconds() //毫秒
+        'M+': this.getMonth() + 1,
+        'D+': this.getDate(),
+        'h+': this.getHours(),
+        'm+': this.getMinutes(),
+        's+': this.getSeconds(),
+        'q+': Math.floor((this.getMonth() + 3) / 3),
+        'S': this.getMilliseconds()
     };
     if (/(Y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
@@ -2748,6 +2749,8 @@ function init() {
 
     var width = this.width;
     var height = this.height;
+
+    this.overCtx.clearRect(0, 0, width, height);
 
     this.proportion = 0.7;
 
@@ -2891,7 +2894,7 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    return Math.abs(num) > 0.01 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+    return Math.abs(num) > 0.1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
 }
 
 // 判断鼠标是否在${this.views}中

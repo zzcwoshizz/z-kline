@@ -1,29 +1,29 @@
 Date.prototype.format = function(fmt) {
-    if(this == 'Invalid Date') {
-        return ''
+    if (this == 'Invalid Date') {
+        return '';
     }
     var o = {
-        'M+': this.getMonth() + 1, //月份
-        'D+': this.getDate(), //日
-        'h+': this.getHours(), //小时
-        'm+': this.getMinutes(), //分
-        's+': this.getSeconds(), //秒
-        'q+': Math.floor((this.getMonth() + 3) / 3), //季度
-        'S': this.getMilliseconds() //毫秒
-    }
+        'M+': this.getMonth() + 1,
+        'D+': this.getDate(),
+        'h+': this.getHours(),
+        'm+': this.getMinutes(),
+        's+': this.getSeconds(),
+        'q+': Math.floor((this.getMonth() + 3) / 3),
+        'S': this.getMilliseconds(),
+    };
     if (/(Y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '')
-        .substr(4 - RegExp.$1.length))
+        .substr(4 - RegExp.$1.length));
     }
     for (var k in o) {
         if (new RegExp('(' + k + ')').test(fmt)) {
             fmt = fmt.replace(RegExp.$1,
                 (RegExp.$1.length == 1) ?
-                (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+                (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
         }
     }
-    return fmt
-}
+    return fmt;
+};
 export default function setOption(option = {}) {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
@@ -96,6 +96,8 @@ function init() {
 
     const width = this.width;
     const height = this.height;
+
+    this.overCtx.clearRect(0, 0, width, height);
 
     this.proportion = 0.7;
 

@@ -70,6 +70,7 @@ export default function operation(canvas, overCanvas) {
                 const verticalRectNumber = endIndex - startIndex;
                 const currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
                 lastIndex = currentIndex;
+                move(e.targetTouches[0]);
             }
         };
         const touchend = () => {
