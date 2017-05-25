@@ -1,3 +1,6 @@
+function toInt(num) {
+    return ~~(0.5 + num);
+}
 export default function drawMain(yaxis) {
     const ctx = this.ctx;
 
@@ -27,10 +30,12 @@ export default function drawMain(yaxis) {
     ctx.textBaseline = 'middle';
     let lengthY = (max - min) / intervalY;
     for (let i = 0; i < lengthY; i++) {
-        ctx.fillText((max - (i * intervalY)).toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y);
+        ctx.fillText((max - (i * intervalY)).toFixed(this.option.priceDecimal), toInt(mainYaxisView.x + mainYaxisView.w * 0.5), toInt(i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y));
 
         let x = mainYaxisView.x;
         let y = i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
+        x = toInt(x);
+        y = toInt(y);
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(x, y);
@@ -42,6 +47,8 @@ export default function drawMain(yaxis) {
     for (let i = 0; i < lengthY; i++) {
         let x = mainYaxisView.x;
         let y = i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
+        x = toInt(x);
+        y = toInt(y);
         ctx.beginPath();
         ctx.moveTo(x + 10, y);
         ctx.lineTo(x, y);
@@ -58,6 +65,8 @@ export default function drawMain(yaxis) {
         }
         let x = mainView.x + mainView.w * i / 5;
         let y = timeView.y + timeView.h * 0.5;
+        x = toInt(x);
+        y = toInt(y);
         ctx.fillText(timeStr[index], x, y);
 
         ctx.beginPath();
@@ -80,11 +89,19 @@ export default function drawMain(yaxis) {
         let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
         let w = mainView.w / verticalRectNumber * 0.8;
         let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
+        x = toInt(x);
+        y = toInt(y);
+        w = toInt(w);
+        h = toInt(h);
         ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
         let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
         let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
         let x2 = x1;
         let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
+        x1 = toInt(x1);
+        y1 = toInt(y1);
+        x2 = toInt(x2);
+        y2 = toInt(y2);
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
@@ -103,11 +120,19 @@ export default function drawMain(yaxis) {
         let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
         let w = mainView.w / verticalRectNumber * 0.8;
         let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
+        x = toInt(x);
+        y = toInt(y);
+        w = toInt(w);
+        h = toInt(h);
         ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
         let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
         let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
         let x2 = x1;
         let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
+        x1 = toInt(x1);
+        y1 = toInt(y1);
+        x2 = toInt(x2);
+        y2 = toInt(y2);
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
@@ -124,6 +149,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.ma30[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -140,6 +167,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.ma7[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -156,6 +185,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.ema30[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -172,6 +203,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.ema7[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -188,6 +221,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.up[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -204,6 +239,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.mb[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -220,6 +257,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.dn[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             if (j == 0) {
                 ctx.moveTo(x, y);
             }
@@ -234,6 +273,8 @@ export default function drawMain(yaxis) {
             }
             let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
             let y = (max - this.state.sar[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
             ctx.beginPath();
             ctx.arc(x, y, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
             ctx.stroke();
@@ -249,6 +290,10 @@ export default function drawMain(yaxis) {
     let maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
     let minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
     let minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
+    maxX = toInt(maxX);
+    maxY = toInt(maxY);
+    minX = toInt(minX);
+    minY = toInt(minY);
     if (index < verticalRectNumber * 0.5) {
         ctx.textAlign = 'left';
         ctx.fillText(' ← ' + maxPrice, maxX, maxY);

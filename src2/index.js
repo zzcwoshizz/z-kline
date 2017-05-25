@@ -1,6 +1,8 @@
+import 'babel-polyfill';
+import 'whatwg-fetch';
 import { KLine, Depth } from './KLine';
 var bodyWidth = document.body.clientWidth;
-var bodyHeight = document.body.clientHeight * 0.5;
+var bodyHeight = document.body.clientHeight;
 
 var app = document.getElementById('app');
 app.style.width = bodyWidth + 'px';
@@ -31,6 +33,7 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
         data: json,
+        period: 60,
     });
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;
@@ -47,12 +50,12 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         overCanvas.height = bodyHeight * 2;
         chart.setOption({});
     });
-    const socket = window.io.connect('http://192.168.1.125:9092');
+    var socket = window.io('http://45.248.68.30:3000');
     socket.on('connect', function() {
-        socket.emit('subscribe:market', 'btctrade:btc');
+        socket.emit('market.subscribe', 'btc:okcoin');
     });
-    socket.on('trade', function(d) {
-        d = JSON.parse(d);
+    socket.on('update:trades', function(d) {
+        // d = JSON.parse(d);
         for (let data of d) {
             let newTime = parseFloat(data.date);
             let newPrice = parseFloat(data.price);
@@ -68,21 +71,21 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
                 json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
             }
         }
-        chart.append(json);
+        chart.setOption({ data: json, period: 60 });
     });
 
-    var ele = document.getElementById('depth');
-    var depth = new Depth(ele, { width: document.body.clientWidth, height: document.body.clientHeight * 0.5 });
-    socket.on('depth', function(data) {
-        data = JSON.parse(data);
-        const buy = [];
-        const sell = [];
-        data.asks.forEach(el => {
-            sell.push(el);
-        });
-        data.bids.forEach(el => {
-            buy.push(el);
-        });
-        depth.setData({ buy, sell: sell.reverse() });
-    });
+    // var ele = document.getElementById('depth');
+    // var depth = new Depth(ele, { width: document.body.clientWidth, height: document.body.clientHeight * 0.5 });
+    // socket.on('depth', function(data) {
+        // data = JSON.parse(data);
+        // const buy = [];
+        // const sell = [];
+        // data.asks.forEach(el => {
+            // sell.push(el);
+        // });
+        // data.bids.forEach(el => {
+            // buy.push(el);
+        // });
+        // depth.setData({ buy, sell: sell.reverse() });
+    // });
 });

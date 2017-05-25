@@ -11,7 +11,7 @@ export function moveRange(distance) {
         newStartIndex = 0;
         newEndIndex = verticalRectNumber;
     }
-    this.state.range = [newStartIndex, newEndIndex];
+    this.state = { ...this.state, range: [newStartIndex, newEndIndex] };
 }
 
 export function scaleRange(n) {
@@ -42,5 +42,5 @@ export function scaleRange(n) {
         newStartIndex = 0;
         newEndIndex = newVerticalRectNumber;
     }
-    this.state.range = [newStartIndex, newEndIndex];
+    this.state = { ...this.state, range: [newStartIndex, newEndIndex] };
 }

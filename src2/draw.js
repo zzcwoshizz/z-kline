@@ -1,16 +1,26 @@
 export default function draw() {
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.width, this.height);
+    if (!this.lastState) {
+        this.lastState = {range: [-1, -1]};
+    }
+    if (this.canDraw()) {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, this.width, this.height);
 
-    drawBackground.call(this);
-    drawTime.call(this);
-    drawSplitLine.call(this);
+        drawBackground.call(this);
+        drawTime.call(this);
+        drawSplitLine.call(this);
 
-    const yaxis = this.computAxis();
+        const yaxis = this.computAxis();
 
-    this.drawMain(yaxis);
+        this.drawMain(yaxis);
 
-    this.drawAid();
+        this.drawAid();
+    }
+
+    this.lastOption = this.option;
+    this.lastState = this.state;
+
+    requestAnimationFrame(this.draw.bind(this));
 }
 
 function drawBackground() {

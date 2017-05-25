@@ -1,3 +1,6 @@
+function toInt(num) {
+    return ~~(0.5 + num);
+}
 export default function drawAid() {
     if (this.option.aidCsi === 'volume') {
         drawVolume.call(this);

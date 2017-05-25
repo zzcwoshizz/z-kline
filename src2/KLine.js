@@ -7,6 +7,7 @@ import operation from './operation';
 import select from './select';
 import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
+import canDraw from './canDraw';
 import Depth from './Depth';
 
 export function KLine(canvas, overCanvas, option) {
@@ -20,6 +21,7 @@ export function KLine(canvas, overCanvas, option) {
     this.overCtx = overCanvas.getContext('2d');
     this.dpr = canvas.width / canvas.getBoundingClientRect().width;
     this.setOption(option);
+    this.draw();
     this.operation(canvas, overCanvas);
 }
 
@@ -36,6 +38,7 @@ KLine.prototype = {
     isInLineView,
     moveRange,
     scaleRange,
+    canDraw,
     computAxis,
 };
 
