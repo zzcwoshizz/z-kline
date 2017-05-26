@@ -89,7 +89,7 @@ export default function setData() {
             }
         }),
         isDown: false,
-        range: data.length > 44 ? [data.length - 70, data.length + 18] : [0, 88],
+        range: data.length > 70 ? [data.length - 70, data.length + 18] : [0, 88],
     };
     this.state.ema30 = [];
     this.state.close.forEach((el, i) => {

@@ -949,13 +949,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = canDraw;
 function canDraw() {
     if (this.state.range[0] != this.lastState.range[0] || this.state.range[1] != this.lastState.range[1]) {
-        return true;
+        return [true, true];
     }
-    if (this.force) {
-        this.force = false;
-        return true;
+    if (this.force[0] || this.force[1]) {
+        var temp = this.force;
+        this.force = [false, false];
+        return temp;
     }
-    return false;
+    return [false, false];
 }
 
 /***/ }),
@@ -1067,7 +1068,11 @@ function draw() {
     if (!this.lastState) {
         this.lastState = { range: [-1, -1] };
     }
-    if (this.canDraw()) {
+    var canDraw = this.canDraw();
+    if (canDraw[1]) {
+        this.drawHairLine();
+    }
+    if (canDraw[0]) {
         var ctx = this.ctx;
         ctx.clearRect(0, 0, this.width, this.height);
 
@@ -1076,8 +1081,6 @@ function draw() {
         drawSplitLine.call(this);
 
         var yaxis = this.computAxis();
-
-        this.drawHairLine();
 
         this.drawMain(yaxis);
 
@@ -1914,9 +1917,7 @@ function operation(canvas, overCanvas) {
         }
         if (_this.isInLineView(pos)) {
             _this.pos = pos;
-            if (lastIndex != currentIndex) {
-                _this.forceUpdate();
-            }
+            _this.forceUpdate(false, true);
         } else {
             overCtx.clearRect(0, 0, _this.width, _this.height);
         }
@@ -1974,7 +1975,7 @@ function operation(canvas, overCanvas) {
                 var currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
                 lastIndex = currentIndex;
                 _this.pos = pos;
-                _this.forceUpdate();
+                _this.forceUpdate(false, true);
             }
         };
         var touchend = function touchend() {
@@ -2466,7 +2467,7 @@ function setData() {
             }
         }),
         isDown: false,
-        range: data.length > 44 ? [data.length - 70, data.length + 18] : [0, 88]
+        range: data.length > 70 ? [data.length - 70, data.length + 18] : [0, 88]
     };
     this.state.ema30 = [];
     this.state.close.forEach(function (el, i) {
@@ -2787,7 +2788,7 @@ function init() {
 
     this.maxVerticalRectNumber = parseInt(mainView.w / this.dpr / 2) % 2 === 0 ? parseInt(mainView.w / this.dpr / 2) : parseInt(mainView.w / this.dpr / 2) + 1;
     this.minVerticalRectNumber = 30;
-    this.force = true;
+    this.force = [true, true];
 }
 
 /***/ }),
@@ -2878,8 +2879,8 @@ KLine.prototype = {
     scaleRange: _range.scaleRange,
     canDraw: _canDraw2.default,
     computAxis: _computAxis2.default,
-    forceUpdate: function forceUpdate() {
-        this.force = true;
+    forceUpdate: function forceUpdate(canvasCanDraw, overCanvasCanDraw) {
+        this.force = [canvasCanDraw || this.force[0], overCanvasCanDraw || this.force[1]];
     }
 };
 

@@ -41,8 +41,8 @@ KLine.prototype = {
     scaleRange,
     canDraw,
     computAxis,
-    forceUpdate: function() {
-        this.force = true;
+    forceUpdate: function(canvasCanDraw, overCanvasCanDraw) {
+        this.force = [canvasCanDraw || this.force[0], overCanvasCanDraw || this.force[1]];
     },
 };
 

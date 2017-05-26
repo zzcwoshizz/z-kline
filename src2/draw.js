@@ -2,7 +2,11 @@ export default function draw() {
     if (!this.lastState) {
         this.lastState = {range: [-1, -1]};
     }
-    if (this.canDraw()) {
+    const canDraw = this.canDraw();
+    if (canDraw[1]) {
+        this.drawHairLine();
+    }
+    if (canDraw[0]) {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.width, this.height);
 
@@ -11,8 +15,6 @@ export default function draw() {
         drawSplitLine.call(this);
 
         const yaxis = this.computAxis();
-
-        this.drawHairLine();
 
         this.drawMain(yaxis);
 

@@ -16,9 +16,7 @@ export default function operation(canvas, overCanvas) {
         }
         if (this.isInLineView(pos)) {
             this.pos = pos;
-            if (lastIndex != currentIndex) {
-                this.forceUpdate();
-            }
+            this.forceUpdate(false, true);
         } else {
             overCtx.clearRect(0, 0, this.width, this.height);
         }
@@ -72,7 +70,7 @@ export default function operation(canvas, overCanvas) {
                 const currentIndex = Math.floor((pos.x - mainView.x) / mainView.w * verticalRectNumber);
                 lastIndex = currentIndex;
                 this.pos = pos;
-                this.forceUpdate();
+                this.forceUpdate(false, true);
             }
         };
         const touchend = () => {
