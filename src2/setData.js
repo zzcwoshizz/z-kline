@@ -249,6 +249,5 @@ export default function setData() {
         this.state.sar.push(sar);
     }
 
-    maxLength += 3;
     return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
 }

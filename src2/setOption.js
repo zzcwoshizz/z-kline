@@ -54,7 +54,7 @@ export default function setOption(option = {}) {
             aidCsi: option.aidCsi || 'volume',
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
-            priceDecimal: option.priceDecimal || 2,
+            priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal,
             data: (data || []).map(d => d),
             period: option.period || 60 * 60,
         };
