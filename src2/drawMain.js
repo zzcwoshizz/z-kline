@@ -55,25 +55,7 @@ export default function drawMain(yaxis) {
         ctx.stroke();
     }
 
-    // 时间轴
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (let i = 1; i < 5; i++) {
-        let index = parseInt((i / 5) * verticalRectNumber + startIndex);
-        if (index >= times.length) {
-            break;
-        }
-        let x = mainView.x + mainView.w * i / 5;
-        let y = timeView.y + timeView.h * 0.5;
-        x = toInt(x);
-        y = toInt(y);
-        ctx.fillText(timeStr[index], x, y);
-
-        ctx.beginPath();
-        ctx.moveTo(x, this.height - 2);
-        ctx.lineTo(x, this.height - 8);
-        ctx.stroke();
-    }
+    this.drawTimeline();
 
     // 蜡烛线
     ctx.strokeStyle = this.colors.redColor;

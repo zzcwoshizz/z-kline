@@ -2627,7 +2627,6 @@ function setData() {
         this.state.sar.push(sar);
     }
 
-    maxLength += 3;
     return Math.ceil(this.ctx.measureText(Math.pow(10, maxLength)).width);
 }
 
@@ -2703,7 +2702,7 @@ function setOption() {
             overTimeFilter: option.overTimeFilter || function (t) {
                 return new Date(t * 1000).toString('M/d/yyyy');
             },
-            priceDecimal: option.priceDecimal || 2,
+            priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal,
             data: (data || []).map(function (d) {
                 return d;
             }),

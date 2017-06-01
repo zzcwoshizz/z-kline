@@ -141,7 +141,7 @@ export function drawHairLine() {
     overCtx.stroke();
 
     // x轴坐标
-    const currentTime = this.state.times[startIndex + currentIndex];
+    const currentTime = this.option.overTimeFilter(this.state.times[startIndex + currentIndex]);
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'middle';
     overCtx.fillStyle = this.colors.timeBackground;
@@ -149,7 +149,7 @@ export function drawHairLine() {
     overCtx.strokeStyle = this.colors.textFrameColor;
     overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
     overCtx.fillStyle = this.colors.textColor;
-    overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
+    overCtx.fillText(currentTime, x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
 
     // 画y轴坐标
     const { max, min } = this.computAxis();

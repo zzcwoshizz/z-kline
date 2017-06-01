@@ -3,6 +3,7 @@ import setData from './setData';
 import draw from './draw';
 import drawMain from './drawMain';
 import drawAid from './drawAid';
+import drawTimeline from './drawTimeline';
 import operation, { drawHairLine } from './operation';
 import select from './select';
 import { moveRange, scaleRange } from './range';
@@ -32,6 +33,7 @@ KLine.prototype = {
     drawMain,
     drawAid,
     drawHairLine,
+    drawTimeline,
     operation,
     select,
     getMousePos,

@@ -27,14 +27,34 @@ overCanvas.height = bodyHeight * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=btc38dogecny&step=' + 60;
+const period = 60;
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=btc38dogecny&step=' + period;
 fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
         data: json,
-        period: 60,
+        period,
         priceDecimal: 4,
+        timeFilter: function(ctx, d) {
+            let cha = (d[d.length - 1].time - d[0].time) / (d.length - 1);
+            let data;
+            if (cha < 3600) {
+                data = d.map(el => ({ time: new Date(el.time * 1000).toString('d日 H:m'), x: el.x, y: el.y }));
+            } else if (cha < 3600 * 24) {
+                data = d.map(el => ({ time: new Date(el.time * 1000).toString('d日 H'), x: el.x, y: el.y }));
+            } else if (cha < 3600 * 24 * 31) {
+                data = d.map(el => ({ time: new Date(el.time * 1000).toString('yyyy/M/d'), x: el.x, y: el.y }));
+            } else {
+                data = d.map(el => ({ time: new Date(el.time * 1000).toString('yyyy/M'), x: el.x, y: el.y }));
+            }
+            data.forEach(el => {
+                ctx.fillText(el.time, el.x, el.y);
+            });
+        },
+        overTimeFilter: function(d) {
+            return new Date(d * 1000).toString('yyyy/MM/dd HH:mm');
+        }
     });
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;
@@ -60,7 +80,7 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         for (let data of d) {
             let newTime = parseFloat(data.date);
             let newPrice = parseFloat(data.price);
-            if (newTime - json[json.length - 1][0] < 60) {
+            if (newTime - json[json.length - 1][0] < period) {
                 let hi = Math.max(json[json.length - 1][2], newPrice);
                 let lo = Math.min(json[json.length - 1][3], newPrice);
                 let close = data.price;
@@ -69,10 +89,10 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
                 json[json.length - 1][4] = newPrice;
                 json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
             } else {
-                json.push([json[json.length - 1][0] + 60, newPrice, newPrice, newPrice, newPrice, data.amount]);
+                json.push([json[json.length - 1][0] + period, newPrice, newPrice, newPrice, newPrice, data.amount]);
             }
         }
-        chart.setOption({ data: json, period: 60 });
+        chart.setOption({ data: json });
     });
     setTimeout(function() {
         chart.setOption({ theme: 'light', data: json });

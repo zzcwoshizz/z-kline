@@ -2,7 +2,6 @@ export default function setData() {
     let maxLength = -1;
     const data = this.option.data;
     let times = [];
-    let timeStr = [];
     let start = [];
     let hi = [];
     let lo = [];
@@ -10,7 +9,6 @@ export default function setData() {
     let volume = [];
     data.forEach(d => {
         times.push(d[0]);
-        timeStr.push(this.option.timeFilter(d[0]));
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
@@ -27,7 +25,6 @@ export default function setData() {
     });
     this.state = {
         times,
-        timeStr,
         start,
         hi,
         lo,
