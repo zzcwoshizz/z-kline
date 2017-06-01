@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 47);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -118,39 +118,16 @@ module.exports = {};
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(14);
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var dP         = __webpack_require__(11)
-  , createDesc = __webpack_require__(16);
-module.exports = __webpack_require__(7) ? function(object, key, value){
-  return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
-  object[key] = value;
-  return object;
-};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
 exports.__esModule = true;
 
-var _isIterable2 = __webpack_require__(49);
+var _isIterable2 = __webpack_require__(50);
 
 var _isIterable3 = _interopRequireDefault(_isIterable2);
 
-var _getIterator2 = __webpack_require__(48);
+var _getIterator2 = __webpack_require__(49);
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -195,6 +172,29 @@ exports.default = function () {
 }();
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(14);
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var dP         = __webpack_require__(11)
+  , createDesc = __webpack_require__(16);
+module.exports = __webpack_require__(7) ? function(object, key, value){
+  return dP.f(object, key, createDesc(1, value));
+} : function(object, key, value){
+  object[key] = value;
+  return object;
+};
+
+/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -210,7 +210,7 @@ module.exports = !__webpack_require__(9)(function(){
 var global    = __webpack_require__(2)
   , core      = __webpack_require__(1)
   , ctx       = __webpack_require__(24)
-  , hide      = __webpack_require__(5)
+  , hide      = __webpack_require__(6)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -294,9 +294,9 @@ module.exports = function(it, key){
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject       = __webpack_require__(4)
-  , IE8_DOM_DEFINE = __webpack_require__(63)
-  , toPrimitive    = __webpack_require__(81)
+var anObject       = __webpack_require__(5)
+  , IE8_DOM_DEFINE = __webpack_require__(64)
+  , toPrimitive    = __webpack_require__(82)
   , dP             = Object.defineProperty;
 
 exports.f = __webpack_require__(7) ? Object.defineProperty : function defineProperty(O, P, Attributes){
@@ -344,7 +344,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = __webpack_require__(75)
+var $keys       = __webpack_require__(76)
   , enumBugKeys = __webpack_require__(26);
 
 module.exports = Object.keys || function keys(O){
@@ -402,7 +402,7 @@ module.exports = function(it){
 
 "use strict";
 
-var $at  = __webpack_require__(79)(true);
+var $at  = __webpack_require__(80)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
 __webpack_require__(28)(String, 'String', function(iterated){
@@ -428,7 +428,7 @@ __webpack_require__(28)(String, 'String', function(iterated){
 
 exports.__esModule = true;
 
-var _assign = __webpack_require__(50);
+var _assign = __webpack_require__(51);
 
 var _assign2 = _interopRequireDefault(_assign);
 
@@ -491,7 +491,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(58);
+var aFunction = __webpack_require__(59);
 module.exports = function(fn, that, length){
   aFunction(fn);
   if(that === undefined)return fn;
@@ -548,15 +548,15 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 
 "use strict";
 
-var LIBRARY        = __webpack_require__(69)
+var LIBRARY        = __webpack_require__(70)
   , $export        = __webpack_require__(8)
-  , redefine       = __webpack_require__(78)
-  , hide           = __webpack_require__(5)
+  , redefine       = __webpack_require__(79)
+  , hide           = __webpack_require__(6)
   , has            = __webpack_require__(10)
   , Iterators      = __webpack_require__(3)
-  , $iterCreate    = __webpack_require__(66)
+  , $iterCreate    = __webpack_require__(67)
   , setToStringTag = __webpack_require__(29)
-  , getPrototypeOf = __webpack_require__(74)
+  , getPrototypeOf = __webpack_require__(75)
   , ITERATOR       = __webpack_require__(0)('iterator')
   , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
   , FF_ITERATOR    = '@@iterator'
@@ -679,9 +679,9 @@ module.exports = __webpack_require__(1).getIteratorMethod = function(it){
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(85);
+__webpack_require__(86);
 var global        = __webpack_require__(2)
-  , hide          = __webpack_require__(5)
+  , hide          = __webpack_require__(6)
   , Iterators     = __webpack_require__(3)
   , TO_STRING_TAG = __webpack_require__(0)('toStringTag');
 
@@ -970,7 +970,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _toConsumableArray2 = __webpack_require__(52);
+var _toConsumableArray2 = __webpack_require__(53);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -1129,7 +1129,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(6);
+var _slicedToArray2 = __webpack_require__(4);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -1531,7 +1531,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(6);
+var _slicedToArray2 = __webpack_require__(4);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -1605,49 +1605,31 @@ function drawMain(yaxis) {
         ctx.stroke();
     }
 
-    // 时间轴
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (var _i2 = 1; _i2 < 5; _i2++) {
-        var _index = parseInt(_i2 / 5 * verticalRectNumber + startIndex);
-        if (_index >= times.length) {
-            break;
-        }
-        var _x2 = mainView.x + mainView.w * _i2 / 5;
-        var _y2 = timeView.y + timeView.h * 0.5;
-        _x2 = toInt(_x2);
-        _y2 = toInt(_y2);
-        ctx.fillText(timeStr[_index], _x2, _y2);
-
-        ctx.beginPath();
-        ctx.moveTo(_x2, this.height - 2);
-        ctx.lineTo(_x2, this.height - 8);
-        ctx.stroke();
-    }
+    this.drawTimeline();
 
     // 蜡烛线
     ctx.strokeStyle = this.colors.redColor;
     ctx.fillStyle = this.colors.redColor;
-    for (var _i3 = startIndex, j = 0; _i3 < endIndex; _i3++, j++) {
-        if (_i3 >= times.length) {
+    for (var _i2 = startIndex, j = 0; _i2 < endIndex; _i2++, j++) {
+        if (_i2 >= times.length) {
             break;
         }
-        if (close[_i3] > start[_i3]) {
+        if (close[_i2] > start[_i2]) {
             continue;
         }
-        var _x3 = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * mainView.h + mainView.y;
+        var _x2 = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var _y2 = (max - Math.max(start[_i2], close[_i2])) / (max - min) * mainView.h + mainView.y;
         var w = mainView.w / verticalRectNumber * 0.8;
-        var h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * mainView.h;
-        _x3 = toInt(_x3);
-        _y3 = toInt(_y3);
+        var h = (Math.max(start[_i2], close[_i2]) - Math.min(start[_i2], close[_i2])) / (max - min) * mainView.h;
+        _x2 = toInt(_x2);
+        _y2 = toInt(_y2);
         w = toInt(w);
         h = toInt(h);
-        ctx.fillRect(_x3, _y3, w, h < this.dpr ? this.dpr : h);
+        ctx.fillRect(_x2, _y2, w, h < this.dpr ? this.dpr : h);
         var x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        var y1 = (max - hi[_i3]) / (max - min) * mainView.h + mainView.y;
+        var y1 = (max - hi[_i2]) / (max - min) * mainView.h + mainView.y;
         var x2 = x1;
-        var y2 = (max - lo[_i3]) / (max - min) * mainView.h + mainView.y;
+        var y2 = (max - lo[_i2]) / (max - min) * mainView.h + mainView.y;
         x1 = toInt(x1);
         y1 = toInt(y1);
         x2 = toInt(x2);
@@ -1659,33 +1641,33 @@ function drawMain(yaxis) {
     }
     ctx.strokeStyle = this.colors.greenColor;
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i4 = startIndex, _j = 0; _i4 < endIndex; _i4++, _j++) {
-        if (_i4 >= times.length) {
+    for (var _i3 = startIndex, _j = 0; _i3 < endIndex; _i3++, _j++) {
+        if (_i3 >= times.length) {
             break;
         }
-        if (close[_i4] <= start[_i4]) {
+        if (close[_i3] <= start[_i3]) {
             continue;
         }
-        var _x4 = (_j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        var _y4 = (max - Math.max(start[_i4], close[_i4])) / (max - min) * mainView.h + mainView.y;
+        var _x3 = (_j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * mainView.h + mainView.y;
         var _w = mainView.w / verticalRectNumber * 0.8;
-        var _h = (Math.max(start[_i4], close[_i4]) - Math.min(start[_i4], close[_i4])) / (max - min) * mainView.h;
-        _x4 = toInt(_x4);
-        _y4 = toInt(_y4);
+        var _h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * mainView.h;
+        _x3 = toInt(_x3);
+        _y3 = toInt(_y3);
         _w = toInt(_w);
         _h = toInt(_h);
-        ctx.fillRect(_x4, _y4, _w, _h < this.dpr ? this.dpr : _h);
-        var _x5 = _j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        var _y5 = (max - hi[_i4]) / (max - min) * mainView.h + mainView.y;
-        var _x6 = _x5;
-        var _y6 = (max - lo[_i4]) / (max - min) * mainView.h + mainView.y;
+        ctx.fillRect(_x3, _y3, _w, _h < this.dpr ? this.dpr : _h);
+        var _x4 = _j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+        var _y4 = (max - hi[_i3]) / (max - min) * mainView.h + mainView.y;
+        var _x5 = _x4;
+        var _y5 = (max - lo[_i3]) / (max - min) * mainView.h + mainView.y;
+        _x4 = toInt(_x4);
+        _y4 = toInt(_y4);
         _x5 = toInt(_x5);
         _y5 = toInt(_y5);
-        _x6 = toInt(_x6);
-        _y6 = toInt(_y6);
         ctx.beginPath();
-        ctx.moveTo(_x5, _y5);
-        ctx.lineTo(_x6, _y6);
+        ctx.moveTo(_x4, _y4);
+        ctx.lineTo(_x5, _y5);
         ctx.stroke();
     }
 
@@ -1693,140 +1675,140 @@ function drawMain(yaxis) {
         // ma30
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i5 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i5++, _j2++) {
-            if (_i5 >= times.length) {
+        for (var _i4 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i4++, _j2++) {
+            if (_i4 >= times.length) {
                 break;
             }
-            var _x7 = _j2 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y7 = (max - this.state.ma30[_i5]) / (max - min) * mainView.h + mainView.y;
-            _x7 = toInt(_x7);
-            _y7 = toInt(_y7);
+            var _x6 = _j2 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y6 = (max - this.state.ma30[_i4]) / (max - min) * mainView.h + mainView.y;
+            _x6 = toInt(_x6);
+            _y6 = toInt(_y6);
             if (_j2 == 0) {
-                ctx.moveTo(_x7, _y7);
+                ctx.moveTo(_x6, _y6);
             }
-            ctx.lineTo(_x7, _y7);
+            ctx.lineTo(_x6, _y6);
         }
         ctx.stroke();
 
         // ma7
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i6 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i6++, _j3++) {
-            if (_i6 >= this.state.times.length) {
+        for (var _i5 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i5++, _j3++) {
+            if (_i5 >= this.state.times.length) {
                 break;
             }
-            var _x8 = _j3 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y8 = (max - this.state.ma7[_i6]) / (max - min) * mainView.h + mainView.y;
-            _x8 = toInt(_x8);
-            _y8 = toInt(_y8);
+            var _x7 = _j3 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y7 = (max - this.state.ma7[_i5]) / (max - min) * mainView.h + mainView.y;
+            _x7 = toInt(_x7);
+            _y7 = toInt(_y7);
             if (_j3 == 0) {
-                ctx.moveTo(_x8, _y8);
+                ctx.moveTo(_x7, _y7);
             }
-            ctx.lineTo(_x8, _y8);
+            ctx.lineTo(_x7, _y7);
         }
         ctx.stroke();
     } else if (this.option.mainCsi === 'ema') {
         // ema30
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i7 = startIndex, _j4 = 0; _j4 < verticalRectNumber; _i7++, _j4++) {
-            if (_i7 >= times.length) {
+        for (var _i6 = startIndex, _j4 = 0; _j4 < verticalRectNumber; _i6++, _j4++) {
+            if (_i6 >= times.length) {
                 break;
             }
-            var _x9 = _j4 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y9 = (max - this.state.ema30[_i7]) / (max - min) * mainView.h + mainView.y;
-            _x9 = toInt(_x9);
-            _y9 = toInt(_y9);
+            var _x8 = _j4 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y8 = (max - this.state.ema30[_i6]) / (max - min) * mainView.h + mainView.y;
+            _x8 = toInt(_x8);
+            _y8 = toInt(_y8);
             if (_j4 == 0) {
-                ctx.moveTo(_x9, _y9);
+                ctx.moveTo(_x8, _y8);
             }
-            ctx.lineTo(_x9, _y9);
+            ctx.lineTo(_x8, _y8);
         }
         ctx.stroke();
 
         // ema7
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i8 = startIndex, _j5 = 0; _j5 < verticalRectNumber; _i8++, _j5++) {
-            if (_i8 >= times.length) {
+        for (var _i7 = startIndex, _j5 = 0; _j5 < verticalRectNumber; _i7++, _j5++) {
+            if (_i7 >= times.length) {
                 break;
             }
-            var _x10 = _j5 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y10 = (max - this.state.ema7[_i8]) / (max - min) * mainView.h + mainView.y;
-            _x10 = toInt(_x10);
-            _y10 = toInt(_y10);
+            var _x9 = _j5 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y9 = (max - this.state.ema7[_i7]) / (max - min) * mainView.h + mainView.y;
+            _x9 = toInt(_x9);
+            _y9 = toInt(_y9);
             if (_j5 == 0) {
-                ctx.moveTo(_x10, _y10);
+                ctx.moveTo(_x9, _y9);
             }
-            ctx.lineTo(_x10, _y10);
+            ctx.lineTo(_x9, _y9);
         }
         ctx.stroke();
     } else if (this.option.mainCsi === 'boll') {
         // UP
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma30Color;
-        for (var _i9 = startIndex, _j6 = 0; _j6 < verticalRectNumber; _i9++, _j6++) {
-            if (_i9 >= times.length) {
+        for (var _i8 = startIndex, _j6 = 0; _j6 < verticalRectNumber; _i8++, _j6++) {
+            if (_i8 >= times.length) {
                 break;
             }
-            var _x11 = _j6 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y11 = (max - this.state.up[_i9]) / (max - min) * mainView.h + mainView.y;
-            _x11 = toInt(_x11);
-            _y11 = toInt(_y11);
+            var _x10 = _j6 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y10 = (max - this.state.up[_i8]) / (max - min) * mainView.h + mainView.y;
+            _x10 = toInt(_x10);
+            _y10 = toInt(_y10);
             if (_j6 == 0) {
-                ctx.moveTo(_x11, _y11);
+                ctx.moveTo(_x10, _y10);
             }
-            ctx.lineTo(_x11, _y11);
+            ctx.lineTo(_x10, _y10);
         }
         ctx.stroke();
 
         // MB
         ctx.beginPath();
         ctx.strokeStyle = this.colors.ma7Color;
-        for (var _i10 = startIndex, _j7 = 0; _j7 < verticalRectNumber; _i10++, _j7++) {
-            if (_i10 >= times.length) {
+        for (var _i9 = startIndex, _j7 = 0; _j7 < verticalRectNumber; _i9++, _j7++) {
+            if (_i9 >= times.length) {
                 break;
             }
-            var _x12 = _j7 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y12 = (max - this.state.mb[_i10]) / (max - min) * mainView.h + mainView.y;
-            _x12 = toInt(_x12);
-            _y12 = toInt(_y12);
+            var _x11 = _j7 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y11 = (max - this.state.mb[_i9]) / (max - min) * mainView.h + mainView.y;
+            _x11 = toInt(_x11);
+            _y11 = toInt(_y11);
             if (_j7 == 0) {
-                ctx.moveTo(_x12, _y12);
+                ctx.moveTo(_x11, _y11);
             }
-            ctx.lineTo(_x12, _y12);
+            ctx.lineTo(_x11, _y11);
         }
         ctx.stroke();
 
         // DN
         ctx.beginPath();
         ctx.strokeStyle = this.colors.macdColor;
-        for (var _i11 = startIndex, _j8 = 0; _j8 < verticalRectNumber; _i11++, _j8++) {
-            if (_i11 >= times.length) {
+        for (var _i10 = startIndex, _j8 = 0; _j8 < verticalRectNumber; _i10++, _j8++) {
+            if (_i10 >= times.length) {
                 break;
             }
-            var _x13 = _j8 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y13 = (max - this.state.dn[_i11]) / (max - min) * mainView.h + mainView.y;
-            _x13 = toInt(_x13);
-            _y13 = toInt(_y13);
+            var _x12 = _j8 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y12 = (max - this.state.dn[_i10]) / (max - min) * mainView.h + mainView.y;
+            _x12 = toInt(_x12);
+            _y12 = toInt(_y12);
             if (_j8 == 0) {
-                ctx.moveTo(_x13, _y13);
+                ctx.moveTo(_x12, _y12);
             }
-            ctx.lineTo(_x13, _y13);
+            ctx.lineTo(_x12, _y12);
         }
         ctx.stroke();
     } else if (this.option.mainCsi === 'sar') {
         ctx.strokeStyle = this.colors.macdColor;
-        for (var _i12 = startIndex, _j9 = 0; _j9 < verticalRectNumber; _i12++, _j9++) {
-            if (_i12 >= times.length) {
+        for (var _i11 = startIndex, _j9 = 0; _j9 < verticalRectNumber; _i11++, _j9++) {
+            if (_i11 >= times.length) {
                 break;
             }
-            var _x14 = _j9 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y14 = (max - this.state.sar[_i12]) / (max - min) * mainView.h + mainView.y;
-            _x14 = toInt(_x14);
-            _y14 = toInt(_y14);
+            var _x13 = _j9 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y13 = (max - this.state.sar[_i11]) / (max - min) * mainView.h + mainView.y;
+            _x13 = toInt(_x13);
+            _y13 = toInt(_y13);
             ctx.beginPath();
-            ctx.arc(_x14, _y14, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
+            ctx.arc(_x13, _y13, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
             ctx.stroke();
         }
     }
@@ -1876,11 +1858,105 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _slicedToArray2 = __webpack_require__(4);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = drawTimeline;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function toInt(num) {
+    return ~~(0.5 + num);
+}
+var getPeriod = function getPeriod(n) {
+    return function () {
+        for (var _len = arguments.length, arr = Array(_len), _key = 0; _key < _len; _key++) {
+            arr[_key] = arguments[_key];
+        }
+
+        if (Math.floor(n) >= arr.length) {
+            return arr[arr.length - 1];
+        } else {
+            return arr[Math.floor(n)];
+        }
+    };
+};
+function drawTimeline() {
+    var ctx = this.ctx;
+    var times = this.state.times;
+    var timeStr = this.state.timeStr;
+    var mainView = this.mainView;
+    var timeView = this.timeView;
+
+    var _state$range = (0, _slicedToArray3.default)(this.state.range, 2),
+        startIndex = _state$range[0],
+        endIndex = _state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+    var period = this.option.period;
+    // 时间轴
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var p = void 0;
+    var n = verticalRectNumber / this.maxVerticalRectNumber * 5;
+    if (period === 60) {
+        p = getPeriod(n)(600, 1200, 1800, 2400, 3000);
+    } else if (period === 60 * 3) {
+        p = getPeriod(n)(600 * 3, 1200 * 3, 1800 * 3, 2400 * 3, 3000 * 3);
+    } else if (period === 60 * 5) {
+        p = getPeriod(n)(600 * 5, 1200 * 5, 1800 * 5, 2400 * 5, 3000 * 5);
+    } else if (period === 60 * 15) {
+        p = getPeriod(n)(600 * 15, 1200 * 15, 1800 * 15, 2400 * 15, 3000 * 15, 3600 * 15);
+    } else if (period === 60 * 30) {
+        p = getPeriod(n)(600 * 30, 1200 * 30, 1800 * 30, 2400 * 30, 3000 * 30, 3600 * 30);
+    } else if (period === 60 * 60) {
+        p = getPeriod(n)(600 * 60, 1200 * 60, 1800 * 60, 2400 * 60, 3000 * 60, 3600 * 60);
+    } else if (period === 60 * 60 * 12) {
+        p = getPeriod(n)(600 * 60 * 12, 1200 * 60 * 12, 1800 * 60 * 12, 2400 * 60 * 12, 3000 * 60 * 12, 3600 * 60 * 12);
+    } else if (period === 60 * 60 * 24) {
+        p = getPeriod(n)(600 * 60 * 24, 1200 * 60 * 24, 1800 * 60 * 24, 2400 * 60 * 24, 3000 * 60 * 24, 3600 * 60 * 24);
+    } else if (period === 60 * 60 * 24 * 7) {
+        p = getPeriod(n)(600 * 60 * 24 * 7, 1200 * 60 * 24 * 7, 1800 * 60 * 24 * 7, 2400 * 60 * 24 * 7, 3000 * 60 * 24 * 7, 3600 * 60 * 24 * 7);
+    } else if (period === 60 * 60 * 24 * 30) {
+        p = false;
+    }
+    var timeFilterParams = [];
+    for (var i = startIndex; i < endIndex; i++) {
+        if (i >= times.length) {
+            break;
+        }
+        if (times[i] % p === 0) {
+            var x = (i - startIndex) / verticalRectNumber * mainView.w + mainView.x;
+            var y = timeView.y + timeView.h * 0.5;
+            x = toInt(x);
+            y = toInt(y);
+            timeFilterParams.push({ x: x, y: y, time: times[i] });
+            ctx.beginPath();
+            ctx.moveTo(x, this.height - 2);
+            ctx.lineTo(x, this.height - 8);
+            ctx.stroke();
+        }
+    }
+    this.option.timeFilter(ctx, timeFilterParams);
+}
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _extends2 = __webpack_require__(21);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _slicedToArray2 = __webpack_require__(6);
+var _slicedToArray2 = __webpack_require__(4);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -2058,7 +2134,7 @@ function drawHairLine() {
     overCtx.stroke();
 
     // x轴坐标
-    var currentTime = this.state.times[startIndex + currentIndex];
+    var currentTime = this.option.overTimeFilter(this.state.times[startIndex + currentIndex]);
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'middle';
     overCtx.fillStyle = this.colors.timeBackground;
@@ -2066,7 +2142,7 @@ function drawHairLine() {
     overCtx.strokeStyle = this.colors.textFrameColor;
     overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
     overCtx.fillStyle = this.colors.textColor;
-    overCtx.fillText(this.option.overTimeFilter(currentTime), x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
+    overCtx.fillText(currentTime, x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
 
     // 画y轴坐标
 
@@ -2152,7 +2228,7 @@ function drawHairLine() {
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2166,7 +2242,7 @@ var _extends2 = __webpack_require__(21);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _slicedToArray2 = __webpack_require__(6);
+var _slicedToArray2 = __webpack_require__(4);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -2229,7 +2305,7 @@ function scaleRange(n) {
 }
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2239,7 +2315,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(51);
+var _keys = __webpack_require__(52);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -2371,7 +2447,7 @@ function setStyle(key, ctx) {
 }
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2387,7 +2463,6 @@ function setData() {
     var maxLength = -1;
     var data = this.option.data;
     var times = [];
-    var timeStr = [];
     var start = [];
     var hi = [];
     var lo = [];
@@ -2395,7 +2470,6 @@ function setData() {
     var volume = [];
     data.forEach(function (d) {
         times.push(d[0]);
-        timeStr.push(_this.option.timeFilter(d[0]));
         start.push(d[1]);
         hi.push(d[2]);
         lo.push(d[3]);
@@ -2405,7 +2479,6 @@ function setData() {
     });
     this.state = {
         times: times,
-        timeStr: timeStr,
         start: start,
         hi: hi,
         lo: lo,
@@ -2631,7 +2704,7 @@ function setData() {
 }
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2791,7 +2864,7 @@ function init() {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2803,11 +2876,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.Depth = undefined;
 exports.KLine = KLine;
 
-var _setOption = __webpack_require__(45);
+var _setOption = __webpack_require__(46);
 
 var _setOption2 = _interopRequireDefault(_setOption);
 
-var _setData = __webpack_require__(44);
+var _setData = __webpack_require__(45);
 
 var _setData2 = _interopRequireDefault(_setData);
 
@@ -2823,15 +2896,19 @@ var _drawAid = __webpack_require__(39);
 
 var _drawAid2 = _interopRequireDefault(_drawAid);
 
-var _operation = __webpack_require__(41);
+var _drawTimeline = __webpack_require__(41);
+
+var _drawTimeline2 = _interopRequireDefault(_drawTimeline);
+
+var _operation = __webpack_require__(42);
 
 var _operation2 = _interopRequireDefault(_operation);
 
-var _select = __webpack_require__(43);
+var _select = __webpack_require__(44);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _range = __webpack_require__(42);
+var _range = __webpack_require__(43);
 
 var _computAxis = __webpack_require__(37);
 
@@ -2869,6 +2946,7 @@ KLine.prototype = {
     drawMain: _drawMain2.default,
     drawAid: _drawAid2.default,
     drawHairLine: _operation.drawHairLine,
+    drawTimeline: _drawTimeline2.default,
     operation: _operation2.default,
     select: _select2.default,
     getMousePos: getMousePos,
@@ -2919,12 +2997,6 @@ _Depth2.default.prototype.setDP = setDP;
 exports.Depth = _Depth2.default;
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(53), __esModule: true };
-
-/***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2952,12 +3024,18 @@ module.exports = { "default": __webpack_require__(57), __esModule: true };
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = { "default": __webpack_require__(58), __esModule: true };
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
 exports.__esModule = true;
 
-var _from = __webpack_require__(47);
+var _from = __webpack_require__(48);
 
 var _from2 = _interopRequireDefault(_from);
 
@@ -2976,20 +3054,12 @@ exports.default = function (arr) {
 };
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(20);
-__webpack_require__(84);
-module.exports = __webpack_require__(1).Array.from;
-
-/***/ }),
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(34);
 __webpack_require__(20);
-module.exports = __webpack_require__(82);
+__webpack_require__(85);
+module.exports = __webpack_require__(1).Array.from;
 
 /***/ }),
 /* 55 */
@@ -3003,18 +3073,26 @@ module.exports = __webpack_require__(83);
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(86);
-module.exports = __webpack_require__(1).Object.assign;
+__webpack_require__(34);
+__webpack_require__(20);
+module.exports = __webpack_require__(84);
 
 /***/ }),
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(87);
-module.exports = __webpack_require__(1).Object.keys;
+module.exports = __webpack_require__(1).Object.assign;
 
 /***/ }),
 /* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(88);
+module.exports = __webpack_require__(1).Object.keys;
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -3023,20 +3101,20 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = function(){ /* empty */ };
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(19)
   , toLength  = __webpack_require__(31)
-  , toIndex   = __webpack_require__(80);
+  , toIndex   = __webpack_require__(81);
 module.exports = function(IS_INCLUDES){
   return function($this, el, fromIndex){
     var O      = toIObject($this)
@@ -3055,7 +3133,7 @@ module.exports = function(IS_INCLUDES){
 };
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3069,13 +3147,13 @@ module.exports = function(object, index, value){
 };
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(2).document && document.documentElement;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = !__webpack_require__(7) && !__webpack_require__(9)(function(){
@@ -3083,7 +3161,7 @@ module.exports = !__webpack_require__(7) && !__webpack_require__(9)(function(){
 });
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
@@ -3096,11 +3174,11 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
-var anObject = __webpack_require__(4);
+var anObject = __webpack_require__(5);
 module.exports = function(iterator, fn, value, entries){
   try {
     return entries ? fn(anObject(value)[0], value[1]) : fn(value);
@@ -3113,18 +3191,18 @@ module.exports = function(iterator, fn, value, entries){
 };
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var create         = __webpack_require__(71)
+var create         = __webpack_require__(72)
   , descriptor     = __webpack_require__(16)
   , setToStringTag = __webpack_require__(29)
   , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(5)(IteratorPrototype, __webpack_require__(0)('iterator'), function(){ return this; });
+__webpack_require__(6)(IteratorPrototype, __webpack_require__(0)('iterator'), function(){ return this; });
 
 module.exports = function(Constructor, NAME, next){
   Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -3132,7 +3210,7 @@ module.exports = function(Constructor, NAME, next){
 };
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ITERATOR     = __webpack_require__(0)('iterator')
@@ -3158,7 +3236,7 @@ module.exports = function(exec, skipClosing){
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = function(done, value){
@@ -3166,21 +3244,21 @@ module.exports = function(done, value){
 };
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys  = __webpack_require__(15)
-  , gOPS     = __webpack_require__(73)
-  , pIE      = __webpack_require__(76)
+  , gOPS     = __webpack_require__(74)
+  , pIE      = __webpack_require__(77)
   , toObject = __webpack_require__(12)
   , IObject  = __webpack_require__(27)
   , $assign  = Object.assign;
@@ -3211,12 +3289,12 @@ module.exports = !$assign || __webpack_require__(9)(function(){
 } : $assign;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject    = __webpack_require__(4)
-  , dPs         = __webpack_require__(72)
+var anObject    = __webpack_require__(5)
+  , dPs         = __webpack_require__(73)
   , enumBugKeys = __webpack_require__(26)
   , IE_PROTO    = __webpack_require__(17)('IE_PROTO')
   , Empty       = function(){ /* empty */ }
@@ -3231,7 +3309,7 @@ var createDict = function(){
     , gt     = '>'
     , iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(62).appendChild(iframe);
+  __webpack_require__(63).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -3258,11 +3336,11 @@ module.exports = Object.create || function create(O, Properties){
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP       = __webpack_require__(11)
-  , anObject = __webpack_require__(4)
+  , anObject = __webpack_require__(5)
   , getKeys  = __webpack_require__(15);
 
 module.exports = __webpack_require__(7) ? Object.defineProperties : function defineProperties(O, Properties){
@@ -3276,13 +3354,13 @@ module.exports = __webpack_require__(7) ? Object.defineProperties : function def
 };
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -3300,12 +3378,12 @@ module.exports = Object.getPrototypeOf || function(O){
 };
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var has          = __webpack_require__(10)
   , toIObject    = __webpack_require__(19)
-  , arrayIndexOf = __webpack_require__(60)(false)
+  , arrayIndexOf = __webpack_require__(61)(false)
   , IE_PROTO     = __webpack_require__(17)('IE_PROTO');
 
 module.exports = function(object, names){
@@ -3322,13 +3400,13 @@ module.exports = function(object, names){
 };
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
@@ -3343,13 +3421,13 @@ module.exports = function(KEY, exec){
 };
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(6);
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(18)
@@ -3371,7 +3449,7 @@ module.exports = function(TO_STRING){
 };
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(18)
@@ -3383,7 +3461,7 @@ module.exports = function(index, length){
 };
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -3400,10 +3478,10 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(4)
+var anObject = __webpack_require__(5)
   , get      = __webpack_require__(33);
 module.exports = __webpack_require__(1).getIterator = function(it){
   var iterFn = get(it);
@@ -3412,7 +3490,7 @@ module.exports = __webpack_require__(1).getIterator = function(it){
 };
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var classof   = __webpack_require__(22)
@@ -3426,7 +3504,7 @@ module.exports = __webpack_require__(1).isIterable = function(it){
 };
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3434,13 +3512,13 @@ module.exports = __webpack_require__(1).isIterable = function(it){
 var ctx            = __webpack_require__(24)
   , $export        = __webpack_require__(8)
   , toObject       = __webpack_require__(12)
-  , call           = __webpack_require__(65)
-  , isArrayIter    = __webpack_require__(64)
+  , call           = __webpack_require__(66)
+  , isArrayIter    = __webpack_require__(65)
   , toLength       = __webpack_require__(31)
-  , createProperty = __webpack_require__(61)
+  , createProperty = __webpack_require__(62)
   , getIterFn      = __webpack_require__(33);
 
-$export($export.S + $export.F * !__webpack_require__(67)(function(iter){ Array.from(iter); }), 'Array', {
+$export($export.S + $export.F * !__webpack_require__(68)(function(iter){ Array.from(iter); }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
     var O       = toObject(arrayLike)
@@ -3470,13 +3548,13 @@ $export($export.S + $export.F * !__webpack_require__(67)(function(iter){ Array.f
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(59)
-  , step             = __webpack_require__(68)
+var addToUnscopables = __webpack_require__(60)
+  , step             = __webpack_require__(69)
   , Iterators        = __webpack_require__(3)
   , toIObject        = __webpack_require__(19);
 
@@ -3510,23 +3588,23 @@ addToUnscopables('values');
 addToUnscopables('entries');
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(8);
 
-$export($export.S + $export.F, 'Object', {assign: __webpack_require__(70)});
+$export($export.S + $export.F, 'Object', {assign: __webpack_require__(71)});
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
 var toObject = __webpack_require__(12)
   , $keys    = __webpack_require__(15);
 
-__webpack_require__(77)('keys', function(){
+__webpack_require__(78)('keys', function(){
   return function keys(it){
     return $keys(toObject(it));
   };
