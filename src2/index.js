@@ -27,15 +27,15 @@ overCanvas.height = bodyHeight * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-const period = 60;
-const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=btc38dogecny&step=' + period;
+const period = 60 * 60 * 12;
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + period;
 fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
         data: json,
         period,
-        priceDecimal: 4,
+        priceDecimal: 9,
         timeFilter: function(ctx, d) {
             let cha = (d[d.length - 1].time - d[0].time) / (d.length - 1);
             let data;
@@ -71,32 +71,32 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
         overCanvas.height = bodyHeight * 2;
         chart.setOption({});
     });
-    var socket = window.io('http://45.248.68.30:3000');
-    socket.on('connect', function() {
-        socket.emit('market.subscribe', 'doge:btc38');
-    });
-    socket.on('update:trades', function(d) {
-        // d = JSON.parse(d);
-        for (let data of d) {
-            let newTime = parseFloat(data.date);
-            let newPrice = parseFloat(data.price);
-            if (newTime - json[json.length - 1][0] < period) {
-                let hi = Math.max(json[json.length - 1][2], newPrice);
-                let lo = Math.min(json[json.length - 1][3], newPrice);
-                let close = data.price;
-                json[json.length - 1][2] = hi;
-                json[json.length - 1][3] = lo;
-                json[json.length - 1][4] = newPrice;
-                json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
-            } else {
-                json.push([json[json.length - 1][0] + period, newPrice, newPrice, newPrice, newPrice, data.amount]);
-            }
-        }
-        chart.setOption({ data: json });
-    });
-    setTimeout(function() {
-        chart.setOption({ theme: 'light', data: json });
-    }, 3000);
+    // var socket = window.io('http://45.248.68.30:3000');
+    // socket.on('connect', function() {
+        // socket.emit('market.subscribe', 'doge:btc38');
+    // });
+    // socket.on('update:trades', function(d) {
+        // // d = JSON.parse(d);
+        // for (let data of d) {
+            // let newTime = parseFloat(data.date);
+            // let newPrice = parseFloat(data.price);
+            // if (newTime - json[json.length - 1][0] < period) {
+                // let hi = Math.max(json[json.length - 1][2], newPrice);
+                // let lo = Math.min(json[json.length - 1][3], newPrice);
+                // let close = data.price;
+                // json[json.length - 1][2] = hi;
+                // json[json.length - 1][3] = lo;
+                // json[json.length - 1][4] = newPrice;
+                // json[json.length - 1][5] += parseFloat(data.amount.toFixed(3));
+            // } else {
+                // json.push([json[json.length - 1][0] + period, newPrice, newPrice, newPrice, newPrice, data.amount]);
+            // }
+        // }
+        // chart.setOption({ data: json });
+    // });
+    // setTimeout(function() {
+        // chart.setOption({ theme: 'light', data: json });
+    // }, 3000);
 
     // var ele = document.getElementById('depth');
     // var depth = new Depth(ele, { width: document.body.clientWidth, height: document.body.clientHeight * 0.5 });

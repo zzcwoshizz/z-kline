@@ -1333,7 +1333,7 @@ function drawMacd() {
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var i = 1; i < yAxis.length - 1; i++) {
-        ctx.fillText(this.setDP(yAxis[i]), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        ctx.fillText(this.string(this.setDP(yAxis[i])), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
         ctx.beginPath();
         ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
         ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
@@ -1858,23 +1858,23 @@ function drawMain(yaxis) {
     minY = toInt(minY);
     if (index < verticalRectNumber * 0.5) {
         ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + maxPrice, maxX, maxY);
+        ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
     } else {
         ctx.textAlign = 'right';
-        ctx.fillText(maxPrice + ' → ', maxX, maxY);
+        ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
     }
     if (index1 < verticalRectNumber * 0.5) {
         ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + minPrice, minX, minY);
+        ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
     } else {
         ctx.textAlign = 'right';
-        ctx.fillText(minPrice + ' → ', minX, minY);
+        ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
     }
 
     // 当前价格
     ctx.textAlign = 'left';
     ctx.fillStyle = this.colors.currentTextColor;
-    ctx.fillText(' ← ' + close[close.length - 1], mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
+    ctx.fillText(' ← ' + this.string(close[close.length - 1]), mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
 }
 
 /***/ }),
@@ -2363,7 +2363,7 @@ exports.default = function (data, flag) {
                 if (key === 'time') {
                     text = '时间：' + this.option.overTimeFilter(data[key]);
                 } else {
-                    text = transformKey(key) + '：' + data[key];
+                    text = transformKey(key) + '：' + this.string(data[key]);
                 }
                 if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
                     x = 5;
@@ -2374,7 +2374,7 @@ exports.default = function (data, flag) {
                 x += overCtx.measureText(text).width + 40;
             }
         } else {
-            var _text = this.option.overTimeFilter(data.time) + '   \u5F00' + data.start + '   \u9AD8' + data.hi + '   \u4F4E' + data.lo + '   \u6536' + data.close;
+            var _text = this.option.overTimeFilter(data.time) + '   \u5F00' + this.string(data.start) + '   \u9AD8' + this.string(data.hi) + '   \u4F4E' + this.string(data.lo) + '   \u6536' + this.string(data.close);
             overCtx.textAlign = 'center';
             overCtx.textBaseline = 'middle';
             overCtx.fillStyle = this.colors.mobileBar;
@@ -2390,7 +2390,7 @@ exports.default = function (data, flag) {
                 if (/(time|start|hi|lo|end)/g.test(_key)) {
                     continue;
                 }
-                _text = transformKey(_key) + '：' + data[_key];
+                _text = transformKey(_key) + '：' + this.string(data[_key]);
                 if (overCtx.measureText(_text).width + _x + 40 > this.mainView.x + this.mainView.w) {
                     _x = 5;
                     _y += 40;
@@ -2405,7 +2405,7 @@ exports.default = function (data, flag) {
         var _y2 = this.aidView.y;
         for (var _i2 = 0; _i2 < (0, _keys2.default)(data).length; _i2++) {
             var _key2 = (0, _keys2.default)(data)[_i2];
-            var _text2 = transformKey(_key2) + '：' + data[_key2];
+            var _text2 = transformKey(_key2) + '：' + this.string(data[_key2]);
             if (overCtx.measureText(_text2).width + _x2 + 40 > this.mainView.x + this.mainView.w) {
                 _x2 = 5;
                 _y2 += 40;
@@ -2729,6 +2729,7 @@ function setData() {
         }
         this.state.sar.push(sar);
     }
+    maxLength = maxLength > 20 ? 20 : maxLength;
 
     return Math.ceil(this.ctx.measureText(Math.pow(10, maxLength)).width);
 }
@@ -2797,8 +2798,8 @@ function setOption() {
         this.option = {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
-            mainCsi: option.mainCsi || 'ma',
-            aidCsi: option.aidCsi || 'volume',
+            mainCsi: option.mainCsi || 'boll',
+            aidCsi: option.aidCsi || 'macd',
             timeFilter: option.timeFilter || function (t) {
                 return new Date(t * 1000).toString('M/d/yyyy');
             },
@@ -2988,6 +2989,13 @@ KLine.prototype = {
     computAxis: _computAxis2.default,
     forceUpdate: function forceUpdate(canvasCanDraw, overCanvasCanDraw) {
         this.force = [canvasCanDraw || this.force[0], overCanvasCanDraw || this.force[1]];
+    },
+    string: function string(num) {
+        if (Math.abs(num) > 0.000001) {
+            return num;
+        }
+        var length = num.toFixed(20).match(/([1-9]*)(0*)$/)[2].length;
+        return num.toFixed(20 - length);
     }
 };
 
@@ -3002,24 +3010,11 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    if (Math.abs(num) > 1) {
-        return Number(num.toFixed(3));
-    } else if (Math.abs(num) > 0.1) {
-        return Number(num.toFixed(4));
-    } else if (Math.abs(num) > 0.01) {
-        return Number(num.toFixed(5));
-    } else if (Math.abs(num) > 0.001) {
-        return Number(num.toFixed(6));
-    } else if (Math.abs(num) > 0.0001) {
-        return Number(num.toFixed(7));
-    } else if (Math.abs(num) > 0.00001) {
-        return Number(num.toFixed(8));
-    } else if (Math.abs(num) > 0.000001) {
-        return Number(num.toFixed(9));
-    } else if (Math.abs(num) > 0.0000001) {
-        return Number(num.toFixed(10));
+    var n = /(\d*).(0*)(\d*)$/.exec(num.toFixed(20))[2].length;
+    if (n > 17) {
+        return parseFloat(num.toFixed(20));
     } else {
-        return Number(num.toFixed(11));
+        return parseFloat(num.toFixed(n + 3));
     }
 }
 

@@ -69,7 +69,7 @@ export default function(data, flag) {
                 if (key === 'time') {
                     text = '时间：' + this.option.overTimeFilter(data[key]);
                 } else {
-                    text = transformKey(key) + '：' + data[key];
+                    text = transformKey(key) + '：' + this.string(data[key]);
                 }
                 if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
                     x = 5;
@@ -80,7 +80,7 @@ export default function(data, flag) {
                 x += overCtx.measureText(text).width + 40;
             }
         } else {
-            let text = `${this.option.overTimeFilter(data.time)}   开${data.start}   高${data.hi}   低${data.lo}   收${data.close}`;
+            let text = `${this.option.overTimeFilter(data.time)}   开${this.string(data.start)}   高${this.string(data.hi)}   低${this.string(data.lo)}   收${this.string(data.close)}`;
             overCtx.textAlign = 'center';
             overCtx.textBaseline = 'middle';
             overCtx.fillStyle = this.colors.mobileBar;
@@ -96,7 +96,7 @@ export default function(data, flag) {
                 if (/(time|start|hi|lo|end)/g.test(key)) {
                     continue;
                 }
-                text = transformKey(key) + '：' + data[key];
+                text = transformKey(key) + '：' + this.string(data[key]);
                 if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
                     x = 5;
                     y += 40;
@@ -111,7 +111,7 @@ export default function(data, flag) {
         let y = this.aidView.y;
         for (let i = 0; i < Object.keys(data).length; i++) {
             let key = Object.keys(data)[i];
-            let text = transformKey(key) + '：' + data[key];
+            let text = transformKey(key) + '：' + this.string(data[key]);
             if (overCtx.measureText(text).width + x + 40 > this.mainView.x + this.mainView.w) {
                 x = 5;
                 y += 40;

@@ -278,21 +278,21 @@ export default function drawMain(yaxis) {
     minY = toInt(minY);
     if (index < verticalRectNumber * 0.5) {
         ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + maxPrice, maxX, maxY);
+        ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
     } else {
         ctx.textAlign = 'right';
-        ctx.fillText(maxPrice + ' → ', maxX, maxY);
+        ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
     }
     if (index1 < verticalRectNumber * 0.5) {
         ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + minPrice, minX, minY);
+        ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
     } else {
         ctx.textAlign = 'right';
-        ctx.fillText(minPrice + ' → ', minX, minY);
+        ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
     }
 
     // 当前价格
     ctx.textAlign = 'left';
     ctx.fillStyle = this.colors.currentTextColor;
-    ctx.fillText(' ← ' + close[close.length - 1], mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
+    ctx.fillText(' ← ' + this.string(close[close.length - 1]), mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
 }

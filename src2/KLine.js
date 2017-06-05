@@ -46,6 +46,13 @@ KLine.prototype = {
     forceUpdate: function(canvasCanDraw, overCanvasCanDraw) {
         this.force = [canvasCanDraw || this.force[0], overCanvasCanDraw || this.force[1]];
     },
+    string: function(num) {
+        if (Math.abs(num) > 0.000001) {
+            return num;
+        }
+        let length = num.toFixed(20).match(/([1-9]*)(0*)$/)[2].length;
+        return num.toFixed(20 - length);
+    },
 };
 
 // 获取鼠标在canvas上的坐标点
@@ -59,24 +66,11 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    if (Math.abs(num) > 1) {
-        return Number(num.toFixed(3));
-    } else if (Math.abs(num) > 0.1) {
-        return Number(num.toFixed(4));
-    } else if (Math.abs(num) > 0.01) {
-        return Number(num.toFixed(5));
-    } else if (Math.abs(num) > 0.001) {
-        return Number(num.toFixed(6));
-    } else if (Math.abs(num) > 0.0001) {
-        return Number(num.toFixed(7));
-    } else if (Math.abs(num) > 0.00001) {
-        return Number(num.toFixed(8));
-    } else if (Math.abs(num) > 0.000001) {
-        return Number(num.toFixed(9));
-    } else if (Math.abs(num) > 0.0000001) {
-        return Number(num.toFixed(10));
+    let n = /(\d*).(0*)(\d*)$/.exec(num.toFixed(20))[2].length;
+    if (n > 17) {
+        return parseFloat(num.toFixed(20));
     } else {
-        return Number(num.toFixed(11));
+        return parseFloat(num.toFixed(n + 3));
     }
 }
 
