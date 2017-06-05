@@ -65,7 +65,10 @@ function getMousePos(e) {
 }
 
 // 控制小数位数
-function setDP(num) {
+function setDP(num, priceDecimal) {
+    if (priceDecimal) {
+        return parseFloat(num.toFixed(priceDecimal));
+    }
     let n = /(\d*).(0*)(\d*)$/.exec(num.toFixed(20))[2].length;
     if (n > 17) {
         return parseFloat(num.toFixed(20));

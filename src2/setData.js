@@ -38,7 +38,7 @@ export default function setData() {
                 for (let index = i; index > i - 30; index--) {
                     sum += close[index];
                 }
-                return this.setDP(sum / 30);
+                return this.setDP(sum / 30, this.option.priceDecimal + 2);
             }
         }),
         ma20: close.map((el, i) => {
@@ -49,7 +49,7 @@ export default function setData() {
                 for (let index = i; index > i - 20; index--) {
                     sum += close[index];
                 }
-                return this.setDP(sum / 20);
+                return this.setDP(sum / 20, this.option.priceDecimal + 2);
             }
         }),
         ma7: close.map((el, i) => {
@@ -60,7 +60,7 @@ export default function setData() {
                 for (let index = i; index > i - 7; index--) {
                     sum += close[index];
                 }
-                return this.setDP(sum / 7);
+                return this.setDP(sum / 7, this.option.priceDecimal + 2);
             }
         }),
         volumeMa7: volume.map((el, i) => {
@@ -94,7 +94,7 @@ export default function setData() {
             this.state.ema30[i] = el;
         } else {
             let val = 2 / 31 * (this.state.close[i] - this.state.ema30[i - 1]) + this.state.ema30[i - 1];
-            this.state.ema30[i] = this.setDP(val);
+            this.state.ema30[i] = this.setDP(val, this.option.priceDecimal + 2);
         }
     });
     this.state.ema7 = [];
@@ -103,7 +103,7 @@ export default function setData() {
             this.state.ema7[i] = el;
         } else {
             let val = 2 / 8 * (this.state.close[i] - this.state.ema7[i - 1]) + this.state.ema7[i - 1];
-            this.state.ema7[i] = this.setDP(val);
+            this.state.ema7[i] = this.setDP(val, this.option.priceDecimal + 2);
         }
     });
     this.state.ema15 = [];
@@ -112,7 +112,7 @@ export default function setData() {
             this.state.ema15[i] = el;
         } else {
             let val = 2 / 16 * (this.state.close[i] - this.state.ema15[i - 1]) + this.state.ema15[i - 1];
-            this.state.ema15[i] = this.setDP(val);
+            this.state.ema15[i] = this.setDP(val, this.option.priceDecimal + 2);
         }
     });
     this.state.ema26 = [];
@@ -121,7 +121,7 @@ export default function setData() {
             this.state.ema26[i] = el;
         } else {
             let val = 2 / 27 * (this.state.close[i] - this.state.ema26[i - 1]) + this.state.ema26[i - 1];
-            this.state.ema26[i] = this.setDP(val);
+            this.state.ema26[i] = this.setDP(val, this.option.priceDecimal + 2);
         }
     });
     this.state.ema12 = [];
@@ -130,7 +130,7 @@ export default function setData() {
             this.state.ema12[i] = el;
         } else {
             let val = 2 / 13 * (this.state.close[i] - this.state.ema12[i - 1]) + this.state.ema12[i - 1];
-            this.state.ema12[i] = this.setDP(val);
+            this.state.ema12[i] = this.setDP(val, this.option.priceDecimal + 2);
         }
     });
     this.state.dif = this.state.ema12.map((el, i) => {
@@ -169,9 +169,9 @@ export default function setData() {
             sum += (this.state.close[index] - this.state.ma20[index]) ** 2;
         }
         let md = Math.sqrt(sum / (i < 20 ? i : 20));
-        this.state.mb.push(this.setDP(this.state.ma20[i - 1]));
-        this.state.up.push(this.setDP(this.state.ma20[i - 1] + 2 * md));
-        this.state.dn.push(this.setDP(this.state.ma20[i - 1] - 2 * md));
+        this.state.mb.push(this.setDP(this.state.ma20[i - 1], this.option.priceDecimal + 2));
+        this.state.up.push(this.setDP(this.state.ma20[i - 1] + 2 * md, this.option.priceDecimal + 2));
+        this.state.dn.push(this.setDP(this.state.ma20[i - 1] - 2 * md, this.option.priceDecimal + 2));
     });
 
     // 计算kdj

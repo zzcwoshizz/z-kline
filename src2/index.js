@@ -27,8 +27,8 @@ overCanvas.height = bodyHeight * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-const period = 60 * 60 * 12;
-const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + period;
+const period = 60;
+const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=bittrexdogebtcbtc&step=' + period;
 fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
     return res.json();
 }).then(json => {
