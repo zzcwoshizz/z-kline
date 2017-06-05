@@ -2522,7 +2522,7 @@ function setData() {
                 for (var index = i; index > i - 30; index--) {
                     sum += close[index];
                 }
-                return _this.setDP(sum / 30);
+                return _this.setDP(sum / 30, _this.option.priceDecimal + 2);
             }
         }),
         ma20: close.map(function (el, i) {
@@ -2533,7 +2533,7 @@ function setData() {
                 for (var index = i; index > i - 20; index--) {
                     sum += close[index];
                 }
-                return _this.setDP(sum / 20);
+                return _this.setDP(sum / 20, _this.option.priceDecimal + 2);
             }
         }),
         ma7: close.map(function (el, i) {
@@ -2544,7 +2544,7 @@ function setData() {
                 for (var index = i; index > i - 7; index--) {
                     sum += close[index];
                 }
-                return _this.setDP(sum / 7);
+                return _this.setDP(sum / 7, _this.option.priceDecimal + 2);
             }
         }),
         volumeMa7: volume.map(function (el, i) {
@@ -2578,7 +2578,7 @@ function setData() {
             _this.state.ema30[i] = el;
         } else {
             var val = 2 / 31 * (_this.state.close[i] - _this.state.ema30[i - 1]) + _this.state.ema30[i - 1];
-            _this.state.ema30[i] = _this.setDP(val);
+            _this.state.ema30[i] = _this.setDP(val, _this.option.priceDecimal + 2);
         }
     });
     this.state.ema7 = [];
@@ -2587,7 +2587,7 @@ function setData() {
             _this.state.ema7[i] = el;
         } else {
             var val = 2 / 8 * (_this.state.close[i] - _this.state.ema7[i - 1]) + _this.state.ema7[i - 1];
-            _this.state.ema7[i] = _this.setDP(val);
+            _this.state.ema7[i] = _this.setDP(val, _this.option.priceDecimal + 2);
         }
     });
     this.state.ema15 = [];
@@ -2596,7 +2596,7 @@ function setData() {
             _this.state.ema15[i] = el;
         } else {
             var val = 2 / 16 * (_this.state.close[i] - _this.state.ema15[i - 1]) + _this.state.ema15[i - 1];
-            _this.state.ema15[i] = _this.setDP(val);
+            _this.state.ema15[i] = _this.setDP(val, _this.option.priceDecimal + 2);
         }
     });
     this.state.ema26 = [];
@@ -2605,7 +2605,7 @@ function setData() {
             _this.state.ema26[i] = el;
         } else {
             var val = 2 / 27 * (_this.state.close[i] - _this.state.ema26[i - 1]) + _this.state.ema26[i - 1];
-            _this.state.ema26[i] = _this.setDP(val);
+            _this.state.ema26[i] = _this.setDP(val, _this.option.priceDecimal + 2);
         }
     });
     this.state.ema12 = [];
@@ -2614,7 +2614,7 @@ function setData() {
             _this.state.ema12[i] = el;
         } else {
             var val = 2 / 13 * (_this.state.close[i] - _this.state.ema12[i - 1]) + _this.state.ema12[i - 1];
-            _this.state.ema12[i] = _this.setDP(val);
+            _this.state.ema12[i] = _this.setDP(val, _this.option.priceDecimal + 2);
         }
     });
     this.state.dif = this.state.ema12.map(function (el, i) {
@@ -2653,9 +2653,9 @@ function setData() {
             sum += Math.pow(_this.state.close[index] - _this.state.ma20[index], 2);
         }
         var md = Math.sqrt(sum / (i < 20 ? i : 20));
-        _this.state.mb.push(_this.setDP(_this.state.ma20[i - 1]));
-        _this.state.up.push(_this.setDP(_this.state.ma20[i - 1] + 2 * md));
-        _this.state.dn.push(_this.setDP(_this.state.ma20[i - 1] - 2 * md));
+        _this.state.mb.push(_this.setDP(_this.state.ma20[i - 1], _this.option.priceDecimal + 2));
+        _this.state.up.push(_this.setDP(_this.state.ma20[i - 1] + 2 * md, _this.option.priceDecimal + 2));
+        _this.state.dn.push(_this.setDP(_this.state.ma20[i - 1] - 2 * md, _this.option.priceDecimal + 2));
     });
 
     // 计算kdj
@@ -3009,7 +3009,10 @@ function getMousePos(e) {
 }
 
 // 控制小数位数
-function setDP(num) {
+function setDP(num, priceDecimal) {
+    if (priceDecimal) {
+        return parseFloat(num.toFixed(priceDecimal));
+    }
     var n = /(\d*).(0*)(\d*)$/.exec(num.toFixed(20))[2].length;
     if (n > 17) {
         return parseFloat(num.toFixed(20));
