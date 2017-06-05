@@ -59,7 +59,25 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    return Math.abs(num) > 0.1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+    if (Math.abs(num) > 1) {
+        return Number(num.toFixed(3));
+    } else if (Math.abs(num) > 0.1) {
+        return Number(num.toFixed(4));
+    } else if (Math.abs(num) > 0.01) {
+        return Number(num.toFixed(5));
+    } else if (Math.abs(num) > 0.001) {
+        return Number(num.toFixed(6));
+    } else if (Math.abs(num) > 0.0001) {
+        return Number(num.toFixed(7));
+    } else if (Math.abs(num) > 0.00001) {
+        return Number(num.toFixed(8));
+    } else if (Math.abs(num) > 0.000001) {
+        return Number(num.toFixed(9));
+    } else if (Math.abs(num) > 0.0000001) {
+        return Number(num.toFixed(10));
+    } else {
+        return Number(num.toFixed(11));
+    }
 }
 
 // 判断鼠标是否在${this.views}中

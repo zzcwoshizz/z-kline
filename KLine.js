@@ -1032,10 +1032,20 @@ function computAxis() {
     if (cha >= 1) {
         n = cha.toFixed(0).length;
     } else {
-        var str = cha.toString().split('.')[1];
-        for (var _i = 0; _i < str.length; _i++) {
-            if (str.charAt(_i) == 0) {
-                n--;
+        if (cha < 0.000001) {
+            var str = (cha * 100000).toString().split('.')[1] || '';
+            for (var _i = 0; _i < str.length; _i++) {
+                if (str.charAt(_i) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            var _str = cha.toString().split('.')[1] || '';
+            for (var _i2 = 0; _i2 < _str.length; _i2++) {
+                if (_str.charAt(_i2) == 0) {
+                    n--;
+                }
             }
         }
     }
@@ -1180,17 +1190,27 @@ function drawVolume() {
     if (maxVolume >= 1) {
         n = maxVolume.toFixed(0).length;
     } else {
-        var str = maxVolume.toString().split('.')[1];
-        for (var i = 0; i < str.length; i++) {
-            if (str.charAt[1] == 0) {
-                n--;
+        if (maxVolume < 0.000001) {
+            var str = (maxVolume * 100000).toString().split('.')[1];
+            for (var i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            var _str = maxVolume.toString().split('.')[1];
+            for (var _i = 0; _i < _str.length; _i++) {
+                if (_str.charAt(_i) == 0) {
+                    n--;
+                }
             }
         }
     }
     var interval = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     var yAxis = [];
-    for (var _i = interval; _i < maxVolume; _i += interval) {
-        yAxis.unshift(_i);
+    for (var _i2 = interval; _i2 < maxVolume; _i2 += interval) {
+        yAxis.unshift(_i2);
     }
 
     ctx.textAlign = 'center';
@@ -1199,20 +1219,20 @@ function drawVolume() {
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    for (var _i2 = 0; _i2 < yAxis.length; _i2++) {
-        ctx.fillText(yAxis[_i2], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
+    for (var _i3 = 0; _i3 < yAxis.length; _i3++) {
+        ctx.fillText(yAxis[_i3], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
         ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[_i2] / maxVolume * aidYaxisView.h);
+        ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
         ctx.stroke();
     }
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
-    for (var _i3 = 0; _i3 < yAxis.length; _i3++) {
+    for (var _i4 = 0; _i4 < yAxis.length; _i4++) {
         var x = aidYaxisView.x;
-        var y = aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h;
+        var y = aidYaxisView.y + aidYaxisView.h - yAxis[_i4] / maxVolume * aidYaxisView.h;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + 10, y);
@@ -1220,11 +1240,11 @@ function drawVolume() {
     }
 
     ctx.fillStyle = this.colors.greenColor;
-    for (var _i4 = startIndex, j = 0; _i4 < endIndex; _i4++, j++) {
-        if (_i4 >= this.state.times.length) {
+    for (var _i5 = startIndex, j = 0; _i5 < endIndex; _i5++, j++) {
+        if (_i5 >= this.state.times.length) {
             break;
         }
-        if (this.state.start[_i4] < this.state.close[_i4]) {
+        if (this.state.start[_i5] < this.state.close[_i5]) {
             var _x = (j + 0.1) * aidView.w / verticalRectNumber + aidView.x;
             var w = aidView.w / verticalRectNumber * 0.8;
             var h = -realVolume[j] / maxVolume * aidView.h;
@@ -1234,11 +1254,11 @@ function drawVolume() {
     }
 
     ctx.fillStyle = this.colors.redColor;
-    for (var _i5 = startIndex, _j = 0; _i5 < endIndex; _i5++, _j++) {
-        if (_i5 >= this.state.times.length) {
+    for (var _i6 = startIndex, _j = 0; _i6 < endIndex; _i6++, _j++) {
+        if (_i6 >= this.state.times.length) {
             break;
         }
-        if (this.state.close[_i5] <= this.state.start[_i5]) {
+        if (this.state.close[_i6] <= this.state.start[_i6]) {
             var _x2 = (_j + 0.1) * aidView.w / verticalRectNumber + aidView.x;
             var _w = aidView.w / verticalRectNumber * 0.8;
             var _h = -realVolume[_j] / maxVolume * aidView.h;
@@ -1247,13 +1267,13 @@ function drawVolume() {
         }
     }
     ctx.beginPath();
-    for (var _i6 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i6++, _j2++) {
-        if (_i6 >= this.state.times.length) {
+    for (var _i7 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i7++, _j2++) {
+        if (_i7 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma30Color;
         var _x3 = _j2 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y3 = (maxVolume - this.state.volumeMa30[_i6]) / maxVolume * aidView.h + aidView.y;
+        var _y3 = (maxVolume - this.state.volumeMa30[_i7]) / maxVolume * aidView.h + aidView.y;
         if (_j2 == 0) {
             ctx.moveTo(_x3, _y3);
         }
@@ -1262,13 +1282,13 @@ function drawVolume() {
     ctx.stroke();
 
     ctx.beginPath();
-    for (var _i7 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i7++, _j3++) {
-        if (_i7 >= this.state.times.length) {
+    for (var _i8 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i8++, _j3++) {
+        if (_i8 >= this.state.times.length) {
             break;
         }
         ctx.strokeStyle = this.colors.ma7Color;
         var _x4 = _j3 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y4 = (maxVolume - this.state.volumeMa7[_i7]) / maxVolume * aidView.h + aidView.y;
+        var _y4 = (maxVolume - this.state.volumeMa7[_i8]) / maxVolume * aidView.h + aidView.y;
         if (_j3 == 0) {
             ctx.moveTo(_x4, _y4);
         }
@@ -1324,16 +1344,16 @@ function drawMacd() {
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
-    for (var _i8 = startIndex, j = 0; _i8 < endIndex; _i8++, j++) {
-        if (_i8 >= this.state.times.length) {
+    for (var _i9 = startIndex, j = 0; _i9 < endIndex; _i9++, j++) {
+        if (_i9 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i8] > 0) {
+        if (this.state.macd[_i9] > 0) {
             var y = aidView.y + aidView.h * 0.5;
             var w = aidView.w / verticalRectNumber * 0.8;
             var x = j * aidView.w / verticalRectNumber + aidView.x + w * 0.1;
-            var h = -this.state.macd[_i8] / max * aidView.h * 0.5;
-            if (Math.abs(this.state.macd[_i8]) > Math.abs(this.state.macd[_i8 - 1])) {
+            var h = -this.state.macd[_i9] / max * aidView.h * 0.5;
+            if (Math.abs(this.state.macd[_i9]) > Math.abs(this.state.macd[_i9 - 1])) {
                 ctx.fillRect(x, y, w, h);
             } else {
                 if (w <= this.dpr * 4) {
@@ -1346,16 +1366,16 @@ function drawMacd() {
     }
     ctx.fillStyle = this.colors.redColor;
     ctx.strokeStyle = this.colors.redColor;
-    for (var _i9 = startIndex, _j4 = 0; _i9 < endIndex; _i9++, _j4++) {
-        if (_i9 >= this.state.times.length) {
+    for (var _i10 = startIndex, _j4 = 0; _i10 < endIndex; _i10++, _j4++) {
+        if (_i10 >= this.state.times.length) {
             break;
         }
-        if (this.state.macd[_i9] <= 0) {
+        if (this.state.macd[_i10] <= 0) {
             var _y5 = aidView.y + aidView.h * 0.5;
             var _w2 = aidView.w / verticalRectNumber * 0.8;
             var _x5 = _j4 * aidView.w / verticalRectNumber + aidView.x + _w2 * 0.1;
-            var _h2 = -this.state.macd[_i9] / max * aidView.h * 0.5;
-            if (Math.abs(this.state.macd[_i9]) > Math.abs(this.state.macd[_i9 - 1])) {
+            var _h2 = -this.state.macd[_i10] / max * aidView.h * 0.5;
+            if (Math.abs(this.state.macd[_i10]) > Math.abs(this.state.macd[_i10 - 1])) {
                 ctx.fillRect(_x5, _y5, _w2, _h2);
             } else {
                 if (_w2 <= this.dpr * 4) {
@@ -1370,12 +1390,12 @@ function drawMacd() {
     // dif
     ctx.strokeStyle = this.colors.ma7Color;
     ctx.beginPath();
-    for (var _i10 = startIndex, _j5 = 0; _i10 < endIndex; _i10++, _j5++) {
-        if (_i10 >= this.state.times.length) {
+    for (var _i11 = startIndex, _j5 = 0; _i11 < endIndex; _i11++, _j5++) {
+        if (_i11 >= this.state.times.length) {
             break;
         }
         var _x6 = _j5 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y6 = (max - this.state.dif[_i10]) / (2 * max) * aidView.h + aidView.y;
+        var _y6 = (max - this.state.dif[_i11]) / (2 * max) * aidView.h + aidView.y;
         if (_j5 === 0) {
             ctx.moveTo(_x6, _y6);
             continue;
@@ -1387,12 +1407,12 @@ function drawMacd() {
     // dea
     ctx.strokeStyle = this.colors.ma30Color;
     ctx.beginPath();
-    for (var _i11 = startIndex, _j6 = 0; _i11 < endIndex; _i11++, _j6++) {
-        if (_i11 >= this.state.times.length) {
+    for (var _i12 = startIndex, _j6 = 0; _i12 < endIndex; _i12++, _j6++) {
+        if (_i12 >= this.state.times.length) {
             break;
         }
         var _x7 = _j6 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y7 = (max - this.state.dea[_i11]) / (2 * max) * aidView.h + aidView.y;
+        var _y7 = (max - this.state.dea[_i12]) / (2 * max) * aidView.h + aidView.y;
         if (_j6 === 0) {
             ctx.moveTo(_x7, _y7);
             continue;
@@ -1435,17 +1455,27 @@ function drawKdj() {
     if (cha >= 1) {
         n = cha.toFixed(0).length;
     } else {
-        var str = cha.toString().split('.')[1];
-        for (var i = 0; i < str.length; i++) {
-            if (str.charAt[1] == 0) {
-                n--;
+        if (cha < 0.000001) {
+            var str = (cha * 100000).toString().split('.')[1] || '';
+            for (var i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            var _str2 = cha.toString().split('.')[1] || '';
+            for (var _i13 = 0; _i13 < _str2.length; _i13++) {
+                if (_str2.charAt(_i13) == 0) {
+                    n--;
+                }
             }
         }
     }
     var interval = Math.ceil(cha * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     var yAxis = [];
-    for (var _i12 = 0; _i12 < max; _i12 += interval) {
-        yAxis.unshift(_i12);
+    for (var _i14 = 0; _i14 < max; _i14 += interval) {
+        yAxis.unshift(_i14);
     }
 
     ctx.textAlign = 'center';
@@ -1454,20 +1484,20 @@ function drawKdj() {
     ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    for (var _i13 = 0; _i13 < yAxis.length; _i13++) {
-        ctx.fillText(yAxis[_i13], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
+    for (var _i15 = 0; _i15 < yAxis.length; _i15++) {
+        ctx.fillText(yAxis[_i15], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
         ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[_i13]) / cha * aidYaxisView.h);
+        ctx.moveTo(0, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
+        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
         ctx.stroke();
     }
 
     ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
-    for (var _i14 = 0; _i14 < yAxis.length; _i14++) {
+    for (var _i16 = 0; _i16 < yAxis.length; _i16++) {
         var x = aidYaxisView.x;
-        var y = aidYaxisView.y + (max - yAxis[_i14]) / cha * aidYaxisView.h;
+        var y = aidYaxisView.y + (max - yAxis[_i16]) / cha * aidYaxisView.h;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + 10, y);
@@ -1476,12 +1506,12 @@ function drawKdj() {
 
     ctx.strokeStyle = this.colors.ma7Color;
     ctx.beginPath();
-    for (var _i15 = startIndex, j = 0; _i15 < endIndex; _i15++, j++) {
-        if (_i15 >= this.state.times.length) {
+    for (var _i17 = startIndex, j = 0; _i17 < endIndex; _i17++, j++) {
+        if (_i17 >= this.state.times.length) {
             break;
         }
         var _x8 = j * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y8 = (max - this.state.k[_i15]) / cha * aidView.h + aidView.y;
+        var _y8 = (max - this.state.k[_i17]) / cha * aidView.h + aidView.y;
         if (j == 0) {
             ctx.moveTo(_x8, _y8);
         }
@@ -1491,12 +1521,12 @@ function drawKdj() {
 
     ctx.strokeStyle = this.colors.ma30Color;
     ctx.beginPath();
-    for (var _i16 = startIndex, _j7 = 0; _i16 < endIndex; _i16++, _j7++) {
-        if (_i16 >= this.state.times.length) {
+    for (var _i18 = startIndex, _j7 = 0; _i18 < endIndex; _i18++, _j7++) {
+        if (_i18 >= this.state.times.length) {
             break;
         }
         var _x9 = _j7 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y9 = (max - this.state.d[_i16]) / cha * aidView.h + aidView.y;
+        var _y9 = (max - this.state.d[_i18]) / cha * aidView.h + aidView.y;
         if (_j7 == 0) {
             ctx.moveTo(_x9, _y9);
         }
@@ -1506,12 +1536,12 @@ function drawKdj() {
 
     ctx.strokeStyle = this.colors.macdColor;
     ctx.beginPath();
-    for (var _i17 = startIndex, _j8 = 0; _i17 < endIndex; _i17++, _j8++) {
-        if (_i17 >= this.state.times.length) {
+    for (var _i19 = startIndex, _j8 = 0; _i19 < endIndex; _i19++, _j8++) {
+        if (_i19 >= this.state.times.length) {
             break;
         }
         var _x10 = _j8 * aidView.w / verticalRectNumber + 0.5 * aidView.w / verticalRectNumber + aidView.x;
-        var _y10 = (max - this.state.j[_i17]) / cha * aidView.h + aidView.y;
+        var _y10 = (max - this.state.j[_i19]) / cha * aidView.h + aidView.y;
         if (_j8 == 0) {
             ctx.moveTo(_x10, _y10);
         }
@@ -2972,7 +3002,25 @@ function getMousePos(e) {
 
 // 控制小数位数
 function setDP(num) {
-    return Math.abs(num) > 0.1 ? Number(num.toFixed(2)) : Number(num.toFixed(7));
+    if (Math.abs(num) > 1) {
+        return Number(num.toFixed(3));
+    } else if (Math.abs(num) > 0.1) {
+        return Number(num.toFixed(4));
+    } else if (Math.abs(num) > 0.01) {
+        return Number(num.toFixed(5));
+    } else if (Math.abs(num) > 0.001) {
+        return Number(num.toFixed(6));
+    } else if (Math.abs(num) > 0.0001) {
+        return Number(num.toFixed(7));
+    } else if (Math.abs(num) > 0.00001) {
+        return Number(num.toFixed(8));
+    } else if (Math.abs(num) > 0.000001) {
+        return Number(num.toFixed(9));
+    } else if (Math.abs(num) > 0.0000001) {
+        return Number(num.toFixed(10));
+    } else {
+        return Number(num.toFixed(11));
+    }
 }
 
 // 判断鼠标是否在${this.views}中

@@ -52,10 +52,20 @@ export default function computAxis() {
     if (cha >= 1) {
         n = cha.toFixed(0).length;
     } else {
-        let str = cha.toString().split('.')[1];
-        for (let i = 0; i < str.length; i++) {
-            if (str.charAt(i) == 0) {
-                n--;
+        if (cha < 0.000001) {
+            let str = (cha * 100000).toString().split('.')[1] || '';
+            for (let i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            let str = cha.toString().split('.')[1] || '';
+            for (let i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
             }
         }
     }
