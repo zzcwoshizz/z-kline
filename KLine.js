@@ -704,9 +704,25 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = Depth;
+function roundedRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + radius);
+    ctx.lineTo(x, y + height - radius);
+    ctx.quadraticCurveTo(x, y + height, x + radius, y + height);
+    ctx.lineTo(x + width - radius, y + height);
+    ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
+    ctx.lineTo(x + width, y + radius);
+    ctx.quadraticCurveTo(x + width, y, x + width - radius, y);
+    ctx.lineTo(x + radius, y);
+    ctx.quadraticCurveTo(x, y, x, y + radius);
+    ctx.fill();
+}
+
 function Depth(ele, option) {
     var _this = this;
 
+    this.device = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) ? 'mb' : 'pc';
+    this.option = option;
     this.dpr = window.devicePixelRatio > 2 ? window.devicePixelRatio : 2;
     ele.style.width = option.width + 'px';
     ele.style.height = option.height + 'px';
@@ -721,7 +737,7 @@ function Depth(ele, option) {
     this.width = option.width * this.dpr;
     this.height = option.height * this.dpr;
     this.ctx = canvas.getContext('2d');
-    this.ctx.font = this.dpr * 12 + 'px sans-serif';
+    this.ctx.font = this.dpr * (option.fontSize || 14) + 'px sans-serif';
 
     ele.appendChild(canvas);
 
@@ -732,18 +748,25 @@ function Depth(ele, option) {
         splitColor: this.theme === 'dark' ? '#333' : '#ccc'
     };
 
-    canvas.addEventListener('mousemove', function (e) {
-        _this.pos = _this.getMousePos(e);
-        _this.setData();
-    });
-    canvas.addEventListener('mouseout', function (e) {
-        _this.pos = null;
-        _this.setData();
-    });
-    canvas.addEventListener('mousecancel', function (e) {
-        _this.pos = null;
-        _this.setData();
-    });
+    if (this.device === 'pc') {
+        canvas.addEventListener('mousemove', function (e) {
+            _this.pos = _this.getMousePos(e);
+            _this.setData();
+        });
+        canvas.addEventListener('mouseout', function (e) {
+            _this.pos = null;
+            _this.setData();
+        });
+        canvas.addEventListener('mousecancel', function (e) {
+            _this.pos = null;
+            _this.setData();
+        });
+    } else {
+        canvas.addEventListener('touchstart', function (e) {
+            _this.pos = _this.getMousePos(e.targetTouches[0]);
+            _this.setData();
+        });
+    }
 }
 
 Depth.prototype.setData = function (data) {
@@ -786,7 +809,7 @@ Depth.prototype.setData = function (data) {
         sellDepth[_i] = sellDepth[_i - 1] + parseFloat(sellVolume[_i]);
     }
 
-    var maxVolume = Math.max(buyDepth[buyDepth.length - 1], sellDepth[sellDepth.length - 1]);
+    var maxVolume = Math.max(buyDepth[buyDepth.length - 1], sellDepth[sellDepth.length - 1]) * 1.2;
     var n = (maxVolume * 0.2).toFixed(0).length;
     var interval = Math.ceil(maxVolume * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     var yAxis = [];
@@ -795,19 +818,34 @@ Depth.prototype.setData = function (data) {
     }
 
     var ctx = this.ctx;
+    ctx.lineWidth = this.dpr;
     ctx.clearRect(0, 0, this.width, this.height);
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
 
     var maxLength = 0;
     for (var _i3 = interval; _i3 < maxVolume; _i3 += interval) {
-        maxLength = Math.max(maxLength, ctx.measureText(_i3.toString()).width);
+        maxLength = Math.max(maxLength, ctx.measureText((_i3 >= 10000 ? _i3 / 1000 + 'k' : _i3).toString()).width);
     }
     this.contentWidth = this.width - maxLength - 10;
-    this.contentHeight = this.height - this.dpr * 16;
+    this.contentHeight = this.height - this.dpr * 40;
 
-    n = ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.25).toFixed(0).length;
-    var intervalX = Math.ceil(maxVolume * 0.25 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    this.ctx.font = this.dpr * (this.option.fontSize * 2 || 28) + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#2b8043';
+    roundedRect(ctx, 40 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 24 * this.dpr);
+    ctx.fillStyle = 'white';
+    ctx.fillText('买单', 120 * this.dpr, 60 * this.dpr);
+
+    ctx.fillStyle = '#db2f1a';
+    roundedRect(ctx, this.contentWidth - 40 * this.dpr - 160 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 24 * this.dpr);
+    ctx.fillStyle = 'white';
+    ctx.fillText('卖单', this.contentWidth - 120 * this.dpr, 60 * this.dpr);
+    this.ctx.font = this.dpr * (this.option.fontSize || 14) + 'px sans-serif';
+
+    n = ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.4).toFixed(0).length;
+    var intervalX = Math.ceil(maxVolume * 0.4 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     ctx.fillStyle = this.colors.fontColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
@@ -823,7 +861,7 @@ Depth.prototype.setData = function (data) {
     ctx.setLineDash([2, 2]);
     for (var _i5 = interval; _i5 < maxVolume; _i5 += interval) {
         var y = this.contentHeight - this.contentHeight * _i5 / maxVolume;
-        ctx.fillText(_i5, this.contentWidth + 5, y);
+        ctx.fillText(_i5 >= 10000 ? _i5 / 1000 + 'k' : _i5, this.contentWidth + 5, y);
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(this.contentWidth, y);
@@ -833,7 +871,7 @@ Depth.prototype.setData = function (data) {
 
     // 买单
     var p1 = (buyPrice[0] - buyPrice[buyPrice.length - 1]) / (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]);
-    ctx.lineWidth = this.dpr;
+    ctx.lineWidth = this.dpr * 3;
     ctx.beginPath();
     ctx.moveTo(0, this.contentHeight - buyDepth[buyDepth.length - 1] / maxVolume * this.contentHeight);
     for (var _i6 = buyDepth.length - 2; _i6 >= 0; _i6--) {
@@ -878,17 +916,17 @@ Depth.prototype.setData = function (data) {
     if (this.pos && this.pos.x < this.contentWidth && this.pos.y < this.contentHeight) {
         var x = void 0;
         var _y = void 0;
-        var rectH = 90;
+        var rectH = (this.option.fontSize || 14) * 3 * this.dpr;
         var text = void 0;
         var title = '';
         if (this.pos.x >= this.contentWidth * (1 - p2)) {
             var _i8 = parseInt((this.pos.x - this.contentWidth * (1 - p2)) / (this.contentWidth * p2) * sell.length);
-            title = '卖单：';
-            text = [sell[_i8][0], sellDepth[_i8]];
+            text = '价钱：' + sell[_i8][0];
+            title = '卖单：' + Number(sellDepth[_i8].toFixed(4));
             ctx.beginPath();
-            x = this.pos.x;
+            x = _i8 / sell.length * this.contentWidth * p2 + this.contentWidth * (1 - p2);
             _y = this.contentHeight - sellDepth[_i8] / maxVolume * this.contentHeight;
-            ctx.arc(x, _y, 8, 0, Math.PI * 2, true);
+            ctx.arc(x, _y, 10 * this.dpr, 0, Math.PI * 2, true);
             ctx.closePath();
             ctx.fillStyle = 'rgb(255, 0, 0)';
             ctx.fill();
@@ -896,12 +934,12 @@ Depth.prototype.setData = function (data) {
             ctx.stroke();
         } else if (this.pos.x <= this.contentWidth * p1) {
             var _i9 = parseInt(this.pos.x / (this.contentWidth * p1) * buy.length);
-            title = '买单：';
-            text = [buy[buy.length - 1 - _i9][0], buyDepth[buyDepth.length - 1 - _i9]];
+            text = '价钱：' + buy[buy.length - 1 - _i9][0];
+            title = '买单：' + Number(buyDepth[buyDepth.length - 1 - _i9].toFixed(4));
             ctx.beginPath();
-            x = this.pos.x;
+            x = _i9 / buy.length * this.contentWidth * p1;
             _y = this.contentHeight - buyDepth[buyDepth.length - 1 - _i9] / maxVolume * this.contentHeight;
-            ctx.arc(x, _y, 8, 0, Math.PI * 2, true);
+            ctx.arc(x, _y, 10 * this.dpr, 0, Math.PI * 2, true);
             ctx.closePath();
             ctx.fillStyle = 'rgb(0, 255, 0)';
             ctx.fill();
@@ -912,7 +950,7 @@ Depth.prototype.setData = function (data) {
         }
         ctx.strokeStyle = 'white';
 
-        var rectW = ctx.measureText('买单：' + this.setDP(text[1])).width + 30;
+        var rectW = Math.max(ctx.measureText(title).width, ctx.measureText(text).width) + 30;
         x = x > this.contentWidth * 0.5 ? x - 10 : x + 10;
         _y = _y > this.contentHeight * 0.5 ? _y - 10 : _y + 10;
         rectW = x > this.contentWidth * 0.5 ? -rectW : rectW;
@@ -930,7 +968,7 @@ Depth.prototype.setData = function (data) {
         ctx.textBaseline = 'middle';
         var textX = x > this.contentWidth * 0.5 ? x + rectW + 10 : x + 10;
         var textY = _y > this.contentHeight * 0.5 ? _y + rectH * 2 / 3 : _y + rectH / 3;
-        ctx.fillText('￥' + text[0], textX, textY);
+        ctx.fillText(text, textX, textY);
         textY = _y > this.contentHeight * 0.5 ? _y + rectH / 3 : _y + rectH * 2 / 3;
         ctx.fillText(title, textX, textY);
     }
