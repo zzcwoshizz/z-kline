@@ -17,7 +17,7 @@ socket.on('connect', function() {
 });
 setTimeout(function() {
     // socket.emit('subscribe:market', 'okcoin_btc');
-    socket.emit('market.subscribe', 'doge:btc38');
+    socket.emit('market.subscribe', 'dogebtc:poloniex');
 }, 1000);
 // socket.on('depth', function(data) {
 socket.on('update:depth', function(data) {

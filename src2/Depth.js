@@ -133,13 +133,36 @@ Depth.prototype.setData = function(data) {
     ctx.fillText('卖单', this.contentWidth - 120 * this.dpr, 60 * this.dpr);
     this.ctx.font = this.dpr * (this.option.fontSize || 14) + 'px sans-serif';
 
-    n = ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.4).toFixed(0).length;
-    const intervalX = Math.ceil(maxVolume * 0.4 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    n = 0;
+    if ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) >= 1) {
+        n = (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]).toFixed(0).length;
+    } else {
+        if ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) < 0.000001) {
+            let str = ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 100000).toString().split('.')[1];
+            for (let i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            let str = (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]).toString().split('.')[1];
+            for (let i = 0; i < str.length; i++) {
+                if (str.charAt(i) == 0) {
+                    n--;
+                }
+            }
+        }
+    }
+    const intervalX = Math.ceil((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
+    // n = ((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.4).toFixed(0).length;
+    // const intervalX = Math.ceil(maxVolume * 0.4 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
     ctx.fillStyle = this.colors.fontColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
+    console.log(intervalX);
     for (let i = buyPrice[buyPrice.length - 1] + intervalX; i < sellPrice[sellPrice.length - 1]; i += intervalX) {
-        ctx.fillText(parseInt(i), (i - buyPrice[buyPrice.length - 1]) / (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * this.contentWidth, this.contentHeight);
+        ctx.fillText(i, (i - buyPrice[buyPrice.length - 1]) / (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * this.contentWidth, this.contentHeight);
     }
 
     ctx.textAlign = 'left';
