@@ -16,9 +16,10 @@ export default function operation(canvas, overCanvas) {
         }
         if (this.isInLineView(pos)) {
             this.pos = pos;
+            if (this.lineCache && pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
+                this.lineCache.setPoint(pos);
+            }
             this.forceUpdate(false, true);
-        } else {
-            overCtx.clearRect(0, 0, this.width, this.height);
         }
         lastIndex = currentIndex;
     };
@@ -55,6 +56,19 @@ export default function operation(canvas, overCanvas) {
             e.preventDefault();
             let n = Number(e.deltaY.toFixed(0));
             scale(n);
+        });
+        overCanvas.addEventListener('click', e => {
+            e.preventDefault();
+            if (!this.lineCache) {
+                return;
+            }
+            const pos = this.getMousePos(e);
+            const complete = this.lineCache.next(pos);
+            if (complete) {
+                this.lines.push(this.lineCache);
+                this.lineCache = null;
+            }
+            this.forceUpdate(false, true);
         });
     } else {
         const touchstart = e => {
@@ -122,7 +136,7 @@ export function drawHairLine() {
     const x = currentIndex * aidView.w / verticalRectNumber + aidView.w / verticalRectNumber * 0.5 + mainView.x;
     const y = pos.y;
 
-    overCtx.clearRect(0, 0, this.width, this.height);
+    // overCtx.clearRect(0, 0, this.width, this.height);
     if (currentIndex + startIndex >= this.state.times.length || currentIndex + startIndex < 0) {
         return;
     }

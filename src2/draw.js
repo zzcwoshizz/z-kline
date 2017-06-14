@@ -4,7 +4,13 @@ export default function draw() {
     }
     const canDraw = this.canDraw();
     if (canDraw[1]) {
+        const overCtx = this.overCtx;
+        overCtx.clearRect(0, 0, this.width, this.height);
         this.drawHairLine();
+        if (this.lineCache) {
+            this.drawLineCache();
+        }
+        this.drawLines();
     }
     if (canDraw[0]) {
         const ctx = this.ctx;

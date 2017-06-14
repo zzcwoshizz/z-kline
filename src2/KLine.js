@@ -10,6 +10,9 @@ import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
 import canDraw from './canDraw';
 import Depth from './Depth';
+import drawLines from './tools/drawLines';
+import drawLineCache from './tools/drawLineCache';
+import ParallelSegment from './tools/ParallelSegment';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -34,6 +37,8 @@ KLine.prototype = {
     drawAid,
     drawHairLine,
     drawTimeline,
+    drawLines,
+    drawLineCache,
     operation,
     select,
     getMousePos,
@@ -52,6 +57,11 @@ KLine.prototype = {
         }
         let length = num.toFixed(20).match(/([1-9]*)(0*)$/)[2].length;
         return num.toFixed(20 - length);
+    },
+    beginDrawLine: function(type) {
+        if (type === 'parallelsegment') {
+            this.lineCache = new ParallelSegment(this.overCtx, this.colors);
+        }
     },
 };
 
