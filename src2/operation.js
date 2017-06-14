@@ -8,16 +8,28 @@ export default function operation(canvas, overCanvas) {
 
     const move = e => {
         const pos = this.getMousePos(e);
+        this.mousePos = pos;
         let [startIndex, endIndex] = this.state.range;
         const verticalRectNumber = endIndex - startIndex;
         const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
         if (isDown) {
-            this.moveRange(currentIndex - lastIndex);
+            let flag = false;
+            this.lines.forEach(line => {
+                if (line.isInPath(pos)) {
+                    flag = true;
+                    return;
+                }
+            });
+            if (!flag) {
+                this.moveRange(currentIndex - lastIndex);
+            }
         }
         if (this.isInLineView(pos)) {
             this.pos = pos;
             if (this.lineCache && pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
-                this.lineCache.setPoint(pos);
+                const { max, min } = this.computAxis();
+                const price = max - (max - min) * (pos.y - mainView.y) / mainView.h;
+                this.lineCache.setPosition(currentIndex + startIndex, price);
             }
             this.forceUpdate(false, true);
         }
@@ -63,9 +75,9 @@ export default function operation(canvas, overCanvas) {
                 return;
             }
             const pos = this.getMousePos(e);
-            const complete = this.lineCache.next(pos);
+            const complete = this.lineCache.next();
             if (complete) {
-                this.lines.push(this.lineCache);
+                this.lines.unshift(this.lineCache);
                 this.lineCache = null;
             }
             this.forceUpdate(false, true);

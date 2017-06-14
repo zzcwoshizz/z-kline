@@ -60,7 +60,7 @@ KLine.prototype = {
     },
     beginDrawLine: function(type) {
         if (type === 'parallelsegment') {
-            this.lineCache = new ParallelSegment(this.overCtx, this.colors);
+            this.lineCache = new ParallelSegment(this.overCtx, this.colors, this);
         }
     },
 };

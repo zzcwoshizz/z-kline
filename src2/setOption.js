@@ -81,6 +81,8 @@ function init() {
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
         hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
         mobileBar: isDarkTheme ? '#343f4d' : '#fafafa',
+        lineColor: isDarkTheme ? '#ccc' : '#333',
+        lineHilightColor: isDarkTheme ? '#fff' : '#000',
     };
 
     this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
@@ -141,4 +143,5 @@ function init() {
 
     this.lines = [];
     this.lineCache = null;
+    this.mousePos = {};
 }
