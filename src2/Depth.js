@@ -123,14 +123,14 @@ Depth.prototype.setData = function(data) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#2b8043';
-    roundedRect(ctx, 20 * this.dpr, 10 * this.dpr, 80 * this.dpr, 40 * this.dpr, 12 * this.dpr);
+    roundedRect(ctx, 40 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 24 * this.dpr);
     ctx.fillStyle = 'white';
-    ctx.fillText('买单', 60 * this.dpr, 30 * this.dpr);
+    ctx.fillText('买单', 120 * this.dpr, 60 * this.dpr);
 
     ctx.fillStyle = '#db2f1a';
-    roundedRect(ctx, this.contentWidth - 20 * this.dpr - 80 * this.dpr, 10 * this.dpr, 80 * this.dpr, 40 * this.dpr, 12 * this.dpr);
+    roundedRect(ctx, this.contentWidth - 40 * this.dpr - 160 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 12 * this.dpr);
     ctx.fillStyle = 'white';
-    ctx.fillText('卖单', this.contentWidth - 60 * this.dpr, 30 * this.dpr);
+    ctx.fillText('卖单', this.contentWidth - 120 * this.dpr, 60 * this.dpr);
     this.ctx.font = this.dpr * (this.option.fontSize || 14) + 'px sans-serif';
 
     n = 0;
