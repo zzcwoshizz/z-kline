@@ -117,7 +117,7 @@ Depth.prototype.setData = function(data) {
         maxLength = Math.max(maxLength, ctx.measureText((i >= 10000 ? (i / 1000) + 'k' : i).toString()).width);
     }
     this.contentWidth = this.width - maxLength - 10;
-    this.contentHeight = this.height - this.dpr * 40;
+    this.contentHeight = this.height - this.dpr * 50;
 
     this.ctx.font = this.dpr * (this.option.fontSize || 14) + 'px sans-serif';
     ctx.textAlign = 'center';
@@ -128,7 +128,7 @@ Depth.prototype.setData = function(data) {
     ctx.fillText('买单', 120 * this.dpr, 60 * this.dpr);
 
     ctx.fillStyle = '#db2f1a';
-    roundedRect(ctx, this.contentWidth - 40 * this.dpr - 160 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 12 * this.dpr);
+    roundedRect(ctx, this.contentWidth - 40 * this.dpr - 160 * this.dpr, 20 * this.dpr, 160 * this.dpr, 80 * this.dpr, 24 * this.dpr);
     ctx.fillStyle = 'white';
     ctx.fillText('卖单', this.contentWidth - 120 * this.dpr, 60 * this.dpr);
     this.ctx.font = this.dpr * (this.option.fontSize || 14) + 'px sans-serif';
