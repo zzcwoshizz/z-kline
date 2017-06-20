@@ -865,12 +865,13 @@ Depth.prototype.setData = function (data) {
             }
         }
     }
-    var intervalX = Math.ceil((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * 0.25 / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
+    var number = (this.option.priceDecimal || 2) > 5 ? 0.5 : 0.25;
+    var intervalX = Math.ceil((sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * number / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
     ctx.fillStyle = this.colors.fontColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     for (var _i6 = buyPrice[buyPrice.length - 1] + intervalX; _i6 < sellPrice[sellPrice.length - 1]; _i6 += intervalX) {
-        ctx.fillText(_i6, (_i6 - buyPrice[buyPrice.length - 1]) / (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * this.contentWidth, this.contentHeight);
+        ctx.fillText(_i6.toFixed(this.option.priceDecimal || 2), (_i6 - buyPrice[buyPrice.length - 1]) / (sellPrice[sellPrice.length - 1] - buyPrice[buyPrice.length - 1]) * this.contentWidth, this.contentHeight);
     }
 
     ctx.textAlign = 'left';
@@ -956,7 +957,6 @@ Depth.prototype.setData = function (data) {
                     break;
                 }
                 if (currentPrice >= sellPrice[index] && currentPrice < sellPrice[index + 1]) {
-                    console.log(currentPrice, sellPrice[index], sellPrice[index + 1]);
                     _i10 = index;
                     break;
                 }
@@ -986,7 +986,6 @@ Depth.prototype.setData = function (data) {
                     break;
                 }
             }
-            console.log(_i11);
             text = '价钱：' + buy[buy.length - 1 - _i11][0];
             title = '买单：' + Number(buyDepth[buyDepth.length - 1 - _i11].toFixed(4));
             ctx.beginPath();
