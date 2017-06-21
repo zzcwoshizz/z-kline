@@ -5,6 +5,7 @@ export default function operation(canvas, overCanvas) {
     let isDown = false;
     let lastIndex = -1;
     let lastTouchDistance = 0;
+    let moveLine = null;
 
     const move = e => {
         const pos = this.getMousePos(e);
@@ -12,23 +13,20 @@ export default function operation(canvas, overCanvas) {
         let [startIndex, endIndex] = this.state.range;
         const verticalRectNumber = endIndex - startIndex;
         const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+        const { max, min } = this.computAxis();
+        const price = max - (max - min) * (pos.y - mainView.y) / mainView.h;
         if (isDown) {
-            let flag = false;
-            this.lines.forEach(line => {
-                if (line.isInPath(pos)) {
-                    flag = true;
-                    return;
+            if (moveLine && moveLine.moving) {
+                if (pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
+                    moveLine.move(currentIndex - lastIndex, price - moveLine.price[1]);
                 }
-            });
-            if (!flag) {
+            } else {
                 this.moveRange(currentIndex - lastIndex);
             }
         }
         if (this.isInLineView(pos)) {
             this.pos = pos;
             if (this.lineCache && pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
-                const { max, min } = this.computAxis();
-                const price = max - (max - min) * (pos.y - mainView.y) / mainView.h;
                 this.lineCache.setPosition(currentIndex + startIndex, price);
             }
             this.forceUpdate(false, true);
@@ -48,17 +46,32 @@ export default function operation(canvas, overCanvas) {
 
     if (this.device === 'pc') {
         const mousedown = e => {
-            isDown = true;
             const pos = this.getMousePos(e);
+            isDown = true;
+            this.lines.forEach(line => {
+                if (line.isInPath(pos)) {
+                    moveLine = line;
+                    moveLine.moving = true;
+                    return;
+                }
+            });
             const verticalRectNumber = this.state.range[1] - this.state.range[0];
             const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
             lastIndex = currentIndex;
         };
         const mouseup = () => {
             isDown = false;
+            if (moveLine) {
+                moveLine.moving = false;
+                moveLine = null;
+            }
         };
         const mouseout = () => {
             isDown = false;
+            if (moveLine) {
+                moveLine.moving = false;
+                moveLine = null;
+            }
         };
         overCanvas.addEventListener('mousedown', mousedown);
         overCanvas.addEventListener('mouseup', mouseup);

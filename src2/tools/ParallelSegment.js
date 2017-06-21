@@ -5,6 +5,7 @@ export default function ParallelSegment(ctx, colors, context) {
     this.context = context;
     this.index = [];
     this.price = [];
+    this.moving = false;
 }
 
 ParallelSegment.prototype.draw = function() {
@@ -14,20 +15,20 @@ ParallelSegment.prototype.draw = function() {
     const ctx = this.ctx;
     const [point1, point2] = this.getPos();
 
-    ctx.beginPath();
-    ctx.moveTo(point1.x, point2.y);
-    ctx.lineTo(point2.x, point2.y);
-    if (this.isInPath(this.context.mousePos)) {
+    const linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
         if (this.step === 2) {
             ctx.strokeStyle = this.colors.lineHilightColor;
         } else {
             ctx.strokeStyle = this.colors.lineColor;
         }
-        ctx.stroke();
+        ctx.stroke(linePath);
         this.drawPoint();
     } else {
+        ctx.lineWidth = this.context.dpr;
         ctx.strokeStyle = this.colors.lineColor;
-        ctx.stroke();
+        ctx.stroke(linePath);
     }
 
     if (this.step !== 2) {
@@ -44,28 +45,55 @@ ParallelSegment.prototype.next = function() {
     }
 };
 
-ParallelSegment.prototype.isInPath = function(pos) {
-    const [point1, point2] = this.getPos();
-    const dis = 5 * this.context.dpr;
-    if (pos.x > Math.min(point1.x, point2.x) - dis && pos.x < Math.max(point2.x, point1.x) + dis && pos.y > point2.y - dis && pos.y < point2.y + dis) {
+ParallelSegment.prototype.isInPath = function(pos, path) {
+    const ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
         return true;
     }
     return false;
 };
 
+ParallelSegment.prototype.getCircle = function() {
+    const ctx = this.ctx;
+    const [point1, point2] = this.getPos();
+
+    const circle1 = new Path2D();
+    circle1.arc(point1.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    const circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+ParallelSegment.prototype.getLine = function() {
+    const ctx = this.ctx;
+    const [point1, point2] = this.getPos();
+
+    const path = new Path2D();
+    path.moveTo(point1.x, point2.y);
+    path.lineTo(point2.x, point2.y);
+
+    return path;
+};
+
 ParallelSegment.prototype.drawPoint = function() {
     const ctx = this.ctx;
     const [point1, point2] = this.getPos();
-    ctx.fillStyle = this.colors.background;
-    ctx.beginPath();
-    ctx.arc(point1.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    const [circle1, circle2] = this.getCircle();
 
-    ctx.beginPath();
-    ctx.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
 };
 
 ParallelSegment.prototype.setPosition = function(index, price) {
@@ -76,6 +104,11 @@ ParallelSegment.prototype.setPosition = function(index, price) {
         this.index = [this.index[0], index];
         this.price = [this.price[0], price];
     }
+};
+
+ParallelSegment.prototype.move = function(index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
 };
 
 ParallelSegment.prototype.getPos = function() {

@@ -50,7 +50,7 @@ export default function setOption(option = {}) {
         this.option = {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
-            mainCsi: option.mainCsi || 'boll',
+            mainCsi: option.mainCsi || 'ema',
             aidCsi: option.aidCsi || 'macd',
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
