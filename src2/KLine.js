@@ -13,6 +13,7 @@ import Depth from './Depth';
 import drawLines from './tools/drawLines';
 import drawLineCache from './tools/drawLineCache';
 import ParallelSegment from './tools/ParallelSegment';
+import HorizontalLine from './tools/HorizontalLine';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -61,6 +62,8 @@ KLine.prototype = {
     beginDrawLine: function(type) {
         if (type === 'parallelsegment') {
             this.lineCache = new ParallelSegment(this.overCtx, this.colors, this);
+        } else if (type === 'horizontalline') {
+            this.lineCache = new HorizontalLine(this.overCtx, this.colors, this);
         }
     },
 };

@@ -18,7 +18,7 @@ export default function operation(canvas, overCanvas) {
         if (isDown) {
             if (moveLine && moveLine.moving) {
                 if (pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
-                    moveLine.move(currentIndex - lastIndex, price - moveLine.price[1]);
+                    moveLine.move(currentIndex - lastIndex, price);
                 }
             } else {
                 this.moveRange(currentIndex - lastIndex);
