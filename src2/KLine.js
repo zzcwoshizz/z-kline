@@ -20,6 +20,7 @@ import PriceLine from './tools/PriceLine';
 import Segment from './tools/Segment';
 import Line from './tools/Line';
 import Beam from './tools/Beam';
+import Arrow from './tools/Arrow';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -82,6 +83,8 @@ KLine.prototype = {
             this.lineCache = new Line(this.overCtx, this.colors, this);
         } else if (type === 'beam') {
             this.lineCache = new Beam(this.overCtx, this.colors, this);
+        } else if (type === 'arrow') {
+            this.lineCache = new Arrow(this.overCtx, this.colors, this);
         }
     },
 };
