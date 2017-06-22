@@ -15,6 +15,7 @@ import drawLineCache from './tools/drawLineCache';
 import ParallelSegment from './tools/ParallelSegment';
 import HorizontalLine from './tools/HorizontalLine';
 import HorizontalBeam from './tools/HorizontalBeam';
+import VerticalLine from './tools/VerticalLine';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -67,6 +68,8 @@ KLine.prototype = {
             this.lineCache = new HorizontalLine(this.overCtx, this.colors, this);
         } else if (type === 'horizontalbeam') {
             this.lineCache = new HorizontalBeam(this.overCtx, this.colors, this);
+        } else if (type === 'verticalline') {
+            this.lineCache = new VerticalLine(this.overCtx, this.colors, this);
         }
     },
 };
