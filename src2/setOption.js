@@ -126,7 +126,7 @@ function init() {
         h: aidView.h,
     };
     let timeView = {
-        x: mainYaxisView.x,
+        x: mainView.x,
         y: aidView.y + aidView.h,
         w: width,
         h: bottom,

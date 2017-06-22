@@ -70,7 +70,7 @@ ParallelSegment.prototype.getLine = function() {
 
     const path = new Path2D();
     path.moveTo(0, point.y);
-    path.lineTo(this.context.timeView.x, point.y);
+    path.lineTo(this.context.mainYaxisView.x, point.y);
 
     return path;
 };
