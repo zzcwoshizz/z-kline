@@ -4,6 +4,7 @@ export default function operation(canvas, overCanvas) {
 
     let isDown = false;
     let lastIndex = -1;
+    let lastPrice = -1;
     let lastTouchDistance = 0;
     let moveLine = null;
 
@@ -18,7 +19,7 @@ export default function operation(canvas, overCanvas) {
         if (isDown) {
             if (moveLine && moveLine.moving) {
                 if (pos.x > mainView.x && pos.x < (mainView.x + mainView.w) && pos.y > mainView.y && pos.y < (mainView.y + mainView.h)) {
-                    moveLine.move(currentIndex - lastIndex, price);
+                    moveLine.move(currentIndex - lastIndex, price - lastPrice);
                 }
             } else {
                 this.moveRange(currentIndex - lastIndex);
@@ -32,6 +33,7 @@ export default function operation(canvas, overCanvas) {
             this.forceUpdate(false, true);
         }
         lastIndex = currentIndex;
+        lastPrice = price;
     };
 
     const scale = n => {

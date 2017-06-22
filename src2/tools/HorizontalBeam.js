@@ -115,7 +115,7 @@ ParallelSegment.prototype.setPosition = function(index, price) {
  */
 ParallelSegment.prototype.move = function(index, price) {
     this.index = [this.index[0] + index, this.index[1] + index];
-    this.price = [price, price];
+    this.price = [this.price[0] + price, this.price[1] + price];
 };
 
 ParallelSegment.prototype.getPos = function() {
