@@ -99,7 +99,7 @@ fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).the
             return new Date(d * 1000).toString('yyyy/MM/dd HH:mm');
         }
     });
-    chart.beginDrawLine('verticalline');
+    chart.beginDrawLine('line');
     console.log(chart);
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;

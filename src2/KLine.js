@@ -18,6 +18,7 @@ import HorizontalBeam from './tools/HorizontalBeam';
 import VerticalLine from './tools/VerticalLine';
 import PriceLine from './tools/PriceLine';
 import Segment from './tools/Segment';
+import Line from './tools/Line';
 
 export function KLine(canvas, overCanvas, option) {
     this.canvas = canvas;
@@ -76,6 +77,8 @@ KLine.prototype = {
             this.lineCache = new PriceLine(this.overCtx, this.colors, this);
         } else if (type === 'segment') {
             this.lineCache = new Segment(this.overCtx, this.colors, this);
+        } else if (type === 'line') {
+            this.lineCache = new Line(this.overCtx, this.colors, this);
         }
     },
 };
