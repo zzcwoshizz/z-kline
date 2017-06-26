@@ -1,4 +1,4 @@
-export default function ParallelSegment(ctx, colors, context) {
+export default function VerticalLine(ctx, colors, context) {
     this.ctx = ctx;
     this.colors = colors;
     this.step = 0;
@@ -8,7 +8,7 @@ export default function ParallelSegment(ctx, colors, context) {
     this.moving = false;
 }
 
-ParallelSegment.prototype.draw = function() {
+VerticalLine.prototype.draw = function() {
     if (this.index.length === 0) {
         return;
     }
@@ -35,14 +35,14 @@ ParallelSegment.prototype.draw = function() {
     }
 };
 
-ParallelSegment.prototype.next = function() {
+VerticalLine.prototype.next = function() {
     if (this.step === 0) {
         this.step = 1;
         return true;
     }
 };
 
-ParallelSegment.prototype.isInPath = function(pos, path) {
+VerticalLine.prototype.isInPath = function(pos, path) {
     const ctx = this.ctx;
     ctx.lineWidth = this.context.dpr * 10;
     if (!path) {
@@ -54,7 +54,7 @@ ParallelSegment.prototype.isInPath = function(pos, path) {
     return false;
 };
 
-ParallelSegment.prototype.getCircle = function() {
+VerticalLine.prototype.getCircle = function() {
     const ctx = this.ctx;
     const point = this.getPos();
 
@@ -64,7 +64,7 @@ ParallelSegment.prototype.getCircle = function() {
     return circle;
 };
 
-ParallelSegment.prototype.getLine = function() {
+VerticalLine.prototype.getLine = function() {
     const ctx = this.ctx;
     const point = this.getPos();
 
@@ -75,7 +75,7 @@ ParallelSegment.prototype.getLine = function() {
     return path;
 };
 
-ParallelSegment.prototype.drawPoint = function() {
+VerticalLine.prototype.drawPoint = function() {
     const ctx = this.ctx;
     const circle = this.getCircle();
 
@@ -86,19 +86,19 @@ ParallelSegment.prototype.drawPoint = function() {
     ctx.stroke(circle);
 };
 
-ParallelSegment.prototype.setPosition = function(index, price) {
+VerticalLine.prototype.setPosition = function(index, price) {
     if (this.step === 0) {
         this.index = index;
         this.price = price;
     }
 };
 
-ParallelSegment.prototype.move = function(index, price) {
+VerticalLine.prototype.move = function(index, price) {
     this.index += index;
     this.price += price;
 };
 
-ParallelSegment.prototype.getPos = function() {
+VerticalLine.prototype.getPos = function() {
     const { mainView } = this.context;
     const [startIndex, endIndex] = this.context.state.range;
     const verticalRectNumber = endIndex - startIndex;

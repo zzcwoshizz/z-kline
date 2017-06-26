@@ -1,4 +1,4 @@
-export default function ParallelSegment(ctx, colors, context) {
+export default function Beam(ctx, colors, context) {
     this.ctx = ctx;
     this.colors = colors;
     this.step = 0;
@@ -8,7 +8,7 @@ export default function ParallelSegment(ctx, colors, context) {
     this.moving = false;
 }
 
-ParallelSegment.prototype.draw = function() {
+Beam.prototype.draw = function() {
     if (this.index.length === 0) {
         return;
     }
@@ -36,7 +36,7 @@ ParallelSegment.prototype.draw = function() {
     }
 };
 
-ParallelSegment.prototype.next = function() {
+Beam.prototype.next = function() {
     if (this.step === 0) {
         this.step = 1;
     } else if (this.step === 1) {
@@ -45,7 +45,7 @@ ParallelSegment.prototype.next = function() {
     }
 };
 
-ParallelSegment.prototype.isInPath = function(pos, path) {
+Beam.prototype.isInPath = function(pos, path) {
     const ctx = this.ctx;
     ctx.lineWidth = this.context.dpr * 10;
     if (!path) {
@@ -57,7 +57,7 @@ ParallelSegment.prototype.isInPath = function(pos, path) {
     return false;
 };
 
-ParallelSegment.prototype.getCircle = function() {
+Beam.prototype.getCircle = function() {
     const ctx = this.ctx;
     const [point1, point2] = this.getPos();
 
@@ -70,7 +70,7 @@ ParallelSegment.prototype.getCircle = function() {
     return [circle1, circle2];
 };
 
-ParallelSegment.prototype.getLine = function() {
+Beam.prototype.getLine = function() {
     const ctx = this.ctx;
     const [point1, point2] = this.getPos();
 
@@ -91,7 +91,7 @@ ParallelSegment.prototype.getLine = function() {
     return path;
 };
 
-ParallelSegment.prototype.drawPoint = function() {
+Beam.prototype.drawPoint = function() {
     const ctx = this.ctx;
     const [point1, point2] = this.getPos();
     const [circle1, circle2] = this.getCircle();
@@ -106,7 +106,7 @@ ParallelSegment.prototype.drawPoint = function() {
     ctx.stroke(circle2);
 };
 
-ParallelSegment.prototype.setPosition = function(index, price) {
+Beam.prototype.setPosition = function(index, price) {
     if (this.step === 0) {
         this.index = [index, index];
         this.price = [price, price];
@@ -120,12 +120,12 @@ ParallelSegment.prototype.setPosition = function(index, price) {
  * index 沿x轴移动的距离
  * price 当前价格
  */
-ParallelSegment.prototype.move = function(index, price) {
+Beam.prototype.move = function(index, price) {
     this.index = [this.index[0] + index, this.index[1] + index];
     this.price = [this.price[0] + price, this.price[1] + price];
 };
 
-ParallelSegment.prototype.getPos = function() {
+Beam.prototype.getPos = function() {
     const { mainView } = this.context;
     const [startIndex, endIndex] = this.context.state.range;
     const verticalRectNumber = endIndex - startIndex;
