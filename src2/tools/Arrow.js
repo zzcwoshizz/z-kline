@@ -64,37 +64,13 @@ ParallelSegment.prototype.isInPath = function(pos, path) {
 ParallelSegment.prototype.getArrow = function() {
     const [point1, point2] = this.getPos();
 
-    const k = (point2.y - point1.y) / (point2.x - point1.x);
-    const k1 = Math.tan(Math.atan(k) + Math.PI / 5);
-    const k2 = Math.tan(Math.atan(k) - Math.PI / 5);
-
-    let x1;
-    let y1;
-    let x2;
-    let y2;
-    if (point2.x > point1.x) {
-        x1 = point2.x - Math.cos(Math.atan(k1)) * 12;
-        y1 = point2.y - Math.sin(Math.atan(k1)) * 12;
-        x2 = point2.x - Math.cos(Math.atan(k2)) * 12;
-        y2 = point2.y - Math.sin(Math.atan(k2)) * 12;
-    } else if (point2.x < point1.x) {
-        x1 = point2.x + Math.cos(Math.atan(k1)) * 12;
-        y1 = point2.y + Math.sin(Math.atan(k1)) * 12;
-        x2 = point2.x + Math.cos(Math.atan(k2)) * 12;
-        y2 = point2.y + Math.sin(Math.atan(k2)) * 12;
-    } else {
-        if (point2.y > point1.y) {
-            x1 = point2.x + Math.cos(Math.atan(k1)) * 12;
-            y1 = point2.y + Math.sin(Math.atan(k1)) * 12;
-            x2 = point2.x - Math.cos(Math.atan(k2)) * 12;
-            y2 = point2.y - Math.sin(Math.atan(k2)) * 12;
-        } else {
-            x1 = point2.x - Math.cos(Math.atan(k1)) * 12;
-            y1 = point2.y - Math.sin(Math.atan(k1)) * 12;
-            x2 = point2.x + Math.cos(Math.atan(k2)) * 12;
-            y2 = point2.y + Math.sin(Math.atan(k2)) * 12;
-        }
-    }
+    const angle = Math.atan2(point1.y - point2.y, point1.x - point2.x);
+    const angle1 = angle + Math.PI / 6;
+    const angle2 = angle - Math.PI / 6;
+    const x1 = point2.x + 12 * Math.cos(angle1);
+    const y1 = point2.y + 12 * Math.sin(angle1);
+    const x2 = point2.x + 12 * Math.cos(angle2);
+    const y2 = point2.y + 12 * Math.sin(angle2);
 
     const arrow = new Path2D();
     arrow.moveTo(x1, y1);

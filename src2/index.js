@@ -66,8 +66,7 @@ app.appendChild(canvas);
 app.appendChild(overCanvas);
 
 const period = 60;
-const url = 'https://www.sosobtc.com/widgetembed/data/period?symbol=okcoinbtccny&step=' + period;
-fetch('http://45.248.68.30:3000/data?url=' + window.encodeURIComponent(url)).then(res => {
+fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_cny&type=${period}`).then(res => {
     return res.json();
 }).then(json => {
     let chart = new KLine(canvas, overCanvas, {
