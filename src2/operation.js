@@ -49,17 +49,32 @@ export default function operation(canvas, overCanvas) {
     if (this.device === 'pc') {
         const mousedown = e => {
             const pos = this.getMousePos(e);
-            isDown = true;
-            this.lines.forEach(line => {
-                if (line.isInPath(pos)) {
-                    moveLine = line;
-                    moveLine.moving = true;
-                    return;
+            if (e.button === 0) {
+                isDown = true;
+                this.lines.forEach(line => {
+                    if (line.isInPath(pos)) {
+                        moveLine = line;
+                        moveLine.moving = true;
+                        return;
+                    }
+                });
+                const verticalRectNumber = this.state.range[1] - this.state.range[0];
+                const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+                lastIndex = currentIndex;
+            } else if (e.button === 2) {
+                overCanvas.oncontextmenu = () => false;
+                let index = null;
+                this.lines.forEach((line, i) => {
+                    if (line.isInPath(pos)) {
+                        index = i;
+                        return;
+                    }
+                });
+                if (index !== null) {
+                    this.clearLine(index);
                 }
-            });
-            const verticalRectNumber = this.state.range[1] - this.state.range[0];
-            const currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
-            lastIndex = currentIndex;
+            }
+            this.forceUpdate(false, true);
         };
         const mouseup = () => {
             isDown = false;
@@ -67,6 +82,7 @@ export default function operation(canvas, overCanvas) {
                 moveLine.moving = false;
                 moveLine = null;
             }
+            this.forceUpdate(false, true);
         };
         const mouseout = () => {
             isDown = false;
@@ -74,6 +90,7 @@ export default function operation(canvas, overCanvas) {
                 moveLine.moving = false;
                 moveLine = null;
             }
+            this.forceUpdate(false, true);
         };
         overCanvas.addEventListener('mousedown', mousedown);
         overCanvas.addEventListener('mouseup', mouseup);
@@ -116,10 +133,12 @@ export default function operation(canvas, overCanvas) {
         };
         const touchend = () => {
             isDown = false;
+            this.forceUpdate(false, true);
         };
         const touchcancel = () => {
             isDown = false;
             overCtx.clearRect(0, 0, this.width, this.height);
+            this.forceUpdate(false, true);
         };
         const touchmove = e => {
             e.preventDefault();
@@ -141,6 +160,7 @@ export default function operation(canvas, overCanvas) {
             } else {
                 move(e.targetTouches[0]);
             }
+            this.forceUpdate(false, true);
         };
         overCanvas.addEventListener('touchstart', touchstart);
         overCanvas.addEventListener('touchend', touchend);

@@ -87,6 +87,12 @@ KLine.prototype = {
             this.lineCache = new Arrow(this.overCtx, this.colors, this);
         }
     },
+    clearLine: function(index) {
+        this.lines.splice(index, 1);
+    },
+    clearAllLine: function() {
+        this.lines = [];
+    }
 };
 
 // 获取鼠标在canvas上的坐标点
