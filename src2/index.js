@@ -49,18 +49,18 @@ app.style.position = 'relative';
 
 var canvas = document.createElement('canvas');
 canvas.style.width = bodyWidth + 'px';
-canvas.style.height = bodyHeight + 'px';
+canvas.style.height = bodyHeight * 0.6 + 'px';
 canvas.style.position = 'absolute';
 canvas.width = bodyWidth * 2;
-canvas.height = bodyHeight * 2;
+canvas.height = bodyHeight * 0.6 * 2;
 var overCanvas = document.createElement('canvas');
 overCanvas.style.width = bodyWidth + 'px';
-overCanvas.style.height = bodyHeight + 'px';
+overCanvas.style.height = bodyHeight * 0.6 + 'px';
 overCanvas.style.position = 'absolute';
 overCanvas.style.top = 0;
 overCanvas.style.left = 0;
 overCanvas.width = bodyWidth * 2;
-overCanvas.height = bodyHeight * 2;
+overCanvas.height = bodyHeight * 0.6 * 2;
 
 app.appendChild(canvas);
 app.appendChild(overCanvas);
@@ -92,8 +92,9 @@ fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_
                 ctx.fillText(el.time, el.x, el.y);
             });
         },
+        type: 'line',
         mainCsi: '',
-        adiCsi: 'volume',
+        aidCsi: 'macd',
         overTimeFilter: function(d) {
             return new Date(d * 1000).toString('yyyy/MM/dd HH:mm');
         }
@@ -104,15 +105,15 @@ fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_
         var bodyWidth = document.body.clientWidth;
         var bodyHeight = document.body.clientHeight;
         app.style.width = bodyWidth + 'px';
-        app.style.height = bodyHeight + 'px';
+        app.style.height = bodyHeight * 0.6 + 'px';
         canvas.style.width = bodyWidth + 'px';
-        canvas.style.height = bodyHeight + 'px';
+        canvas.style.height = bodyHeight * 0.6 + 'px';
         canvas.width = bodyWidth * 2;
-        canvas.height = bodyHeight * 2;
+        canvas.height = bodyHeight * 0.6 * 2;
         overCanvas.style.width = bodyWidth + 'px';
-        overCanvas.style.height = bodyHeight + 'px';
+        overCanvas.style.height = bodyHeight * 0.6 + 'px';
         overCanvas.width = bodyWidth * 2;
-        overCanvas.height = bodyHeight * 2;
+        overCanvas.height = bodyHeight * 0.6 * 2;
         chart.setOption({});
     });
 });

@@ -58,66 +58,85 @@ export default function drawMain(yaxis) {
     this.drawTimeline();
 
     // 蜡烛线
-    ctx.strokeStyle = this.colors.redColor;
-    ctx.fillStyle = this.colors.redColor;
-    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
-        if (i >= times.length) {
-            break;
+    if (this.option.type === 'candle') {
+        ctx.strokeStyle = this.colors.redColor;
+        ctx.fillStyle = this.colors.redColor;
+        for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            if (close[i] > start[i]) {
+                continue;
+            }
+            let x = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
+            let w = mainView.w / verticalRectNumber * 0.8;
+            let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
+            x = toInt(x);
+            y = toInt(y);
+            w = toInt(w);
+            h = toInt(h);
+            ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
+            let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
+            let x2 = x1;
+            let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
+            x1 = toInt(x1);
+            y1 = toInt(y1);
+            x2 = toInt(x2);
+            y2 = toInt(y2);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
-        if (close[i] > start[i]) {
-            continue;
+        ctx.strokeStyle = this.colors.greenColor;
+        ctx.fillStyle = this.colors.greenColor;
+        for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            if (close[i] <= start[i]) {
+                continue;
+            }
+            let x = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
+            let w = mainView.w / verticalRectNumber * 0.8;
+            let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
+            x = toInt(x);
+            y = toInt(y);
+            w = toInt(w);
+            h = toInt(h);
+            ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
+            let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
+            let x2 = x1;
+            let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
+            x1 = toInt(x1);
+            y1 = toInt(y1);
+            x2 = toInt(x2);
+            y2 = toInt(y2);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
-        let x = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
-        let w = mainView.w / verticalRectNumber * 0.8;
-        let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
-        x = toInt(x);
-        y = toInt(y);
-        w = toInt(w);
-        h = toInt(h);
-        ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
-        let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
-        let x2 = x1;
-        let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
-        x1 = toInt(x1);
-        y1 = toInt(y1);
-        x2 = toInt(x2);
-        y2 = toInt(y2);
+    } else if (this.option.type === 'line') {
         ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-    }
-    ctx.strokeStyle = this.colors.greenColor;
-    ctx.fillStyle = this.colors.greenColor;
-    for (let i = startIndex, j = 0; i < endIndex; i++, j++) {
-        if (i >= times.length) {
-            break;
+        ctx.strokeStyle = this.colors.textFrameColor;
+        for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
+            if (i >= times.length) {
+                break;
+            }
+            let x = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            let y = (max - this.state.close[i]) / (max - min) * mainView.h + mainView.y;
+            x = toInt(x);
+            y = toInt(y);
+            if (j == 0) {
+                ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
         }
-        if (close[i] <= start[i]) {
-            continue;
-        }
-        let x = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        let y = (max - Math.max(start[i], close[i])) / (max - min) * mainView.h + mainView.y;
-        let w = mainView.w / verticalRectNumber * 0.8;
-        let h = (Math.max(start[i], close[i]) - Math.min(start[i], close[i])) / (max - min) * mainView.h;
-        x = toInt(x);
-        y = toInt(y);
-        w = toInt(w);
-        h = toInt(h);
-        ctx.fillRect(x, y, w, h < this.dpr ? this.dpr : h);
-        let x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        let y1 = (max - hi[i]) / (max - min) * mainView.h + mainView.y;
-        let x2 = x1;
-        let y2 = (max - lo[i]) / (max - min) * mainView.h + mainView.y;
-        x1 = toInt(x1);
-        y1 = toInt(y1);
-        x2 = toInt(x2);
-        y2 = toInt(y2);
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
         ctx.stroke();
     }
 

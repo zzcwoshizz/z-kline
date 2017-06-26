@@ -33,6 +33,7 @@ export default function setOption(option = {}) {
         this.option = {
             theme: option.theme || this.option.theme,
             fontSize: option.fontSize || this.option.fontSize,
+            type: option.type || this.option.type,
             mainCsi: option.mainCsi || this.option.mainCsi,
             aidCsi: option.aidCsi || this.option.aidCsi,
             timeFilter: option.timeFilter || this.option.timeFilter,
@@ -50,8 +51,9 @@ export default function setOption(option = {}) {
         this.option = {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
+            type: option.type || 'candle',
             mainCsi: option.mainCsi || 'ema',
-            aidCsi: option.aidCsi || 'macd',
+            aidCsi: option.aidCsi,
             timeFilter: option.timeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
             overTimeFilter: option.overTimeFilter || (t => new Date(t * 1000).toString('M/d/yyyy')),
             priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal,
@@ -99,13 +101,17 @@ function init() {
     const width = this.width;
     const height = this.height;
 
-    this.proportion = 0.7;
+    if (!this.option.aidCsi) {
+        this.proportion = 1;
+    } else {
+        this.proportion = 0.7;
+    }
 
     let mainView = {
         x: left,
         y: top,
         w: width - yAxisWidth - left - right - middle,
-        h: (height - top - bottom) * this.proportion - middle * 0.5,
+        h: (height - top - bottom) * this.proportion,
     };
     let mainYaxisView = {
         x: mainView.w + mainView.x + middle,
@@ -115,9 +121,9 @@ function init() {
     };
     let aidView = {
         x: mainView.x,
-        y: mainView.y + mainView.h + middle,
+        y: mainView.y + mainView.h,
         w: mainView.w,
-        h: (height - top - bottom) * (1 - this.proportion) + middle * 0.5,
+        h: (height - top - bottom) * (1 - this.proportion),
     };
     let aidYaxisView = {
         x: mainYaxisView.x,
