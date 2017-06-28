@@ -121,9 +121,38 @@ export default function drawMain(yaxis) {
             ctx.lineTo(x2, y2);
             ctx.stroke();
         }
+
+        // 画最高点，最低点
+        ctx.fillStyle = this.colors.textColor;
+        ctx.textBaseline = 'middle';
+        let index = (maxPriceIndex - startIndex);
+        let index1 = (minPriceIndex - startIndex);
+        let maxX = mainView.w / verticalRectNumber * 0.5 + (index + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        let maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
+        let minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        let minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
+        maxX = toInt(maxX);
+        maxY = toInt(maxY);
+        minX = toInt(minX);
+        minY = toInt(minY);
+        if (index < verticalRectNumber * 0.5) {
+            ctx.textAlign = 'left';
+            ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
+        } else {
+            ctx.textAlign = 'right';
+            ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
+        }
+        if (index1 < verticalRectNumber * 0.5) {
+            ctx.textAlign = 'left';
+            ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
+        } else {
+            ctx.textAlign = 'right';
+            ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
+        }
     } else if (this.option.type === 'line') {
         ctx.beginPath();
         ctx.strokeStyle = this.colors.textFrameColor;
+        ctx.lineWidth = 2 * this.dpr;
         for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
             if (i >= times.length) {
                 break;
@@ -139,6 +168,7 @@ export default function drawMain(yaxis) {
         }
         ctx.stroke();
     }
+    ctx.lineWidth = this.dpr;
 
     if (this.option.mainCsi === 'ma') {
         // ma30
@@ -282,33 +312,6 @@ export default function drawMain(yaxis) {
         }
     }
 
-    // 画最高点，最低点
-    ctx.fillStyle = this.colors.textColor;
-    ctx.textBaseline = 'middle';
-    let index = (maxPriceIndex - startIndex);
-    let index1 = (minPriceIndex - startIndex);
-    let maxX = mainView.w / verticalRectNumber * 0.5 + (index + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-    let maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
-    let minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-    let minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
-    maxX = toInt(maxX);
-    maxY = toInt(maxY);
-    minX = toInt(minX);
-    minY = toInt(minY);
-    if (index < verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
-    }
-    if (index1 < verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
-    }
 
     // 当前价格
     ctx.textAlign = 'left';

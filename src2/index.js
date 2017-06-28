@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
-import { KLine, Depth } from './KLine';
+import { KLine, Depth, Depth2 } from './KLine';
 var bodyWidth = document.body.clientWidth;
 var bodyHeight = document.body.clientHeight;
 
@@ -8,44 +8,6 @@ var app = document.getElementById('app');
 app.style.width = bodyWidth + 'px';
 app.style.height = bodyHeight + 'px';
 app.style.position = 'relative';
-
-// // const socket = window.io.connect('http://120.26.203.206:9092');
-// const socket = window.io.connect('http://45.248.68.30:3000');
-// let depth;
-// socket.on('connect', function() {
-    // depth = new Depth(app, { width: bodyWidth, height: bodyHeight, fontSize: 24 });
-// });
-// setTimeout(function() {
-    // // socket.emit('subscribe:market', 'okcoin_btc');
-    // socket.emit('market.subscribe', 'dogebtc:poloniex');
-// }, 1000);
-// // socket.on('depth', function(data) {
-// socket.on('update:depth', function(data) {
-    // // depth.setData({ buy: data.bids, sell: data.asks });
-    // const buy = [];
-    // const sell = [];
-    // let bids = data.bids.replace(/\[|\]/g, '').split(',');
-    // let asks = data.asks.replace(/\[|\]/g, '').split(',');
-    // data.bids.replace(/\[|\]/g, '').split(',').forEach((el, i) => {
-        // let index = parseInt(i / 2);
-        // if (i % 2 === 0) {
-            // buy[index] = [];
-            // buy[index].push(Number(el));
-        // } else {
-            // buy[index].push(Number(el));
-        // }
-    // });
-    // data.asks.replace(/\[|\]/g, '').split(',').map((el, i) => {
-        // let index = parseInt(i / 2);
-        // if (i % 2 === 0) {
-            // sell[index] = [];
-            // sell[index].push(Number(el));
-        // } else {
-            // sell[index].push(Number(el));
-        // }
-    // });
-    // depth.setData({ buy, sell: sell.reverse() });
-// });
 
 var canvas = document.createElement('canvas');
 canvas.style.width = bodyWidth + 'px';
@@ -65,7 +27,7 @@ overCanvas.height = bodyHeight * 0.6 * 2;
 app.appendChild(canvas);
 app.appendChild(overCanvas);
 
-const period = 60;
+const period = 60 * 60;
 fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_cny&type=${period}`).then(res => {
     return res.json();
 }).then(json => {
@@ -116,4 +78,21 @@ fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_
         overCanvas.height = bodyHeight * 0.6 * 2;
         chart.setOption({});
     });
+});
+
+
+fetch('http://120.26.102.105:8080/marketCenter/market/v0/depth?symbol=huobi_btc').then(res => {
+    return res.json();
+}).then(json => {
+    var depthCanvas = document.createElement('canvas');
+    depthCanvas.style.width = bodyWidth + 'px';
+    depthCanvas.style.height = bodyHeight * 0.4 + 'px';
+    depthCanvas.style.position = 'absolute';
+    depthCanvas.width = bodyWidth * 2;
+    depthCanvas.height = bodyHeight * 0.4 * 2;
+    depthCanvas.style.top = bodyHeight * 0.6 + 'px';
+    depthCanvas.style.left = 0;
+    app.appendChild(depthCanvas);
+
+    var depth = new Depth2(depthCanvas, json, { theme: 'dark' });
 });

@@ -10,6 +10,7 @@ import { moveRange, scaleRange } from './range';
 import computAxis from './computAxis';
 import canDraw from './canDraw';
 import Depth from './Depth';
+import Depth2 from './Depth2';
 import drawLines from './tools/drawLines';
 import drawLineCache from './tools/drawLineCache';
 import ParallelSegment from './tools/ParallelSegment';
@@ -133,7 +134,10 @@ function isInLineView(pos) {
 
 Depth.prototype.getMousePos = getMousePos;
 Depth.prototype.setDP = setDP;
+Depth2.prototype.getMousePos = getMousePos;
+Depth2.prototype.setDP = setDP;
 
 export {
-    Depth
+    Depth,
+    Depth2,
 };
