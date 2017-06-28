@@ -25,7 +25,7 @@ export default function drawMain(yaxis) {
     ctx.fillStyle = this.colors.textColor;
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     let lengthY = (max - min) / intervalY;
@@ -36,13 +36,13 @@ export default function drawMain(yaxis) {
         let y = i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
         x = toInt(x);
         y = toInt(y);
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, y);
+        // ctx.lineTo(x, y);
+        // ctx.stroke();
     }
     ctx.lineWidth = this.dpr;
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.strokeStyle = this.colors.textColor;
     for (let i = 0; i < lengthY; i++) {
         let x = mainYaxisView.x;
@@ -50,8 +50,12 @@ export default function drawMain(yaxis) {
         x = toInt(x);
         y = toInt(y);
         ctx.beginPath();
-        ctx.moveTo(x + 10, y);
+        ctx.moveTo(x + 5 * this.dpr, y);
         ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(this.width, y);
+        ctx.lineTo(this.width - 5 * this.dpr, y);
         ctx.stroke();
     }
 
@@ -151,7 +155,7 @@ export default function drawMain(yaxis) {
         }
     } else if (this.option.type === 'line') {
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.textFrameColor;
+        ctx.strokeStyle = this.colors.lightColor;
         ctx.lineWidth = 2 * this.dpr;
         for (let i = startIndex, j = 0; j < verticalRectNumber; i++, j++) {
             if (i >= times.length) {
@@ -314,7 +318,11 @@ export default function drawMain(yaxis) {
 
 
     // 当前价格
-    ctx.textAlign = 'left';
-    ctx.fillStyle = this.colors.currentTextColor;
-    ctx.fillText(' ← ' + this.string(close[close.length - 1]), mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
+    // ctx.fillStyle = this.colors.background;
+    // ctx.fillRect(mainYaxisView.x + this.dpr, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y - 10 * this.dpr, mainYaxisView.w - 2 * this.dpr, 20 * this.dpr);
+    // ctx.strokeStyle = this.colors.textFrameColor;
+    // ctx.strokeRect(mainYaxisView.x + this.dpr, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y - 10 * this.dpr, mainYaxisView.w - 2 * this.dpr, 20 * this.dpr);
+    // ctx.textAlign = 'center';
+    // ctx.fillStyle = this.colors.currentTextColor;
+    // ctx.fillText(this.string(close[close.length - 1]), mainYaxisView.x + mainYaxisView.w * 0.5, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
 }

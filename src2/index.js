@@ -34,6 +34,7 @@ fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_
     let chart = new KLine(canvas, overCanvas, {
         data: json,
         period,
+        theme: 'dark',
         priceDecimal: 2,
         timeFilter: function(ctx, d) {
             if (d.length < 1) {
@@ -56,12 +57,12 @@ fetch(`http://120.26.102.105:8080/marketCenter/market/v0/kline?symbol=huobi_btc_
         },
         type: 'line',
         mainCsi: '',
-        aidCsi: 'macd',
+        aidCsi: 'kdj',
         overTimeFilter: function(d) {
             return new Date(d * 1000).toString('yyyy/MM/dd HH:mm');
         }
     });
-    chart.beginDrawLine('arrow');
+    // chart.beginDrawLine('arrow');
     console.log(chart);
     window.addEventListener('resize', function(e) {
         var bodyWidth = document.body.clientWidth;

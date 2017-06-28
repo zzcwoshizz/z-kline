@@ -73,34 +73,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 50);
+/******/ 	return __webpack_require__(__webpack_require__.s = 59);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var store      = __webpack_require__(30)('wks')
-  , uid        = __webpack_require__(32)
-  , Symbol     = __webpack_require__(3).Symbol
-  , USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function(name){
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108,11 +85,11 @@ if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 exports.__esModule = true;
 
-var _isIterable2 = __webpack_require__(53);
+var _isIterable2 = __webpack_require__(62);
 
 var _isIterable3 = _interopRequireDefault(_isIterable2);
 
-var _getIterator2 = __webpack_require__(52);
+var _getIterator2 = __webpack_require__(61);
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -155,6 +132,29 @@ exports.default = function () {
     }
   };
 }();
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var store      = __webpack_require__(30)('wks')
+  , uid        = __webpack_require__(32)
+  , Symbol     = __webpack_require__(3).Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function(name){
+  return store[name] || (store[name] =
+    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+};
+
+$exports.store = store;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
 /* 3 */
@@ -208,7 +208,7 @@ module.exports = !__webpack_require__(9)(function(){
 /***/ (function(module, exports, __webpack_require__) {
 
 var global    = __webpack_require__(3)
-  , core      = __webpack_require__(1)
+  , core      = __webpack_require__(2)
   , ctx       = __webpack_require__(24)
   , hide      = __webpack_require__(6)
   , PROTOTYPE = 'prototype';
@@ -295,8 +295,8 @@ module.exports = function(it, key){
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject       = __webpack_require__(5)
-  , IE8_DOM_DEFINE = __webpack_require__(67)
-  , toPrimitive    = __webpack_require__(85)
+  , IE8_DOM_DEFINE = __webpack_require__(76)
+  , toPrimitive    = __webpack_require__(94)
   , dP             = Object.defineProperty;
 
 exports.f = __webpack_require__(7) ? Object.defineProperty : function defineProperty(O, P, Attributes){
@@ -344,7 +344,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = __webpack_require__(79)
+var $keys       = __webpack_require__(88)
   , enumBugKeys = __webpack_require__(26);
 
 module.exports = Object.keys || function keys(O){
@@ -402,7 +402,7 @@ module.exports = function(it){
 
 "use strict";
 
-var $at  = __webpack_require__(83)(true);
+var $at  = __webpack_require__(92)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
 __webpack_require__(28)(String, 'String', function(iterated){
@@ -428,7 +428,7 @@ __webpack_require__(28)(String, 'String', function(iterated){
 
 exports.__esModule = true;
 
-var _assign = __webpack_require__(54);
+var _assign = __webpack_require__(63);
 
 var _assign2 = _interopRequireDefault(_assign);
 
@@ -454,7 +454,7 @@ exports.default = _assign2.default || function (target) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = __webpack_require__(23)
-  , TAG = __webpack_require__(0)('toStringTag')
+  , TAG = __webpack_require__(1)('toStringTag')
   // ES3 wrong here
   , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -491,7 +491,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(62);
+var aFunction = __webpack_require__(71);
 module.exports = function(fn, that, length){
   aFunction(fn);
   if(that === undefined)return fn;
@@ -548,16 +548,16 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 
 "use strict";
 
-var LIBRARY        = __webpack_require__(73)
+var LIBRARY        = __webpack_require__(82)
   , $export        = __webpack_require__(8)
-  , redefine       = __webpack_require__(82)
+  , redefine       = __webpack_require__(91)
   , hide           = __webpack_require__(6)
   , has            = __webpack_require__(10)
   , Iterators      = __webpack_require__(4)
-  , $iterCreate    = __webpack_require__(70)
+  , $iterCreate    = __webpack_require__(79)
   , setToStringTag = __webpack_require__(29)
-  , getPrototypeOf = __webpack_require__(78)
-  , ITERATOR       = __webpack_require__(0)('iterator')
+  , getPrototypeOf = __webpack_require__(87)
+  , ITERATOR       = __webpack_require__(1)('iterator')
   , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
   , FF_ITERATOR    = '@@iterator'
   , KEYS           = 'keys'
@@ -624,7 +624,7 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
 
 var def = __webpack_require__(11).f
   , has = __webpack_require__(10)
-  , TAG = __webpack_require__(0)('toStringTag');
+  , TAG = __webpack_require__(1)('toStringTag');
 
 module.exports = function(it, tag, stat){
   if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
@@ -667,9 +667,9 @@ module.exports = function(key){
 /***/ (function(module, exports, __webpack_require__) {
 
 var classof   = __webpack_require__(22)
-  , ITERATOR  = __webpack_require__(0)('iterator')
+  , ITERATOR  = __webpack_require__(1)('iterator')
   , Iterators = __webpack_require__(4);
-module.exports = __webpack_require__(1).getIteratorMethod = function(it){
+module.exports = __webpack_require__(2).getIteratorMethod = function(it){
   if(it != undefined)return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
@@ -679,11 +679,11 @@ module.exports = __webpack_require__(1).getIteratorMethod = function(it){
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(89);
+__webpack_require__(98);
 var global        = __webpack_require__(3)
   , hide          = __webpack_require__(6)
   , Iterators     = __webpack_require__(4)
-  , TO_STRING_TAG = __webpack_require__(0)('toStringTag');
+  , TO_STRING_TAG = __webpack_require__(1)('toStringTag');
 
 for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
   var NAME       = collections[i]
@@ -1037,6 +1037,351 @@ Depth.prototype.setData = function (data) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.default = Depth;
+function Depth(canvas, data) {
+    var _this = this;
+
+    var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    this.dpr = canvas.width / canvas.getBoundingClientRect().width;
+    this.setOption(option);
+    this.canvas = canvas;
+    this.width = canvas.width;
+    this.height = canvas.height;
+    this.ctx = canvas.getContext('2d');
+    this.ctx.font = this.dpr * this.option.fontSize + 'px sans-serif';
+    this.data = data;
+
+    this.colors = {
+        background: this.option.theme === 'dark' ? '#0e2029' : '#ebf5fa',
+        fontColor: this.option.theme === 'dark' ? '#878f94' : '#666',
+        splitColor: this.option.theme === 'dark' ? '#878f94' : '#666',
+        greenColor: this.option.theme === 'dark' ? 'rgb(138,224,63)' : 'rgb(138,224,63)',
+        greenBackgroundColor: this.option.theme === 'dark' ? 'rgba(138,224,63,.24)' : 'rgba(138,224,63,.24)',
+        redColor: this.option.theme === 'dark' ? 'rgb(209,29,32)' : 'rgb(209,29,32)',
+        redBackgroundColor: this.option.theme === 'dark' ? 'rgba(209,29,32,.24)' : 'rgba(209,29,32,.24)'
+    };
+
+    canvas.addEventListener('mousemove', function (e) {
+        _this.pos = _this.getMousePos(e);
+    });
+    this.forceUpdate();
+    this.draw();
+}
+
+Depth.prototype.setOption = function (option) {
+    if (this.option) {
+        this.option = {
+            theme: option.theme || this.option.theme,
+            fontSize: option.fontSize || this.option.fontSize,
+            priceDecimal: option.priceDecimal === undefined ? this.option.priceDecimal : option.priceDecimal
+        };
+    } else {
+        this.option = {
+            theme: option.theme || 'dark',
+            fontSize: option.fontSize || 14,
+            priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal
+        };
+    }
+};
+
+Depth.prototype.forceUpdate = function () {
+    this.force = true;
+};
+
+Depth.prototype.draw = function () {
+    if (!this.pos && !this.force) {
+        requestAnimationFrame(this.draw.bind(this));
+        return;
+    }
+    var bottom = 20 * this.dpr;
+    var width = this.width;
+    var height = this.height;
+    var contentWidth = width;
+    var contentHeight = height - bottom;
+    var data = this.data;
+    var ctx = this.ctx;
+    ctx.clearRect(0, 0, width, height);
+
+    var bidsPrice = [];
+    var asksPrice = [];
+    var bidsVolume = [];
+    var asksVolume = [];
+    data.bids.forEach(function (el) {
+        bidsPrice.push(parseFloat(el[0]));
+        bidsVolume.push(parseFloat(el[1]));
+    });
+    data.asks.forEach(function (el) {
+        asksPrice.push(parseFloat(el[0]));
+        asksVolume.push(parseFloat(el[1]));
+    });
+
+    var bidsDepth = [];
+    for (var i = 0; i < bidsVolume.length; i++) {
+        if (i === 0) {
+            bidsDepth[i] = parseFloat(bidsVolume[i]);
+            continue;
+        }
+        bidsDepth[i] = bidsDepth[i - 1] + parseFloat(bidsVolume[i]);
+    }
+
+    var asksDepth = [];
+    for (var _i = 0; _i < asksVolume.length; _i++) {
+        if (_i === 0) {
+            asksDepth[_i] = parseFloat(asksVolume[_i]);
+            continue;
+        }
+        asksDepth[_i] = asksDepth[_i - 1] + parseFloat(asksVolume[_i]);
+    }
+
+    var maxVolume = Math.max(bidsDepth[bidsDepth.length - 1], asksDepth[asksDepth.length - 1]) * 1.2;
+    var n = (maxVolume * 0.2).toFixed(0).length;
+    var interval = Math.ceil(maxVolume * 0.2 / Math.pow(10, n - 1)) * Math.pow(10, n - 1);
+    var yAxis = [];
+    for (var _i2 = interval; _i2 < maxVolume; _i2 += interval) {
+        yAxis.unshift(_i2);
+    }
+
+    ctx.lineWidth = this.dpr;
+    ctx.fillStyle = this.colors.background;
+    ctx.fillRect(0, 0, width, height);
+
+    // 买单
+    var p1 = (bidsPrice[0] - bidsPrice[bidsPrice.length - 1]) / (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]);
+    ctx.lineWidth = this.dpr * 2;
+    ctx.beginPath();
+    var lastX = void 0,
+        lastY = void 0;
+    for (var _i3 = 0; _i3 < bidsDepth.length; _i3++) {
+        var p = (bidsPrice[_i3] - bidsPrice[bidsPrice.length - 1]) / (bidsPrice[0] - bidsPrice[bidsPrice.length - 1]);
+        var x = contentWidth * p1 * p;
+        var y = contentHeight - bidsDepth[_i3] / maxVolume * contentHeight;
+        if (_i3 === 0) {
+            ctx.moveTo(x, contentHeight);
+            ctx.lineTo(x, y);
+        } else {
+            ctx.lineTo(x, lastY);
+            ctx.lineTo(x, y);
+        }
+        lastX = contentWidth * p1 * p;
+        lastY = contentHeight - bidsDepth[_i3] / maxVolume * contentHeight;
+    }
+    ctx.strokeStyle = this.colors.greenColor;
+    ctx.stroke();
+    ctx.lineTo(0, contentHeight);
+    ctx.closePath();
+    ctx.fillStyle = this.colors.greenBackgroundColor;
+    ctx.fill();
+
+    ctx.lineWidth = this.dpr;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var _i4 = 0; _i4 < bidsDepth.length; _i4++) {
+        var _p = (bidsPrice[_i4] - bidsPrice[bidsPrice.length - 1]) / (bidsPrice[0] - bidsPrice[bidsPrice.length - 1]);
+        var _x2 = contentWidth * p1 * _p;
+        var _y = contentHeight - bidsDepth[_i4] / maxVolume * contentHeight;
+        if (this.pos && this.pos.x <= lastX && this.pos.x > _x2) {
+            ctx.beginPath();
+            ctx.arc(this.pos.x, lastY, 4 * this.dpr, 0, Math.PI * 2, true);
+            ctx.fillStyle = this.colors.greenColor;
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = this.colors.fontColor;
+            if (lastY > contentHeight * 0.5) {
+                ctx.strokeStyle = this.colors.splitColor;
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, 0);
+                ctx.lineTo(this.pos.x, (lastY - 10 * this.dpr) * 0.5 - 10 * this.dpr);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, (lastY - 10 * this.dpr) * 0.5 + 10 * this.dpr);
+                ctx.lineTo(this.pos.x, lastY - 10 * this.dpr);
+                ctx.stroke();
+                ctx.fillText(bidsPrice[_i4], this.pos.x, (lastY - 10 * this.dpr) * 0.5);
+
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, contentHeight);
+                ctx.lineTo(this.pos.x, lastY + 10 * this.dpr > contentHeight ? contentHeight : lastY + 10 * this.dpr);
+                ctx.strokeStyle = this.colors.greenColor;
+                ctx.stroke();
+            } else {
+                ctx.strokeStyle = this.colors.splitColor;
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, 0);
+                ctx.lineTo(this.pos.x, lastY - 10 * this.dpr);
+                ctx.stroke();
+
+                var lineY = lastY + 10 * this.dpr > contentHeight ? contentHeight : lastY + 10 * this.dpr;
+                var textY = (contentHeight + lineY) * 0.5;
+                ctx.beginPath();
+                ctx.strokeStyle = this.colors.greenColor;
+                ctx.moveTo(this.pos.x, contentHeight);
+                ctx.lineTo(this.pos.x, textY + 10 * this.dpr);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, textY - 10 * this.dpr);
+                ctx.lineTo(this.pos.x, lineY);
+                ctx.stroke();
+                ctx.fillText(bidsPrice[_i4], this.pos.x, textY);
+            }
+        }
+        lastX = contentWidth * p1 * _p;
+        lastY = contentHeight - bidsDepth[_i4] / maxVolume * contentHeight;
+    }
+
+    // 卖单
+    var p2 = (asksPrice[asksPrice.length - 1] - asksPrice[0]) / (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]);
+    ctx.beginPath();
+    ctx.lineWidth = this.dpr * 2;
+    for (var _i5 = 0; _i5 < asksPrice.length; _i5++) {
+        var _p2 = (asksPrice[_i5] - asksPrice[0]) / (asksPrice[asksPrice.length - 1] - asksPrice[0]);
+        var _x3 = contentWidth * (1 - p2) + contentWidth * p2 * _p2;
+        var _y2 = contentHeight - asksDepth[_i5] / maxVolume * contentHeight;
+        if (_i5 === 0) {
+            ctx.moveTo(_x3, contentHeight);
+            ctx.lineTo(_x3, _y2);
+        } else {
+            ctx.lineTo(_x3, lastY);
+            ctx.lineTo(_x3, _y2);
+        }
+        lastX = contentWidth * (1 - p2) + contentWidth * p2 * _p2;
+        lastY = contentHeight - asksDepth[_i5] / maxVolume * contentHeight;
+    }
+    ctx.strokeStyle = this.colors.redColor;
+    ctx.stroke();
+    ctx.lineTo(contentWidth, contentHeight);
+    ctx.closePath();
+    ctx.fillStyle = this.colors.redBackgroundColor;
+    ctx.fill();
+
+    ctx.lineWidth = this.dpr;
+    for (var _i6 = 0; _i6 < asksPrice.length; _i6++) {
+        var _p3 = (asksPrice[_i6] - asksPrice[0]) / (asksPrice[asksPrice.length - 1] - asksPrice[0]);
+        var _x4 = contentWidth * (1 - p2) + contentWidth * p2 * _p3;
+        var _y3 = contentHeight - asksDepth[_i6] / maxVolume * contentHeight;
+        if (this.pos && this.pos.x >= lastX && this.pos.x < _x4) {
+            ctx.beginPath();
+            ctx.arc(this.pos.x, lastY, 4 * this.dpr, 0, Math.PI * 2, true);
+            ctx.fillStyle = this.colors.redColor;
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = this.colors.fontColor;
+            if (lastY > contentHeight * 0.5) {
+                ctx.strokeStyle = this.colors.splitColor;
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, 0);
+                ctx.lineTo(this.pos.x, (lastY - 10 * this.dpr) * 0.5 - 10 * this.dpr);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, (lastY - 10 * this.dpr) * 0.5 + 10 * this.dpr);
+                ctx.lineTo(this.pos.x, lastY - 10 * this.dpr);
+                ctx.stroke();
+                ctx.fillText(asksPrice[_i6], this.pos.x, (lastY - 10 * this.dpr) * 0.5);
+
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, contentHeight);
+                ctx.lineTo(this.pos.x, lastY + 10 * this.dpr > contentHeight ? contentHeight : lastY + 10 * this.dpr);
+                ctx.strokeStyle = this.colors.redColor;
+                ctx.stroke();
+            } else {
+                ctx.strokeStyle = this.colors.splitColor;
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, 0);
+                ctx.lineTo(this.pos.x, lastY - 10 * this.dpr);
+                ctx.stroke();
+
+                var _lineY = lastY + 10 * this.dpr > contentHeight ? contentHeight : lastY + 10 * this.dpr;
+                var _textY = (contentHeight + _lineY) * 0.5;
+                ctx.beginPath();
+                ctx.strokeStyle = this.colors.redColor;
+                ctx.moveTo(this.pos.x, contentHeight);
+                ctx.lineTo(this.pos.x, _textY + 10 * this.dpr);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(this.pos.x, _textY - 10 * this.dpr);
+                ctx.lineTo(this.pos.x, _lineY);
+                ctx.stroke();
+                ctx.fillText(asksPrice[_i6], this.pos.x, _textY);
+            }
+        }
+        lastX = contentWidth * (1 - p2) + contentWidth * p2 * _p3;
+        lastY = contentHeight - asksDepth[_i6] / maxVolume * contentHeight;
+    }
+
+    // y轴刻度
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = this.colors.fontColor;
+    ctx.strokeStyle = this.colors.splitColor;
+    for (var _i7 = interval; _i7 < maxVolume; _i7 += interval) {
+        var _y4 = contentHeight - contentHeight * _i7 / maxVolume;
+        ctx.fillText(_i7, 12 * this.dpr, _y4);
+        ctx.beginPath();
+        ctx.moveTo(0, _y4);
+        ctx.lineTo(8 * this.dpr, _y4);
+        ctx.stroke();
+    }
+    ctx.textAlign = 'right';
+    for (var _i8 = interval; _i8 < maxVolume; _i8 += interval) {
+        var _y5 = contentHeight - contentHeight * _i8 / maxVolume;
+        ctx.fillText(_i8, width - 12 * this.dpr, _y5);
+        ctx.beginPath();
+        ctx.moveTo(width, _y5);
+        ctx.lineTo(width - 8 * this.dpr, _y5);
+        ctx.stroke();
+    }
+
+    n = 0;
+    if (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1] >= 1) {
+        n = (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]).toFixed(0).length;
+    } else {
+        if (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1] < 0.000001) {
+            var str = ((asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]) * 100000).toString().split('.')[1];
+            for (var _i9 = 0; _i9 < str.length; _i9++) {
+                if (str.charAt(_i9) == 0) {
+                    n--;
+                }
+            }
+            n -= 5;
+        } else {
+            var _str = (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]).toString().split('.')[1];
+            for (var _i10 = 0; _i10 < _str.length; _i10++) {
+                if (_str.charAt(_i10) == 0) {
+                    n--;
+                }
+            }
+        }
+    }
+    var number = 0.15;
+    var intervalX = Math.ceil((asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]) * number / Math.pow(10, n - 2)) * Math.pow(10, n - 2);
+    ctx.fillStyle = this.colors.fontColor;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (var _i11 = bidsPrice[bidsPrice.length - 1] + intervalX; _i11 < asksPrice[asksPrice.length - 1]; _i11 += intervalX) {
+        ctx.fillText(_i11.toFixed(this.option.priceDecimal || 2), (_i11 - bidsPrice[bidsPrice.length - 1]) / (asksPrice[asksPrice.length - 1] - bidsPrice[bidsPrice.length - 1]) * contentWidth, contentHeight);
+    }
+
+    if (this.force) {
+        this.force = false;
+    }
+    if (this.pos) {
+        this.pos = null;
+    }
+    requestAnimationFrame(this.draw.bind(this));
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.default = canDraw;
 function canDraw() {
     if (this.state.range[0] != this.lastState.range[0] || this.state.range[1] != this.lastState.range[1]) {
@@ -1051,7 +1396,7 @@ function canDraw() {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1061,7 +1406,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _toConsumableArray2 = __webpack_require__(56);
+var _toConsumableArray2 = __webpack_require__(65);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -1155,7 +1500,7 @@ function computAxis() {
 }
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1203,12 +1548,14 @@ function drawBackground() {
     var ctx = this.ctx;
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.strokeRect(0, 0, this.width, this.height);
 }
 
 function drawTime() {
     var ctx = this.ctx;
-    ctx.fillStyle = this.colors.timeBackground;
-    ctx.fillRect(0, this.timeView.y, this.width, this.timeView.h);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.strokeRect(-this.dpr, this.timeView.y, this.timeView.w + this.dpr, this.timeView.h);
 }
 
 function drawSplitLine() {
@@ -1226,7 +1573,7 @@ function drawSplitLine() {
 }
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1583,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -1313,18 +1660,18 @@ function drawVolume() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var _i3 = 0; _i3 < yAxis.length; _i3++) {
         ctx.fillText(yAxis[_i3], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[_i3] / maxVolume * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
     for (var _i4 = 0; _i4 < yAxis.length; _i4++) {
@@ -1426,18 +1773,18 @@ function drawMacd() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var i = 1; i < yAxis.length - 1; i++) {
         ctx.fillText(this.string(this.setDP(yAxis[i])), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
@@ -1578,18 +1925,18 @@ function drawKdj() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (var _i15 = 0; _i15 < yAxis.length; _i15++) {
         ctx.fillText(yAxis[_i15], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[_i15]) / cha * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
     for (var _i16 = 0; _i16 < yAxis.length; _i16++) {
@@ -1648,7 +1995,7 @@ function drawKdj() {
 }
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1658,7 +2005,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -1702,7 +2049,7 @@ function drawMain(yaxis) {
     ctx.fillStyle = this.colors.textColor;
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     var lengthY = (max - min) / intervalY;
@@ -1713,13 +2060,13 @@ function drawMain(yaxis) {
         var y = i * intervalY / (max - min) * mainYaxisView.h + mainYaxisView.y;
         x = toInt(x);
         y = toInt(y);
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, y);
+        // ctx.lineTo(x, y);
+        // ctx.stroke();
     }
     ctx.lineWidth = this.dpr;
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.strokeStyle = this.colors.textColor;
     for (var _i = 0; _i < lengthY; _i++) {
         var _x = mainYaxisView.x;
@@ -1727,87 +2074,119 @@ function drawMain(yaxis) {
         _x = toInt(_x);
         _y = toInt(_y);
         ctx.beginPath();
-        ctx.moveTo(_x + 10, _y);
+        ctx.moveTo(_x + 5 * this.dpr, _y);
         ctx.lineTo(_x, _y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(this.width, _y);
+        ctx.lineTo(this.width - 5 * this.dpr, _y);
         ctx.stroke();
     }
 
     this.drawTimeline();
 
     // 蜡烛线
-    ctx.strokeStyle = this.colors.redColor;
-    ctx.fillStyle = this.colors.redColor;
-    for (var _i2 = startIndex, j = 0; _i2 < endIndex; _i2++, j++) {
-        if (_i2 >= times.length) {
-            break;
+    if (this.option.type === 'candle') {
+        ctx.strokeStyle = this.colors.redColor;
+        ctx.fillStyle = this.colors.redColor;
+        for (var _i2 = startIndex, j = 0; _i2 < endIndex; _i2++, j++) {
+            if (_i2 >= times.length) {
+                break;
+            }
+            if (close[_i2] > start[_i2]) {
+                continue;
+            }
+            var _x2 = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+            var _y2 = (max - Math.max(start[_i2], close[_i2])) / (max - min) * mainView.h + mainView.y;
+            var w = mainView.w / verticalRectNumber * 0.8;
+            var h = (Math.max(start[_i2], close[_i2]) - Math.min(start[_i2], close[_i2])) / (max - min) * mainView.h;
+            _x2 = toInt(_x2);
+            _y2 = toInt(_y2);
+            w = toInt(w);
+            h = toInt(h);
+            ctx.fillRect(_x2, _y2, w, h < this.dpr ? this.dpr : h);
+            var x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var y1 = (max - hi[_i2]) / (max - min) * mainView.h + mainView.y;
+            var x2 = x1;
+            var y2 = (max - lo[_i2]) / (max - min) * mainView.h + mainView.y;
+            x1 = toInt(x1);
+            y1 = toInt(y1);
+            x2 = toInt(x2);
+            y2 = toInt(y2);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
         }
-        if (close[_i2] > start[_i2]) {
-            continue;
+        ctx.strokeStyle = this.colors.greenColor;
+        ctx.fillStyle = this.colors.greenColor;
+        for (var _i3 = startIndex, _j = 0; _i3 < endIndex; _i3++, _j++) {
+            if (_i3 >= times.length) {
+                break;
+            }
+            if (close[_i3] <= start[_i3]) {
+                continue;
+            }
+            var _x3 = (_j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+            var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * mainView.h + mainView.y;
+            var _w = mainView.w / verticalRectNumber * 0.8;
+            var _h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * mainView.h;
+            _x3 = toInt(_x3);
+            _y3 = toInt(_y3);
+            _w = toInt(_w);
+            _h = toInt(_h);
+            ctx.fillRect(_x3, _y3, _w, _h < this.dpr ? this.dpr : _h);
+            var _x4 = _j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y4 = (max - hi[_i3]) / (max - min) * mainView.h + mainView.y;
+            var _x5 = _x4;
+            var _y5 = (max - lo[_i3]) / (max - min) * mainView.h + mainView.y;
+            _x4 = toInt(_x4);
+            _y4 = toInt(_y4);
+            _x5 = toInt(_x5);
+            _y5 = toInt(_y5);
+            ctx.beginPath();
+            ctx.moveTo(_x4, _y4);
+            ctx.lineTo(_x5, _y5);
+            ctx.stroke();
         }
-        var _x2 = (j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        var _y2 = (max - Math.max(start[_i2], close[_i2])) / (max - min) * mainView.h + mainView.y;
-        var w = mainView.w / verticalRectNumber * 0.8;
-        var h = (Math.max(start[_i2], close[_i2]) - Math.min(start[_i2], close[_i2])) / (max - min) * mainView.h;
-        _x2 = toInt(_x2);
-        _y2 = toInt(_y2);
-        w = toInt(w);
-        h = toInt(h);
-        ctx.fillRect(_x2, _y2, w, h < this.dpr ? this.dpr : h);
-        var x1 = j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        var y1 = (max - hi[_i2]) / (max - min) * mainView.h + mainView.y;
-        var x2 = x1;
-        var y2 = (max - lo[_i2]) / (max - min) * mainView.h + mainView.y;
-        x1 = toInt(x1);
-        y1 = toInt(y1);
-        x2 = toInt(x2);
-        y2 = toInt(y2);
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-    }
-    ctx.strokeStyle = this.colors.greenColor;
-    ctx.fillStyle = this.colors.greenColor;
-    for (var _i3 = startIndex, _j = 0; _i3 < endIndex; _i3++, _j++) {
-        if (_i3 >= times.length) {
-            break;
-        }
-        if (close[_i3] <= start[_i3]) {
-            continue;
-        }
-        var _x3 = (_j + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-        var _y3 = (max - Math.max(start[_i3], close[_i3])) / (max - min) * mainView.h + mainView.y;
-        var _w = mainView.w / verticalRectNumber * 0.8;
-        var _h = (Math.max(start[_i3], close[_i3]) - Math.min(start[_i3], close[_i3])) / (max - min) * mainView.h;
-        _x3 = toInt(_x3);
-        _y3 = toInt(_y3);
-        _w = toInt(_w);
-        _h = toInt(_h);
-        ctx.fillRect(_x3, _y3, _w, _h < this.dpr ? this.dpr : _h);
-        var _x4 = _j * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-        var _y4 = (max - hi[_i3]) / (max - min) * mainView.h + mainView.y;
-        var _x5 = _x4;
-        var _y5 = (max - lo[_i3]) / (max - min) * mainView.h + mainView.y;
-        _x4 = toInt(_x4);
-        _y4 = toInt(_y4);
-        _x5 = toInt(_x5);
-        _y5 = toInt(_y5);
-        ctx.beginPath();
-        ctx.moveTo(_x4, _y4);
-        ctx.lineTo(_x5, _y5);
-        ctx.stroke();
-    }
 
-    if (this.option.mainCsi === 'ma') {
-        // ma30
+        // 画最高点，最低点
+        ctx.fillStyle = this.colors.textColor;
+        ctx.textBaseline = 'middle';
+        var index = maxPriceIndex - startIndex;
+        var index1 = minPriceIndex - startIndex;
+        var maxX = mainView.w / verticalRectNumber * 0.5 + (index + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
+        var minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
+        var minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
+        maxX = toInt(maxX);
+        maxY = toInt(maxY);
+        minX = toInt(minX);
+        minY = toInt(minY);
+        if (index < verticalRectNumber * 0.5) {
+            ctx.textAlign = 'left';
+            ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
+        } else {
+            ctx.textAlign = 'right';
+            ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
+        }
+        if (index1 < verticalRectNumber * 0.5) {
+            ctx.textAlign = 'left';
+            ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
+        } else {
+            ctx.textAlign = 'right';
+            ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
+        }
+    } else if (this.option.type === 'line') {
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
+        ctx.strokeStyle = this.colors.lightColor;
+        ctx.lineWidth = 2 * this.dpr;
         for (var _i4 = startIndex, _j2 = 0; _j2 < verticalRectNumber; _i4++, _j2++) {
             if (_i4 >= times.length) {
                 break;
             }
             var _x6 = _j2 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y6 = (max - this.state.ma30[_i4]) / (max - min) * mainView.h + mainView.y;
+            var _y6 = (max - this.state.close[_i4]) / (max - min) * mainView.h + mainView.y;
             _x6 = toInt(_x6);
             _y6 = toInt(_y6);
             if (_j2 == 0) {
@@ -1816,16 +2195,19 @@ function drawMain(yaxis) {
             ctx.lineTo(_x6, _y6);
         }
         ctx.stroke();
+    }
+    ctx.lineWidth = this.dpr;
 
-        // ma7
+    if (this.option.mainCsi === 'ma') {
+        // ma30
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
+        ctx.strokeStyle = this.colors.ma30Color;
         for (var _i5 = startIndex, _j3 = 0; _j3 < verticalRectNumber; _i5++, _j3++) {
-            if (_i5 >= this.state.times.length) {
+            if (_i5 >= times.length) {
                 break;
             }
             var _x7 = _j3 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y7 = (max - this.state.ma7[_i5]) / (max - min) * mainView.h + mainView.y;
+            var _y7 = (max - this.state.ma30[_i5]) / (max - min) * mainView.h + mainView.y;
             _x7 = toInt(_x7);
             _y7 = toInt(_y7);
             if (_j3 == 0) {
@@ -1834,16 +2216,16 @@ function drawMain(yaxis) {
             ctx.lineTo(_x7, _y7);
         }
         ctx.stroke();
-    } else if (this.option.mainCsi === 'ema') {
-        // ema30
+
+        // ma7
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
+        ctx.strokeStyle = this.colors.ma7Color;
         for (var _i6 = startIndex, _j4 = 0; _j4 < verticalRectNumber; _i6++, _j4++) {
-            if (_i6 >= times.length) {
+            if (_i6 >= this.state.times.length) {
                 break;
             }
             var _x8 = _j4 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y8 = (max - this.state.ema30[_i6]) / (max - min) * mainView.h + mainView.y;
+            var _y8 = (max - this.state.ma7[_i6]) / (max - min) * mainView.h + mainView.y;
             _x8 = toInt(_x8);
             _y8 = toInt(_y8);
             if (_j4 == 0) {
@@ -1852,16 +2234,16 @@ function drawMain(yaxis) {
             ctx.lineTo(_x8, _y8);
         }
         ctx.stroke();
-
-        // ema7
+    } else if (this.option.mainCsi === 'ema') {
+        // ema30
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
+        ctx.strokeStyle = this.colors.ma30Color;
         for (var _i7 = startIndex, _j5 = 0; _j5 < verticalRectNumber; _i7++, _j5++) {
             if (_i7 >= times.length) {
                 break;
             }
             var _x9 = _j5 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y9 = (max - this.state.ema7[_i7]) / (max - min) * mainView.h + mainView.y;
+            var _y9 = (max - this.state.ema30[_i7]) / (max - min) * mainView.h + mainView.y;
             _x9 = toInt(_x9);
             _y9 = toInt(_y9);
             if (_j5 == 0) {
@@ -1870,16 +2252,16 @@ function drawMain(yaxis) {
             ctx.lineTo(_x9, _y9);
         }
         ctx.stroke();
-    } else if (this.option.mainCsi === 'boll') {
-        // UP
+
+        // ema7
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma30Color;
+        ctx.strokeStyle = this.colors.ma7Color;
         for (var _i8 = startIndex, _j6 = 0; _j6 < verticalRectNumber; _i8++, _j6++) {
             if (_i8 >= times.length) {
                 break;
             }
             var _x10 = _j6 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y10 = (max - this.state.up[_i8]) / (max - min) * mainView.h + mainView.y;
+            var _y10 = (max - this.state.ema7[_i8]) / (max - min) * mainView.h + mainView.y;
             _x10 = toInt(_x10);
             _y10 = toInt(_y10);
             if (_j6 == 0) {
@@ -1888,16 +2270,16 @@ function drawMain(yaxis) {
             ctx.lineTo(_x10, _y10);
         }
         ctx.stroke();
-
-        // MB
+    } else if (this.option.mainCsi === 'boll') {
+        // UP
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.ma7Color;
+        ctx.strokeStyle = this.colors.ma30Color;
         for (var _i9 = startIndex, _j7 = 0; _j7 < verticalRectNumber; _i9++, _j7++) {
             if (_i9 >= times.length) {
                 break;
             }
             var _x11 = _j7 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y11 = (max - this.state.mb[_i9]) / (max - min) * mainView.h + mainView.y;
+            var _y11 = (max - this.state.up[_i9]) / (max - min) * mainView.h + mainView.y;
             _x11 = toInt(_x11);
             _y11 = toInt(_y11);
             if (_j7 == 0) {
@@ -1907,15 +2289,15 @@ function drawMain(yaxis) {
         }
         ctx.stroke();
 
-        // DN
+        // MB
         ctx.beginPath();
-        ctx.strokeStyle = this.colors.macdColor;
+        ctx.strokeStyle = this.colors.ma7Color;
         for (var _i10 = startIndex, _j8 = 0; _j8 < verticalRectNumber; _i10++, _j8++) {
             if (_i10 >= times.length) {
                 break;
             }
             var _x12 = _j8 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y12 = (max - this.state.dn[_i10]) / (max - min) * mainView.h + mainView.y;
+            var _y12 = (max - this.state.mb[_i10]) / (max - min) * mainView.h + mainView.y;
             _x12 = toInt(_x12);
             _y12 = toInt(_y12);
             if (_j8 == 0) {
@@ -1924,58 +2306,52 @@ function drawMain(yaxis) {
             ctx.lineTo(_x12, _y12);
         }
         ctx.stroke();
-    } else if (this.option.mainCsi === 'sar') {
+
+        // DN
+        ctx.beginPath();
         ctx.strokeStyle = this.colors.macdColor;
         for (var _i11 = startIndex, _j9 = 0; _j9 < verticalRectNumber; _i11++, _j9++) {
             if (_i11 >= times.length) {
                 break;
             }
             var _x13 = _j9 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
-            var _y13 = (max - this.state.sar[_i11]) / (max - min) * mainView.h + mainView.y;
+            var _y13 = (max - this.state.dn[_i11]) / (max - min) * mainView.h + mainView.y;
             _x13 = toInt(_x13);
             _y13 = toInt(_y13);
+            if (_j9 == 0) {
+                ctx.moveTo(_x13, _y13);
+            }
+            ctx.lineTo(_x13, _y13);
+        }
+        ctx.stroke();
+    } else if (this.option.mainCsi === 'sar') {
+        ctx.strokeStyle = this.colors.macdColor;
+        for (var _i12 = startIndex, _j10 = 0; _j10 < verticalRectNumber; _i12++, _j10++) {
+            if (_i12 >= times.length) {
+                break;
+            }
+            var _x14 = _j10 * mainView.w / verticalRectNumber + 0.5 * mainView.w / verticalRectNumber + mainView.x;
+            var _y14 = (max - this.state.sar[_i12]) / (max - min) * mainView.h + mainView.y;
+            _x14 = toInt(_x14);
+            _y14 = toInt(_y14);
             ctx.beginPath();
-            ctx.arc(_x13, _y13, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
+            ctx.arc(_x14, _y14, mainView.w / verticalRectNumber / 6, 0, Math.PI * 2);
             ctx.stroke();
         }
     }
 
-    // 画最高点，最低点
-    ctx.fillStyle = this.colors.textColor;
-    ctx.textBaseline = 'middle';
-    var index = maxPriceIndex - startIndex;
-    var index1 = minPriceIndex - startIndex;
-    var maxX = mainView.w / verticalRectNumber * 0.5 + (index + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-    var maxY = (max - maxPrice) / (max - min) * mainView.h + mainView.y;
-    var minX = mainView.w / verticalRectNumber * 0.5 + (index1 + 0.1) * mainView.w / verticalRectNumber + mainView.x;
-    var minY = (max - minPrice) / (max - min) * mainView.h + mainView.y;
-    maxX = toInt(maxX);
-    maxY = toInt(maxY);
-    minX = toInt(minX);
-    minY = toInt(minY);
-    if (index < verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + this.string(maxPrice), maxX, maxY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(this.string(maxPrice) + ' → ', maxX, maxY);
-    }
-    if (index1 < verticalRectNumber * 0.5) {
-        ctx.textAlign = 'left';
-        ctx.fillText(' ← ' + this.string(minPrice), minX, minY);
-    } else {
-        ctx.textAlign = 'right';
-        ctx.fillText(this.string(minPrice) + ' → ', minX, minY);
-    }
-
     // 当前价格
-    ctx.textAlign = 'left';
-    ctx.fillStyle = this.colors.currentTextColor;
-    ctx.fillText(' ← ' + this.string(close[close.length - 1]), mainView.x + mainView.w, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
+    // ctx.fillStyle = this.colors.background;
+    // ctx.fillRect(mainYaxisView.x + this.dpr, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y - 10 * this.dpr, mainYaxisView.w - 2 * this.dpr, 20 * this.dpr);
+    // ctx.strokeStyle = this.colors.textFrameColor;
+    // ctx.strokeRect(mainYaxisView.x + this.dpr, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y - 10 * this.dpr, mainYaxisView.w - 2 * this.dpr, 20 * this.dpr);
+    // ctx.textAlign = 'center';
+    // ctx.fillStyle = this.colors.currentTextColor;
+    // ctx.fillText(this.string(close[close.length - 1]), mainYaxisView.x + mainYaxisView.w * 0.5, (max - close[close.length - 1]) / (max - min) * mainView.h + mainView.y);
 }
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1985,7 +2361,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -2059,17 +2435,17 @@ function drawTimeline() {
             x = toInt(x);
             y = toInt(y);
             timeFilterParams.push({ x: x, y: y, time: times[i] });
-            ctx.beginPath();
-            ctx.moveTo(x, this.height - 2);
-            ctx.lineTo(x, this.height - 8);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.moveTo(x, this.height - 2);
+            // ctx.lineTo(x, this.height - 8);
+            // ctx.stroke();
         }
     }
     this.option.timeFilter(ctx, timeFilterParams);
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2083,7 +2459,7 @@ var _extends2 = __webpack_require__(21);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -2104,7 +2480,9 @@ function operation(canvas, overCanvas) {
 
     var isDown = false;
     var lastIndex = -1;
+    var lastPrice = -1;
     var lastTouchDistance = 0;
+    var moveLine = null;
 
     var move = function move(e) {
         var pos = _this.getMousePos(e);
@@ -2116,31 +2494,30 @@ function operation(canvas, overCanvas) {
 
         var verticalRectNumber = endIndex - startIndex;
         var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+
+        var _computAxis = _this.computAxis(),
+            max = _computAxis.max,
+            min = _computAxis.min;
+
+        var price = max - (max - min) * (pos.y - mainView.y) / mainView.h;
         if (isDown) {
-            var flag = false;
-            _this.lines.forEach(function (line) {
-                if (line.isInPath(pos)) {
-                    flag = true;
-                    return;
+            if (moveLine && moveLine.moving) {
+                if (pos.x > mainView.x && pos.x < mainView.x + mainView.w && pos.y > mainView.y && pos.y < mainView.y + mainView.h) {
+                    moveLine.move(currentIndex - lastIndex, price - lastPrice);
                 }
-            });
-            if (!flag) {
+            } else {
                 _this.moveRange(currentIndex - lastIndex);
             }
         }
         if (_this.isInLineView(pos)) {
             _this.pos = pos;
             if (_this.lineCache && pos.x > mainView.x && pos.x < mainView.x + mainView.w && pos.y > mainView.y && pos.y < mainView.y + mainView.h) {
-                var _computAxis = _this.computAxis(),
-                    max = _computAxis.max,
-                    min = _computAxis.min;
-
-                var price = max - (max - min) * (pos.y - mainView.y) / mainView.h;
                 _this.lineCache.setPosition(currentIndex + startIndex, price);
             }
             _this.forceUpdate(false, true);
         }
         lastIndex = currentIndex;
+        lastPrice = price;
     };
 
     var scale = function scale(n) {
@@ -2155,17 +2532,51 @@ function operation(canvas, overCanvas) {
 
     if (this.device === 'pc') {
         var mousedown = function mousedown(e) {
-            isDown = true;
             var pos = _this.getMousePos(e);
-            var verticalRectNumber = _this.state.range[1] - _this.state.range[0];
-            var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
-            lastIndex = currentIndex;
+            if (e.button === 0) {
+                isDown = true;
+                _this.lines.forEach(function (line) {
+                    if (line.isInPath(pos)) {
+                        moveLine = line;
+                        moveLine.moving = true;
+                        return;
+                    }
+                });
+                var verticalRectNumber = _this.state.range[1] - _this.state.range[0];
+                var currentIndex = Math.floor((pos.x - aidView.x) / aidView.w * verticalRectNumber);
+                lastIndex = currentIndex;
+            } else if (e.button === 2) {
+                overCanvas.oncontextmenu = function () {
+                    return false;
+                };
+                var index = null;
+                _this.lines.forEach(function (line, i) {
+                    if (line.isInPath(pos)) {
+                        index = i;
+                        return;
+                    }
+                });
+                if (index !== null) {
+                    _this.clearLine(index);
+                }
+            }
+            _this.forceUpdate(false, true);
         };
         var mouseup = function mouseup() {
             isDown = false;
+            if (moveLine) {
+                moveLine.moving = false;
+                moveLine = null;
+            }
+            _this.forceUpdate(false, true);
         };
         var mouseout = function mouseout() {
             isDown = false;
+            if (moveLine) {
+                moveLine.moving = false;
+                moveLine = null;
+            }
+            _this.forceUpdate(false, true);
         };
         overCanvas.addEventListener('mousedown', mousedown);
         overCanvas.addEventListener('mouseup', mouseup);
@@ -2212,10 +2623,12 @@ function operation(canvas, overCanvas) {
         };
         var touchend = function touchend() {
             isDown = false;
+            _this.forceUpdate(false, true);
         };
         var touchcancel = function touchcancel() {
             isDown = false;
             overCtx.clearRect(0, 0, _this.width, _this.height);
+            _this.forceUpdate(false, true);
         };
         var touchmove = function touchmove(e) {
             e.preventDefault();
@@ -2241,6 +2654,7 @@ function operation(canvas, overCanvas) {
             } else {
                 move(e.targetTouches[0]);
             }
+            _this.forceUpdate(false, true);
         };
         overCanvas.addEventListener('touchstart', touchstart);
         overCanvas.addEventListener('touchend', touchend);
@@ -2293,12 +2707,12 @@ function drawHairLine() {
     var currentTime = this.option.overTimeFilter(this.state.times[startIndex + currentIndex]);
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'middle';
-    overCtx.fillStyle = this.colors.timeBackground;
-    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
+    overCtx.fillStyle = this.colors.background;
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, timeView.y + this.dpr, overCtx.measureText(currentTime).width + 20, timeView.h - this.dpr * 2);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
-    overCtx.fillStyle = this.colors.textColor;
-    overCtx.fillText(currentTime, x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, timeView.y + this.dpr, overCtx.measureText(currentTime).width + 20, timeView.h - this.dpr * 2);
+    overCtx.fillStyle = this.colors.currentTextColor;
+    overCtx.fillText(currentTime, x, timeView.h * 0.5 + timeView.y);
 
     // 画y轴坐标
 
@@ -2311,12 +2725,13 @@ function drawHairLine() {
     overCtx.textAlign = 'right';
     overCtx.textBaseline = 'middle';
     overCtx.fillStyle = this.colors.background;
-    overCtx.fillRect(view.x, y - 16, w, 32);
+    overCtx.fillRect(view.x + this.dpr, y - 10 * this.dpr, w - 2 * this.dpr, 20 * this.dpr);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(view.x, y - 16, w, 32);
+    overCtx.strokeRect(view.x + this.dpr, y - 10 * this.dpr, w - 2 * this.dpr, 20 * this.dpr);
     overCtx.fillStyle = this.colors.textColor;
 
     overCtx.textAlign = 'center';
+    overCtx.fillStyle = this.colors.currentTextColor;
     if (this.isInLineView(pos) === mainView) {
         var yText = max - (max - min) * (y - view.y) / view.h;
         overCtx.fillText(yText.toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, y);
@@ -2384,7 +2799,7 @@ function drawHairLine() {
 }
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2398,7 +2813,7 @@ var _extends2 = __webpack_require__(21);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -2461,7 +2876,7 @@ function scaleRange(n) {
 }
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2471,7 +2886,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _keys = __webpack_require__(55);
+var _keys = __webpack_require__(64);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -2598,12 +3013,12 @@ function setStyle(key, ctx) {
     } else if (key === 'macd' || key === 'dn' || key === 'j') {
         ctx.fillStyle = this.colors.macdColor;
     } else {
-        ctx.fillStyle = this.colors.textColorLight;
+        ctx.fillStyle = this.colors.textColor;
     }
 }
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2861,7 +3276,7 @@ function setData() {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2905,6 +3320,7 @@ function setOption() {
         this.option = {
             theme: option.theme || this.option.theme,
             fontSize: option.fontSize || this.option.fontSize,
+            type: option.type || this.option.type,
             mainCsi: option.mainCsi || this.option.mainCsi,
             aidCsi: option.aidCsi || this.option.aidCsi,
             timeFilter: option.timeFilter || this.option.timeFilter,
@@ -2924,8 +3340,9 @@ function setOption() {
         this.option = {
             theme: option.theme || 'dark',
             fontSize: option.fontSize || 12,
-            mainCsi: option.mainCsi || 'boll',
-            aidCsi: option.aidCsi || 'macd',
+            type: option.type || 'candle',
+            mainCsi: option.mainCsi || 'ema',
+            aidCsi: option.aidCsi,
             timeFilter: option.timeFilter || function (t) {
                 return new Date(t * 1000).toString('M/d/yyyy');
             },
@@ -2948,18 +3365,18 @@ function init() {
     // 设置全局色彩
     var isDarkTheme = this.option.theme === 'dark';
     this.colors = {
-        background: isDarkTheme ? '#2e3947' : 'white',
-        timeBackground: isDarkTheme ? '#343f4d' : '#fff',
-        splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
-        textColor: isDarkTheme ? '#fff' : '#333',
-        currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
-        textFrameColor: isDarkTheme ? 'white' : 'black',
-        greenColor: isDarkTheme ? '#3bd181' : '#48b484',
-        redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
+        background: isDarkTheme ? '#0e2029' : '#ebf5fa',
+        splitLine: isDarkTheme ? '#33434b' : '#c2cacf',
+        lightColor: isDarkTheme ? '#ddd' : '#666',
+        textColor: isDarkTheme ? '#878f94' : '#333',
+        currentTextColor: isDarkTheme ? '#cad8e0' : '#000',
+        textFrameColor: isDarkTheme ? '#5d727a' : '#a0a8ad',
+        greenColor: isDarkTheme ? '#66d430' : '#68d12c',
+        redColor: isDarkTheme ? '#d11e37' : '#d11d38',
         ma30Color: isDarkTheme ? 'rgb(234, 177, 103)' : 'rgb(234, 177, 103)',
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
-        hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+        hairLine: isDarkTheme ? '#33434b' : 'd3dbe0',
         mobileBar: isDarkTheme ? '#343f4d' : '#fafafa',
         lineColor: isDarkTheme ? '#ccc' : '#333',
         lineHilightColor: isDarkTheme ? '#fff' : '#000'
@@ -2970,22 +3387,26 @@ function init() {
 
     var yAxisWidth = this.setData();
 
-    var left = 20;
-    var right = 20;
+    var left = 10 * this.dpr;
+    var right = 0 * this.dpr;
     var top = 40 * this.dpr;
-    var bottom = 80;
-    var middle = 20;
+    var bottom = 20 * this.dpr;
+    var middle = 10 * this.dpr;
 
     var width = this.width;
     var height = this.height;
 
-    this.proportion = 0.7;
+    if (!this.option.aidCsi) {
+        this.proportion = 1;
+    } else {
+        this.proportion = 0.7;
+    }
 
     var mainView = {
         x: left,
         y: top,
         w: width - yAxisWidth - left - right - middle,
-        h: (height - top - bottom) * this.proportion - middle * 0.5
+        h: (height - top - bottom) * this.proportion
     };
     var mainYaxisView = {
         x: mainView.w + mainView.x + middle,
@@ -2995,9 +3416,9 @@ function init() {
     };
     var aidView = {
         x: mainView.x,
-        y: mainView.y + mainView.h + middle,
+        y: mainView.y + mainView.h,
         w: mainView.w,
-        h: (height - top - bottom) * (1 - this.proportion) + middle * 0.5
+        h: (height - top - bottom) * (1 - this.proportion)
     };
     var aidYaxisView = {
         x: mainYaxisView.x,
@@ -3006,9 +3427,9 @@ function init() {
         h: aidView.h
     };
     var timeView = {
-        x: mainYaxisView.x,
+        x: mainView.x,
         y: aidView.y + aidView.h,
-        w: width,
+        w: aidView.x + aidView.w + middle,
         h: bottom
     };
     this.mainView = mainView;
@@ -3027,7 +3448,7 @@ function init() {
 }
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3037,7 +3458,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray2 = __webpack_require__(2);
+var _slicedToArray2 = __webpack_require__(0);
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -3052,6 +3473,7 @@ function ParallelSegment(ctx, colors, context) {
     this.context = context;
     this.index = [];
     this.price = [];
+    this.moving = false;
 }
 
 ParallelSegment.prototype.draw = function () {
@@ -3065,20 +3487,23 @@ ParallelSegment.prototype.draw = function () {
         point1 = _getPos2[0],
         point2 = _getPos2[1];
 
-    ctx.beginPath();
-    ctx.moveTo(point1.x, point2.y);
-    ctx.lineTo(point2.x, point2.y);
-    if (this.isInPath(this.context.mousePos)) {
+    var linePath = this.getLine();
+    var arrowPath = this.getArrow();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
         if (this.step === 2) {
             ctx.strokeStyle = this.colors.lineHilightColor;
         } else {
             ctx.strokeStyle = this.colors.lineColor;
         }
-        ctx.stroke();
+        ctx.stroke(linePath);
+        ctx.stroke(arrowPath);
         this.drawPoint();
     } else {
+        ctx.lineWidth = this.context.dpr;
         ctx.strokeStyle = this.colors.lineColor;
-        ctx.stroke();
+        ctx.stroke(linePath);
+        ctx.stroke(arrowPath);
     }
 
     if (this.step !== 2) {
@@ -3095,20 +3520,41 @@ ParallelSegment.prototype.next = function () {
     }
 };
 
-ParallelSegment.prototype.isInPath = function (pos) {
-    var _getPos3 = this.getPos(),
-        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
-        point1 = _getPos4[0],
-        point2 = _getPos4[1];
-
-    var dis = 5 * this.context.dpr;
-    if (pos.x > Math.min(point1.x, point2.x) - dis && pos.x < Math.max(point2.x, point1.x) + dis && pos.y > point2.y - dis && pos.y < point2.y + dis) {
+ParallelSegment.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
         return true;
     }
     return false;
 };
 
-ParallelSegment.prototype.drawPoint = function () {
+ParallelSegment.prototype.getArrow = function () {
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var angle = Math.atan2(point1.y - point2.y, point1.x - point2.x);
+    var angle1 = angle + Math.PI / 6;
+    var angle2 = angle - Math.PI / 6;
+    var x1 = point2.x + 12 * Math.cos(angle1);
+    var y1 = point2.y + 12 * Math.sin(angle1);
+    var x2 = point2.x + 12 * Math.cos(angle2);
+    var y2 = point2.y + 12 * Math.sin(angle2);
+
+    var arrow = new Path2D();
+    arrow.moveTo(x1, y1);
+    arrow.lineTo(point2.x, point2.y);
+    arrow.lineTo(x2, y2);
+
+    return arrow;
+};
+
+ParallelSegment.prototype.getCircle = function () {
     var ctx = this.ctx;
 
     var _getPos5 = this.getPos(),
@@ -3116,16 +3562,51 @@ ParallelSegment.prototype.drawPoint = function () {
         point1 = _getPos6[0],
         point2 = _getPos6[1];
 
-    ctx.fillStyle = this.colors.background;
-    ctx.beginPath();
-    ctx.arc(point1.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point1.y, 5 * this.context.dpr, 0, Math.PI * 2);
 
-    ctx.beginPath();
-    ctx.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+ParallelSegment.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos7 = this.getPos(),
+        _getPos8 = (0, _slicedToArray3.default)(_getPos7, 2),
+        point1 = _getPos8[0],
+        point2 = _getPos8[1];
+
+    var path = new Path2D();
+    path.moveTo(point1.x, point1.y);
+    path.lineTo(point2.x, point2.y);
+
+    return path;
+};
+
+ParallelSegment.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos9 = this.getPos(),
+        _getPos10 = (0, _slicedToArray3.default)(_getPos9, 2),
+        point1 = _getPos10[0],
+        point2 = _getPos10[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
 };
 
 ParallelSegment.prototype.setPosition = function (index, price) {
@@ -3136,6 +3617,15 @@ ParallelSegment.prototype.setPosition = function (index, price) {
         this.index = [this.index[0], index];
         this.price = [this.price[0], price];
     }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+ParallelSegment.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
 };
 
 ParallelSegment.prototype.getPos = function () {
@@ -3163,7 +3653,1340 @@ ParallelSegment.prototype.getPos = function () {
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = Beam;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Beam(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = [];
+    this.price = [];
+    this.moving = false;
+}
+
+Beam.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var _getPos = this.getPos(),
+        _getPos2 = (0, _slicedToArray3.default)(_getPos, 2),
+        point1 = _getPos2[0],
+        point2 = _getPos2[1];
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 2) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 2) {
+        this.drawPoint();
+    }
+};
+
+Beam.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+    } else if (this.step === 1) {
+        this.step = 2;
+        return true;
+    }
+};
+
+Beam.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+Beam.prototype.getCircle = function () {
+    var ctx = this.ctx;
+
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point1.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+Beam.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos5 = this.getPos(),
+        _getPos6 = (0, _slicedToArray3.default)(_getPos5, 2),
+        point1 = _getPos6[0],
+        point2 = _getPos6[1];
+
+    var f = (point2.x - point1.x) / (point2.y - point1.y);
+
+    var y = void 0;
+    if (point2.y > point1.y) {
+        y = this.context.mainView.y + this.context.mainView.h + 10;
+    } else {
+        y = 0;
+    }
+    var x = f * (y - point1.y) + point1.x;
+
+    var path = new Path2D();
+    path.moveTo(point1.x, point1.y);
+    path.lineTo(x, y);
+
+    return path;
+};
+
+Beam.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos7 = this.getPos(),
+        _getPos8 = (0, _slicedToArray3.default)(_getPos7, 2),
+        point1 = _getPos8[0],
+        point2 = _getPos8[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
+};
+
+Beam.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = [index, index];
+        this.price = [price, price];
+    } else if (this.step === 1) {
+        this.index = [this.index[0], index];
+        this.price = [this.price[0], price];
+    }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+Beam.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
+};
+
+Beam.prototype.getPos = function () {
+    var _this = this;
+
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var pos = [];
+    this.index.forEach(function (el, i) {
+        var x = (el - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+        var y = mainView.y + (max - _this.price[i]) / (max - min) * mainView.h;
+        pos.push({ x: x, y: y });
+    });
+    return pos;
+};
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = HorizontalBeam;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function HorizontalBeam(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = [];
+    this.price = [];
+    this.moving = false;
+}
+
+HorizontalBeam.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 2) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 2) {
+        this.drawPoint();
+    }
+};
+
+HorizontalBeam.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+    } else if (this.step === 1) {
+        this.step = 2;
+        return true;
+    }
+};
+
+HorizontalBeam.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+HorizontalBeam.prototype.getCircle = function () {
+    var ctx = this.ctx;
+
+    var _getPos = this.getPos(),
+        _getPos2 = (0, _slicedToArray3.default)(_getPos, 2),
+        point1 = _getPos2[0],
+        point2 = _getPos2[1];
+
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+HorizontalBeam.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var path = new Path2D();
+    path.moveTo(point1.x, point2.y);
+    if (point2.x >= point1.x) {
+        path.lineTo(this.context.mainYaxisView.x, point2.y);
+    } else {
+        path.lineTo(0, point2.y);
+    }
+
+    return path;
+};
+
+HorizontalBeam.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos5 = this.getPos(),
+        _getPos6 = (0, _slicedToArray3.default)(_getPos5, 2),
+        point1 = _getPos6[0],
+        point2 = _getPos6[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
+};
+
+HorizontalBeam.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = [index, index];
+        this.price = [price, price];
+    } else if (this.step === 1) {
+        this.index = [this.index[0], index];
+        this.price = [this.price[0], price];
+    }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+HorizontalBeam.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
+};
+
+HorizontalBeam.prototype.getPos = function () {
+    var _this = this;
+
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var pos = [];
+    this.index.forEach(function (el, i) {
+        var x = (el - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+        var y = mainView.y + (max - _this.price[i]) / (max - min) * mainView.h;
+        pos.push({ x: x, y: y });
+    });
+    return pos;
+};
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = HorizontalLine;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function HorizontalLine(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = -1;
+    this.price = -1;
+    this.moving = false;
+}
+
+HorizontalLine.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 1) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 1) {
+        this.drawPoint();
+    }
+};
+
+HorizontalLine.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+        return true;
+    }
+};
+
+HorizontalLine.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+HorizontalLine.prototype.getCircle = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var circle = new Path2D();
+    circle.arc(point.x, point.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return circle;
+};
+
+HorizontalLine.prototype.getLine = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var path = new Path2D();
+    path.moveTo(0, point.y);
+    path.lineTo(this.context.mainYaxisView.x, point.y);
+
+    return path;
+};
+
+HorizontalLine.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+    var circle = this.getCircle();
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle);
+    ctx.stroke(circle);
+};
+
+HorizontalLine.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = index;
+        this.price = price;
+    }
+};
+
+HorizontalLine.prototype.move = function (index, price) {
+    this.index += index;
+    this.price += price;
+};
+
+HorizontalLine.prototype.getPos = function () {
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var x = (this.index - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+    var y = mainView.y + (max - this.price) / (max - min) * mainView.h;
+    return { x: x, y: y };
+};
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = Line;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Line(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = [];
+    this.price = [];
+    this.moving = false;
+}
+
+Line.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var _getPos = this.getPos(),
+        _getPos2 = (0, _slicedToArray3.default)(_getPos, 2),
+        point1 = _getPos2[0],
+        point2 = _getPos2[1];
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 2) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 2) {
+        this.drawPoint();
+    }
+};
+
+Line.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+    } else if (this.step === 1) {
+        this.step = 2;
+        return true;
+    }
+};
+
+Line.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+Line.prototype.getCircle = function () {
+    var ctx = this.ctx;
+
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point1.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+Line.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos5 = this.getPos(),
+        _getPos6 = (0, _slicedToArray3.default)(_getPos5, 2),
+        point1 = _getPos6[0],
+        point2 = _getPos6[1];
+
+    var f = (point2.x - point1.x) / (point2.y - point1.y);
+
+    var y1 = 0;
+    var x1 = f * (y1 - point1.y) + point1.x;
+    var y2 = this.context.mainView.y + this.context.mainView.h + 10;
+    var x2 = f * (y2 - point1.y) + point1.x;
+
+    var path = new Path2D();
+    path.moveTo(x1, y1);
+    path.lineTo(x2, y2);
+
+    return path;
+};
+
+Line.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos7 = this.getPos(),
+        _getPos8 = (0, _slicedToArray3.default)(_getPos7, 2),
+        point1 = _getPos8[0],
+        point2 = _getPos8[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
+};
+
+Line.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = [index, index];
+        this.price = [price, price];
+    } else if (this.step === 1) {
+        this.index = [this.index[0], index];
+        this.price = [this.price[0], price];
+    }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+Line.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
+};
+
+Line.prototype.getPos = function () {
+    var _this = this;
+
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var pos = [];
+    this.index.forEach(function (el, i) {
+        var x = (el - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+        var y = mainView.y + (max - _this.price[i]) / (max - min) * mainView.h;
+        pos.push({ x: x, y: y });
+    });
+    return pos;
+};
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = ParallelSegment;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ParallelSegment(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = [];
+    this.price = [];
+    this.moving = false;
+}
+
+ParallelSegment.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var _getPos = this.getPos(),
+        _getPos2 = (0, _slicedToArray3.default)(_getPos, 2),
+        point1 = _getPos2[0],
+        point2 = _getPos2[1];
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 2) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 2) {
+        this.drawPoint();
+    }
+};
+
+ParallelSegment.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+    } else if (this.step === 1) {
+        this.step = 2;
+        return true;
+    }
+};
+
+ParallelSegment.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+ParallelSegment.prototype.getCircle = function () {
+    var ctx = this.ctx;
+
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+ParallelSegment.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos5 = this.getPos(),
+        _getPos6 = (0, _slicedToArray3.default)(_getPos5, 2),
+        point1 = _getPos6[0],
+        point2 = _getPos6[1];
+
+    var path = new Path2D();
+    path.moveTo(point1.x, point2.y);
+    path.lineTo(point2.x, point2.y);
+
+    return path;
+};
+
+ParallelSegment.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos7 = this.getPos(),
+        _getPos8 = (0, _slicedToArray3.default)(_getPos7, 2),
+        point1 = _getPos8[0],
+        point2 = _getPos8[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
+};
+
+ParallelSegment.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = [index, index];
+        this.price = [price, price];
+    } else if (this.step === 1) {
+        this.index = [this.index[0], index];
+        this.price = [this.price[0], price];
+    }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+ParallelSegment.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
+};
+
+ParallelSegment.prototype.getPos = function () {
+    var _this = this;
+
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var pos = [];
+    this.index.forEach(function (el, i) {
+        var x = (el - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+        var y = mainView.y + (max - _this.price[i]) / (max - min) * mainView.h;
+        pos.push({ x: x, y: y });
+    });
+    return pos;
+};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = PriceLine;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function PriceLine(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = -1;
+    this.price = -1;
+    this.moving = false;
+}
+
+PriceLine.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 1) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+            ctx.fillStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+            ctx.fillStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        ctx.fillText(this.price.toFixed(this.context.option.priceDecimal), point.x, point.y);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.fillStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+        ctx.fillText(this.price.toFixed(this.context.option.priceDecimal), point.x, point.y);
+    }
+
+    if (this.step !== 1) {
+        this.drawPoint();
+    }
+};
+
+PriceLine.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+        return true;
+    }
+};
+
+PriceLine.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+PriceLine.prototype.getCircle = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var circle = new Path2D();
+    circle.arc(point.x, point.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return circle;
+};
+
+PriceLine.prototype.getLine = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var path = new Path2D();
+    path.moveTo(point.x, point.y);
+    path.lineTo(this.context.mainYaxisView.x, point.y);
+
+    return path;
+};
+
+PriceLine.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+    var circle = this.getCircle();
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle);
+    ctx.stroke(circle);
+};
+
+PriceLine.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = index;
+        this.price = price;
+    }
+};
+
+PriceLine.prototype.move = function (index, price) {
+    this.index += index;
+    this.price += price;
+};
+
+PriceLine.prototype.getPos = function () {
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var x = (this.index - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+    var y = mainView.y + (max - this.price) / (max - min) * mainView.h;
+    return { x: x, y: y };
+};
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = Segment;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Segment(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = [];
+    this.price = [];
+    this.moving = false;
+}
+
+Segment.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var _getPos = this.getPos(),
+        _getPos2 = (0, _slicedToArray3.default)(_getPos, 2),
+        point1 = _getPos2[0],
+        point2 = _getPos2[1];
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 2) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 2) {
+        this.drawPoint();
+    }
+};
+
+Segment.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+    } else if (this.step === 1) {
+        this.step = 2;
+        return true;
+    }
+};
+
+Segment.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+Segment.prototype.getCircle = function () {
+    var ctx = this.ctx;
+
+    var _getPos3 = this.getPos(),
+        _getPos4 = (0, _slicedToArray3.default)(_getPos3, 2),
+        point1 = _getPos4[0],
+        point2 = _getPos4[1];
+
+    var circle1 = new Path2D();
+    circle1.arc(point1.x, point1.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    var circle2 = new Path2D();
+    circle2.arc(point2.x, point2.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return [circle1, circle2];
+};
+
+Segment.prototype.getLine = function () {
+    var ctx = this.ctx;
+
+    var _getPos5 = this.getPos(),
+        _getPos6 = (0, _slicedToArray3.default)(_getPos5, 2),
+        point1 = _getPos6[0],
+        point2 = _getPos6[1];
+
+    var path = new Path2D();
+    path.moveTo(point1.x, point1.y);
+    path.lineTo(point2.x, point2.y);
+
+    return path;
+};
+
+Segment.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+
+    var _getPos7 = this.getPos(),
+        _getPos8 = (0, _slicedToArray3.default)(_getPos7, 2),
+        point1 = _getPos8[0],
+        point2 = _getPos8[1];
+
+    var _getCircle = this.getCircle(),
+        _getCircle2 = (0, _slicedToArray3.default)(_getCircle, 2),
+        circle1 = _getCircle2[0],
+        circle2 = _getCircle2[1];
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle1);
+    ctx.stroke(circle1);
+
+    ctx.fill(circle2);
+    ctx.stroke(circle2);
+};
+
+Segment.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = [index, index];
+        this.price = [price, price];
+    } else if (this.step === 1) {
+        this.index = [this.index[0], index];
+        this.price = [this.price[0], price];
+    }
+};
+
+/**
+ * index 沿x轴移动的距离
+ * price 当前价格
+ */
+Segment.prototype.move = function (index, price) {
+    this.index = [this.index[0] + index, this.index[1] + index];
+    this.price = [this.price[0] + price, this.price[1] + price];
+};
+
+Segment.prototype.getPos = function () {
+    var _this = this;
+
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var pos = [];
+    this.index.forEach(function (el, i) {
+        var x = (el - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+        var y = mainView.y + (max - _this.price[i]) / (max - min) * mainView.h;
+        pos.push({ x: x, y: y });
+    });
+    return pos;
+};
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray2 = __webpack_require__(0);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+exports.default = VerticalLine;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function VerticalLine(ctx, colors, context) {
+    this.ctx = ctx;
+    this.colors = colors;
+    this.step = 0;
+    this.context = context;
+    this.index = -1;
+    this.price = -1;
+    this.moving = false;
+}
+
+VerticalLine.prototype.draw = function () {
+    if (this.index.length === 0) {
+        return;
+    }
+    var ctx = this.ctx;
+
+    var linePath = this.getLine();
+    if (this.isInPath(this.context.mousePos, linePath)) {
+        ctx.lineWidth = this.context.dpr;
+        if (this.step === 1) {
+            ctx.strokeStyle = this.colors.lineHilightColor;
+        } else {
+            ctx.strokeStyle = this.colors.lineColor;
+        }
+        ctx.stroke(linePath);
+        this.drawPoint();
+    } else {
+        ctx.lineWidth = this.context.dpr;
+        ctx.strokeStyle = this.colors.lineColor;
+        ctx.stroke(linePath);
+    }
+
+    if (this.step !== 1) {
+        this.drawPoint();
+    }
+};
+
+VerticalLine.prototype.next = function () {
+    if (this.step === 0) {
+        this.step = 1;
+        return true;
+    }
+};
+
+VerticalLine.prototype.isInPath = function (pos, path) {
+    var ctx = this.ctx;
+    ctx.lineWidth = this.context.dpr * 10;
+    if (!path) {
+        path = this.getLine();
+    }
+    if (ctx.isPointInStroke(path, pos.x, pos.y)) {
+        return true;
+    }
+    return false;
+};
+
+VerticalLine.prototype.getCircle = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var circle = new Path2D();
+    circle.arc(point.x, point.y, 5 * this.context.dpr, 0, Math.PI * 2);
+
+    return circle;
+};
+
+VerticalLine.prototype.getLine = function () {
+    var ctx = this.ctx;
+    var point = this.getPos();
+
+    var path = new Path2D();
+    path.moveTo(point.x, 0);
+    path.lineTo(point.x, this.context.mainView.y + this.context.mainView.h + 10);
+
+    return path;
+};
+
+VerticalLine.prototype.drawPoint = function () {
+    var ctx = this.ctx;
+    var circle = this.getCircle();
+
+    ctx.lineWidth = this.context.dpr;
+    ctx.fillStyle = this.colors.background;
+
+    ctx.fill(circle);
+    ctx.stroke(circle);
+};
+
+VerticalLine.prototype.setPosition = function (index, price) {
+    if (this.step === 0) {
+        this.index = index;
+        this.price = price;
+    }
+};
+
+VerticalLine.prototype.move = function (index, price) {
+    this.index += index;
+    this.price += price;
+};
+
+VerticalLine.prototype.getPos = function () {
+    var mainView = this.context.mainView;
+
+    var _context$state$range = (0, _slicedToArray3.default)(this.context.state.range, 2),
+        startIndex = _context$state$range[0],
+        endIndex = _context$state$range[1];
+
+    var verticalRectNumber = endIndex - startIndex;
+
+    var _context$computAxis = this.context.computAxis(),
+        max = _context$computAxis.max,
+        min = _context$computAxis.min;
+
+    var x = (this.index - startIndex) * mainView.w / verticalRectNumber + mainView.w / verticalRectNumber * 0.5 + mainView.x;
+    var y = mainView.y + (max - this.price) / (max - min) * mainView.h;
+    return { x: x, y: y };
+};
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3178,7 +5001,7 @@ function drawLineCache() {
 }
 
 /***/ }),
-/* 49 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3195,7 +5018,7 @@ function drawLines() {
 }
 
 /***/ }),
-/* 50 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3204,48 +5027,48 @@ function drawLines() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Depth = undefined;
+exports.Depth2 = exports.Depth = undefined;
 exports.KLine = KLine;
 
-var _setOption = __webpack_require__(46);
+var _setOption = __webpack_require__(47);
 
 var _setOption2 = _interopRequireDefault(_setOption);
 
-var _setData = __webpack_require__(45);
+var _setData = __webpack_require__(46);
 
 var _setData2 = _interopRequireDefault(_setData);
 
-var _draw = __webpack_require__(38);
+var _draw = __webpack_require__(39);
 
 var _draw2 = _interopRequireDefault(_draw);
 
-var _drawMain = __webpack_require__(40);
+var _drawMain = __webpack_require__(41);
 
 var _drawMain2 = _interopRequireDefault(_drawMain);
 
-var _drawAid = __webpack_require__(39);
+var _drawAid = __webpack_require__(40);
 
 var _drawAid2 = _interopRequireDefault(_drawAid);
 
-var _drawTimeline = __webpack_require__(41);
+var _drawTimeline = __webpack_require__(42);
 
 var _drawTimeline2 = _interopRequireDefault(_drawTimeline);
 
-var _operation = __webpack_require__(42);
+var _operation = __webpack_require__(43);
 
 var _operation2 = _interopRequireDefault(_operation);
 
-var _select = __webpack_require__(44);
+var _select = __webpack_require__(45);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _range = __webpack_require__(43);
+var _range = __webpack_require__(44);
 
-var _computAxis = __webpack_require__(37);
+var _computAxis = __webpack_require__(38);
 
 var _computAxis2 = _interopRequireDefault(_computAxis);
 
-var _canDraw = __webpack_require__(36);
+var _canDraw = __webpack_require__(37);
 
 var _canDraw2 = _interopRequireDefault(_canDraw);
 
@@ -3253,17 +5076,53 @@ var _Depth = __webpack_require__(35);
 
 var _Depth2 = _interopRequireDefault(_Depth);
 
-var _drawLines = __webpack_require__(49);
+var _Depth3 = __webpack_require__(36);
+
+var _Depth4 = _interopRequireDefault(_Depth3);
+
+var _drawLines = __webpack_require__(58);
 
 var _drawLines2 = _interopRequireDefault(_drawLines);
 
-var _drawLineCache = __webpack_require__(48);
+var _drawLineCache = __webpack_require__(57);
 
 var _drawLineCache2 = _interopRequireDefault(_drawLineCache);
 
-var _ParallelSegment = __webpack_require__(47);
+var _ParallelSegment = __webpack_require__(53);
 
 var _ParallelSegment2 = _interopRequireDefault(_ParallelSegment);
+
+var _HorizontalLine = __webpack_require__(51);
+
+var _HorizontalLine2 = _interopRequireDefault(_HorizontalLine);
+
+var _HorizontalBeam = __webpack_require__(50);
+
+var _HorizontalBeam2 = _interopRequireDefault(_HorizontalBeam);
+
+var _VerticalLine = __webpack_require__(56);
+
+var _VerticalLine2 = _interopRequireDefault(_VerticalLine);
+
+var _PriceLine = __webpack_require__(54);
+
+var _PriceLine2 = _interopRequireDefault(_PriceLine);
+
+var _Segment = __webpack_require__(55);
+
+var _Segment2 = _interopRequireDefault(_Segment);
+
+var _Line = __webpack_require__(52);
+
+var _Line2 = _interopRequireDefault(_Line);
+
+var _Beam = __webpack_require__(49);
+
+var _Beam2 = _interopRequireDefault(_Beam);
+
+var _Arrow = __webpack_require__(48);
+
+var _Arrow2 = _interopRequireDefault(_Arrow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3314,7 +5173,29 @@ KLine.prototype = {
     beginDrawLine: function beginDrawLine(type) {
         if (type === 'parallelsegment') {
             this.lineCache = new _ParallelSegment2.default(this.overCtx, this.colors, this);
+        } else if (type === 'horizontalline') {
+            this.lineCache = new _HorizontalLine2.default(this.overCtx, this.colors, this);
+        } else if (type === 'horizontalbeam') {
+            this.lineCache = new _HorizontalBeam2.default(this.overCtx, this.colors, this);
+        } else if (type === 'verticalline') {
+            this.lineCache = new _VerticalLine2.default(this.overCtx, this.colors, this);
+        } else if (type === 'priceline') {
+            this.lineCache = new _PriceLine2.default(this.overCtx, this.colors, this);
+        } else if (type === 'segment') {
+            this.lineCache = new _Segment2.default(this.overCtx, this.colors, this);
+        } else if (type === 'line') {
+            this.lineCache = new _Line2.default(this.overCtx, this.colors, this);
+        } else if (type === 'beam') {
+            this.lineCache = new _Beam2.default(this.overCtx, this.colors, this);
+        } else if (type === 'arrow') {
+            this.lineCache = new _Arrow2.default(this.overCtx, this.colors, this);
         }
+    },
+    clearLine: function clearLine(index) {
+        this.lines.splice(index, 1);
+    },
+    clearAllLine: function clearAllLine() {
+        this.lines = [];
     }
 };
 
@@ -3358,41 +5239,44 @@ function isInLineView(pos) {
 
 _Depth2.default.prototype.getMousePos = getMousePos;
 _Depth2.default.prototype.setDP = setDP;
+_Depth4.default.prototype.getMousePos = getMousePos;
+_Depth4.default.prototype.setDP = setDP;
 
 exports.Depth = _Depth2.default;
+exports.Depth2 = _Depth4.default;
 
 /***/ }),
-/* 51 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(57), __esModule: true };
+module.exports = { "default": __webpack_require__(66), __esModule: true };
 
 /***/ }),
-/* 52 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(58), __esModule: true };
+module.exports = { "default": __webpack_require__(67), __esModule: true };
 
 /***/ }),
-/* 53 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(59), __esModule: true };
+module.exports = { "default": __webpack_require__(68), __esModule: true };
 
 /***/ }),
-/* 54 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(60), __esModule: true };
+module.exports = { "default": __webpack_require__(69), __esModule: true };
 
 /***/ }),
-/* 55 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(61), __esModule: true };
+module.exports = { "default": __webpack_require__(70), __esModule: true };
 
 /***/ }),
-/* 56 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3400,7 +5284,7 @@ module.exports = { "default": __webpack_require__(61), __esModule: true };
 
 exports.__esModule = true;
 
-var _from = __webpack_require__(51);
+var _from = __webpack_require__(60);
 
 var _from2 = _interopRequireDefault(_from);
 
@@ -3419,45 +5303,45 @@ exports.default = function (arr) {
 };
 
 /***/ }),
-/* 57 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(20);
-__webpack_require__(88);
-module.exports = __webpack_require__(1).Array.from;
+__webpack_require__(97);
+module.exports = __webpack_require__(2).Array.from;
 
 /***/ }),
-/* 58 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(34);
 __webpack_require__(20);
-module.exports = __webpack_require__(86);
+module.exports = __webpack_require__(95);
 
 /***/ }),
-/* 59 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(34);
 __webpack_require__(20);
-module.exports = __webpack_require__(87);
+module.exports = __webpack_require__(96);
 
 /***/ }),
-/* 60 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(90);
-module.exports = __webpack_require__(1).Object.assign;
+__webpack_require__(99);
+module.exports = __webpack_require__(2).Object.assign;
 
 /***/ }),
-/* 61 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(91);
-module.exports = __webpack_require__(1).Object.keys;
+__webpack_require__(100);
+module.exports = __webpack_require__(2).Object.keys;
 
 /***/ }),
-/* 62 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = function(it){
@@ -3466,20 +5350,20 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 63 */
+/* 72 */
 /***/ (function(module, exports) {
 
 module.exports = function(){ /* empty */ };
 
 /***/ }),
-/* 64 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(19)
   , toLength  = __webpack_require__(31)
-  , toIndex   = __webpack_require__(84);
+  , toIndex   = __webpack_require__(93);
 module.exports = function(IS_INCLUDES){
   return function($this, el, fromIndex){
     var O      = toIObject($this)
@@ -3498,7 +5382,7 @@ module.exports = function(IS_INCLUDES){
 };
 
 /***/ }),
-/* 65 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3512,13 +5396,13 @@ module.exports = function(object, index, value){
 };
 
 /***/ }),
-/* 66 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(3).document && document.documentElement;
 
 /***/ }),
-/* 67 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = !__webpack_require__(7) && !__webpack_require__(9)(function(){
@@ -3526,12 +5410,12 @@ module.exports = !__webpack_require__(7) && !__webpack_require__(9)(function(){
 });
 
 /***/ }),
-/* 68 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
 var Iterators  = __webpack_require__(4)
-  , ITERATOR   = __webpack_require__(0)('iterator')
+  , ITERATOR   = __webpack_require__(1)('iterator')
   , ArrayProto = Array.prototype;
 
 module.exports = function(it){
@@ -3539,7 +5423,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 69 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
@@ -3556,18 +5440,18 @@ module.exports = function(iterator, fn, value, entries){
 };
 
 /***/ }),
-/* 70 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var create         = __webpack_require__(75)
+var create         = __webpack_require__(84)
   , descriptor     = __webpack_require__(16)
   , setToStringTag = __webpack_require__(29)
   , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(6)(IteratorPrototype, __webpack_require__(0)('iterator'), function(){ return this; });
+__webpack_require__(6)(IteratorPrototype, __webpack_require__(1)('iterator'), function(){ return this; });
 
 module.exports = function(Constructor, NAME, next){
   Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -3575,10 +5459,10 @@ module.exports = function(Constructor, NAME, next){
 };
 
 /***/ }),
-/* 71 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ITERATOR     = __webpack_require__(0)('iterator')
+var ITERATOR     = __webpack_require__(1)('iterator')
   , SAFE_CLOSING = false;
 
 try {
@@ -3601,7 +5485,7 @@ module.exports = function(exec, skipClosing){
 };
 
 /***/ }),
-/* 72 */
+/* 81 */
 /***/ (function(module, exports) {
 
 module.exports = function(done, value){
@@ -3609,21 +5493,21 @@ module.exports = function(done, value){
 };
 
 /***/ }),
-/* 73 */
+/* 82 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 /***/ }),
-/* 74 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys  = __webpack_require__(15)
-  , gOPS     = __webpack_require__(77)
-  , pIE      = __webpack_require__(80)
+  , gOPS     = __webpack_require__(86)
+  , pIE      = __webpack_require__(89)
   , toObject = __webpack_require__(12)
   , IObject  = __webpack_require__(27)
   , $assign  = Object.assign;
@@ -3654,12 +5538,12 @@ module.exports = !$assign || __webpack_require__(9)(function(){
 } : $assign;
 
 /***/ }),
-/* 75 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject    = __webpack_require__(5)
-  , dPs         = __webpack_require__(76)
+  , dPs         = __webpack_require__(85)
   , enumBugKeys = __webpack_require__(26)
   , IE_PROTO    = __webpack_require__(17)('IE_PROTO')
   , Empty       = function(){ /* empty */ }
@@ -3674,7 +5558,7 @@ var createDict = function(){
     , gt     = '>'
     , iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(66).appendChild(iframe);
+  __webpack_require__(75).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -3701,7 +5585,7 @@ module.exports = Object.create || function create(O, Properties){
 
 
 /***/ }),
-/* 76 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP       = __webpack_require__(11)
@@ -3719,13 +5603,13 @@ module.exports = __webpack_require__(7) ? Object.defineProperties : function def
 };
 
 /***/ }),
-/* 77 */
+/* 86 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 /***/ }),
-/* 78 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -3743,12 +5627,12 @@ module.exports = Object.getPrototypeOf || function(O){
 };
 
 /***/ }),
-/* 79 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var has          = __webpack_require__(10)
   , toIObject    = __webpack_require__(19)
-  , arrayIndexOf = __webpack_require__(64)(false)
+  , arrayIndexOf = __webpack_require__(73)(false)
   , IE_PROTO     = __webpack_require__(17)('IE_PROTO');
 
 module.exports = function(object, names){
@@ -3765,18 +5649,18 @@ module.exports = function(object, names){
 };
 
 /***/ }),
-/* 80 */
+/* 89 */
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
-/* 81 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(8)
-  , core    = __webpack_require__(1)
+  , core    = __webpack_require__(2)
   , fails   = __webpack_require__(9);
 module.exports = function(KEY, exec){
   var fn  = (core.Object || {})[KEY] || Object[KEY]
@@ -3786,13 +5670,13 @@ module.exports = function(KEY, exec){
 };
 
 /***/ }),
-/* 82 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(6);
 
 /***/ }),
-/* 83 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(18)
@@ -3814,7 +5698,7 @@ module.exports = function(TO_STRING){
 };
 
 /***/ }),
-/* 84 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(18)
@@ -3826,7 +5710,7 @@ module.exports = function(index, length){
 };
 
 /***/ }),
-/* 85 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -3843,25 +5727,25 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 86 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(5)
   , get      = __webpack_require__(33);
-module.exports = __webpack_require__(1).getIterator = function(it){
+module.exports = __webpack_require__(2).getIterator = function(it){
   var iterFn = get(it);
   if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
   return anObject(iterFn.call(it));
 };
 
 /***/ }),
-/* 87 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var classof   = __webpack_require__(22)
-  , ITERATOR  = __webpack_require__(0)('iterator')
+  , ITERATOR  = __webpack_require__(1)('iterator')
   , Iterators = __webpack_require__(4);
-module.exports = __webpack_require__(1).isIterable = function(it){
+module.exports = __webpack_require__(2).isIterable = function(it){
   var O = Object(it);
   return O[ITERATOR] !== undefined
     || '@@iterator' in O
@@ -3869,7 +5753,7 @@ module.exports = __webpack_require__(1).isIterable = function(it){
 };
 
 /***/ }),
-/* 88 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3877,13 +5761,13 @@ module.exports = __webpack_require__(1).isIterable = function(it){
 var ctx            = __webpack_require__(24)
   , $export        = __webpack_require__(8)
   , toObject       = __webpack_require__(12)
-  , call           = __webpack_require__(69)
-  , isArrayIter    = __webpack_require__(68)
+  , call           = __webpack_require__(78)
+  , isArrayIter    = __webpack_require__(77)
   , toLength       = __webpack_require__(31)
-  , createProperty = __webpack_require__(65)
+  , createProperty = __webpack_require__(74)
   , getIterFn      = __webpack_require__(33);
 
-$export($export.S + $export.F * !__webpack_require__(71)(function(iter){ Array.from(iter); }), 'Array', {
+$export($export.S + $export.F * !__webpack_require__(80)(function(iter){ Array.from(iter); }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
     var O       = toObject(arrayLike)
@@ -3913,13 +5797,13 @@ $export($export.S + $export.F * !__webpack_require__(71)(function(iter){ Array.f
 
 
 /***/ }),
-/* 89 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(63)
-  , step             = __webpack_require__(72)
+var addToUnscopables = __webpack_require__(72)
+  , step             = __webpack_require__(81)
   , Iterators        = __webpack_require__(4)
   , toIObject        = __webpack_require__(19);
 
@@ -3953,23 +5837,23 @@ addToUnscopables('values');
 addToUnscopables('entries');
 
 /***/ }),
-/* 90 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(8);
 
-$export($export.S + $export.F, 'Object', {assign: __webpack_require__(74)});
+$export($export.S + $export.F, 'Object', {assign: __webpack_require__(83)});
 
 /***/ }),
-/* 91 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
 var toObject = __webpack_require__(12)
   , $keys    = __webpack_require__(15);
 
-__webpack_require__(81)('keys', function(){
+__webpack_require__(90)('keys', function(){
   return function keys(it){
     return $keys(toObject(it));
   };

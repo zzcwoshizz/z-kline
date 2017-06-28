@@ -61,18 +61,18 @@ function drawVolume() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 0; i < yAxis.length; i++) {
         ctx.fillText(yAxis[i], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + aidYaxisView.h - yAxis[i] / maxVolume * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
     for (let i = 0; i < yAxis.length; i++) {
@@ -168,18 +168,18 @@ function drawMacd() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 1; i < yAxis.length - 1; i++) {
         ctx.fillText(this.string(this.setDP(yAxis[i])), aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + i / (yAxis.length - 1) * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.fillStyle = this.colors.greenColor;
     ctx.strokeStyle = this.colors.greenColor;
@@ -314,18 +314,18 @@ function drawKdj() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colors.textColor;
-    ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
+    // ctx.setLineDash([2 * this.dpr], 2 * this.dpr);
     ctx.strokeStyle = this.colors.splitLine;
     ctx.lineWidth = this.dpr * 0.5;
     for (let i = 0; i < yAxis.length; i++) {
         ctx.fillText(yAxis[i], aidYaxisView.x + aidYaxisView.w * 0.5, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
-        ctx.beginPath();
-        ctx.moveTo(0, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
-        ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.moveTo(0, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
+        // ctx.lineTo(aidYaxisView.x, aidYaxisView.y + (max - yAxis[i]) / cha * aidYaxisView.h);
+        // ctx.stroke();
     }
 
-    ctx.setLineDash([]);
+    // ctx.setLineDash([]);
     ctx.lineWidth = this.dpr;
     ctx.strokeStyle = this.colors.textColor;
     for (let i = 0; i < yAxis.length; i++) {

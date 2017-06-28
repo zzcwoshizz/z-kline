@@ -36,12 +36,14 @@ function drawBackground() {
     const ctx = this.ctx;
     ctx.fillStyle = this.colors.background;
     ctx.fillRect(0, 0, this.width, this.height);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.strokeRect(0, 0, this.width, this.height);
 }
 
 function drawTime() {
     const ctx = this.ctx;
-    ctx.fillStyle = this.colors.timeBackground;
-    ctx.fillRect(0, this.timeView.y, this.width, this.timeView.h);
+    ctx.strokeStyle = this.colors.splitLine;
+    ctx.strokeRect(-this.dpr, this.timeView.y, this.timeView.w + this.dpr, this.timeView.h);
 }
 
 function drawSplitLine() {

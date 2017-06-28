@@ -56,10 +56,10 @@ export default function drawTimeline() {
             x = toInt(x);
             y = toInt(y);
             timeFilterParams.push({ x, y, time: times[i] });
-            ctx.beginPath();
-            ctx.moveTo(x, this.height - 2);
-            ctx.lineTo(x, this.height - 8);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.moveTo(x, this.height - 2);
+            // ctx.lineTo(x, this.height - 8);
+            // ctx.stroke();
         }
     }
     this.option.timeFilter(ctx, timeFilterParams);

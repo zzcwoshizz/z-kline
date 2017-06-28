@@ -205,12 +205,12 @@ export function drawHairLine() {
     const currentTime = this.option.overTimeFilter(this.state.times[startIndex + currentIndex]);
     overCtx.textAlign = 'center';
     overCtx.textBaseline = 'middle';
-    overCtx.fillStyle = this.colors.timeBackground;
-    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
+    overCtx.fillStyle = this.colors.background;
+    overCtx.fillRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, timeView.y + this.dpr, overCtx.measureText(currentTime).width + 20, timeView.h - this.dpr * 2);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, this.height - timeView.h * 0.5, overCtx.measureText(currentTime).width + 20, timeView.h * 0.5 - this.dpr);
-    overCtx.fillStyle = this.colors.textColor;
-    overCtx.fillText(currentTime, x, this.height - (timeView.h * 0.5 - this.dpr) * 0.5);
+    overCtx.strokeRect(x - overCtx.measureText(currentTime).width * 0.5 - 10, timeView.y + this.dpr, overCtx.measureText(currentTime).width + 20, timeView.h - this.dpr * 2);
+    overCtx.fillStyle = this.colors.currentTextColor;
+    overCtx.fillText(currentTime, x, timeView.h * 0.5 + timeView.y);
 
     // 画y轴坐标
     const { max, min } = this.computAxis();
@@ -219,12 +219,13 @@ export function drawHairLine() {
     overCtx.textAlign = 'right';
     overCtx.textBaseline = 'middle';
     overCtx.fillStyle = this.colors.background;
-    overCtx.fillRect(view.x, y - 16, w, 32);
+    overCtx.fillRect(view.x + this.dpr, y - 10 * this.dpr, w - 2 * this.dpr, 20 * this.dpr);
     overCtx.strokeStyle = this.colors.textFrameColor;
-    overCtx.strokeRect(view.x, y - 16, w, 32);
+    overCtx.strokeRect(view.x + this.dpr, y - 10 * this.dpr, w - 2 * this.dpr, 20 * this.dpr);
     overCtx.fillStyle = this.colors.textColor;
 
     overCtx.textAlign = 'center';
+    overCtx.fillStyle = this.colors.currentTextColor;
     if (this.isInLineView(pos) === mainView) {
         const yText = max - (max - min) * (y - view.y) / view.h;
         overCtx.fillText(yText.toFixed(this.option.priceDecimal), mainYaxisView.x + mainYaxisView.w * 0.5, y);

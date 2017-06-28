@@ -51,7 +51,7 @@ function setStyle(key, ctx) {
     } else if (key === 'macd' || key === 'dn' || key === 'j') {
         ctx.fillStyle = this.colors.macdColor;
     } else {
-        ctx.fillStyle = this.colors.textColorLight;
+        ctx.fillStyle = this.colors.textColor;
     }
 }
 

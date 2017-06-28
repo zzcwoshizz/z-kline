@@ -70,18 +70,18 @@ function init() {
     // 设置全局色彩
     const isDarkTheme = this.option.theme === 'dark';
     this.colors = {
-        background: isDarkTheme ? '#2e3947' : 'white',
-        timeBackground: isDarkTheme ? '#343f4d' : '#fff',
-        splitLine: isDarkTheme ? 'rgb(66, 73, 82)' : '#eee',
-        textColor: isDarkTheme ? '#fff' : '#333',
-        currentTextColor: isDarkTheme ? 'rgb(239, 229, 46)' : 'rgb(242, 121, 53)',
-        textFrameColor: isDarkTheme ? 'white' : 'black',
-        greenColor: isDarkTheme ? '#3bd181' : '#48b484',
-        redColor: isDarkTheme ? '#eb3f2f' : '#d64541',
+        background: isDarkTheme ? '#0e2029' : '#ebf5fa',
+        splitLine: isDarkTheme ? '#33434b' : '#c2cacf',
+        lightColor: isDarkTheme ? '#ddd' : '#666',
+        textColor: isDarkTheme ? '#878f94' : '#333',
+        currentTextColor: isDarkTheme ? '#cad8e0' : '#000',
+        textFrameColor: isDarkTheme ? '#5d727a' : '#a0a8ad',
+        greenColor: isDarkTheme ? '#66d430' : '#68d12c',
+        redColor: isDarkTheme ? '#d11e37' : '#d11d38',
         ma30Color: isDarkTheme ? 'rgb(234, 177, 103)' : 'rgb(234, 177, 103)',
         ma7Color: isDarkTheme ? 'rgb(166, 206, 227)' : 'rgb(59, 187, 59)',
         macdColor: isDarkTheme ? 'rgb(208, 146, 209)' : 'rgb(208, 146, 209)',
-        hairLine: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+        hairLine: isDarkTheme ? '#33434b' : 'd3dbe0',
         mobileBar: isDarkTheme ? '#343f4d' : '#fafafa',
         lineColor: isDarkTheme ? '#ccc' : '#333',
         lineHilightColor: isDarkTheme ? '#fff' : '#000',
@@ -92,11 +92,11 @@ function init() {
 
     const yAxisWidth = this.setData();
 
-    const left = 20;
-    const right = 20;
+    const left = 10 * this.dpr;
+    const right = 0 * this.dpr;
     const top = 40 * this.dpr;
-    const bottom = 80;
-    const middle = 20;
+    const bottom = 20 * this.dpr;
+    const middle = 10 * this.dpr;
 
     const width = this.width;
     const height = this.height;
@@ -134,7 +134,7 @@ function init() {
     let timeView = {
         x: mainView.x,
         y: aidView.y + aidView.h,
-        w: width,
+        w: aidView.x + aidView.w + middle,
         h: bottom,
     };
     this.mainView = mainView;
