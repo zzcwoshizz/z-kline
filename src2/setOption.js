@@ -87,8 +87,10 @@ function init() {
         lineHilightColor: isDarkTheme ? '#fff' : '#000',
     };
 
-    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+    this.ctx = this.canvas.getContext('2d');
+    this.overCtx = this.overCanvas.getContext('2d');
+    this.ctx.font = this.option.fontSize * this.dpr + 'px Consolas, Monaco, monospace, sans-serif';
+    this.overCtx.font = this.option.fontSize * this.dpr + 'px Consolas, Monaco, monospace, sans-serif';
 
     const yAxisWidth = this.setData();
 

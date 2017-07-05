@@ -1,6 +1,7 @@
 export default function operation(canvas, overCanvas) {
     const overCtx = this.overCtx;
-    const { mainView, mainYaxisView, aidView, aidYaxisView } = this;
+    const getMainView = () => this.mainView;
+    const getAidView = () => this.aidView;
 
     let isDown = false;
     let lastIndex = -1;
@@ -9,6 +10,8 @@ export default function operation(canvas, overCanvas) {
     let moveLine = null;
 
     const move = e => {
+        const mainView = getMainView();
+        const aidView = getAidView();
         const pos = this.getMousePos(e);
         this.mousePos = pos;
         let [startIndex, endIndex] = this.state.range;
@@ -48,6 +51,7 @@ export default function operation(canvas, overCanvas) {
 
     if (this.device === 'pc') {
         const mousedown = e => {
+            const aidView = getAidView();
             const pos = this.getMousePos(e);
             if (e.button === 0) {
                 isDown = true;
@@ -117,6 +121,7 @@ export default function operation(canvas, overCanvas) {
     } else {
         const touchstart = e => {
             isDown = true;
+            const mainView = getMainView();
             if (e.targetTouches.length == 2) {
                 const touch1 = this.getMousePos(e.targetTouches[0]);
                 const touch2 = this.getMousePos(e.targetTouches[1]);

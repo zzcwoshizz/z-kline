@@ -30,8 +30,6 @@ export function KLine(canvas, overCanvas, option) {
         console.log('Two canvas\'s width and height must equal');
         return;
     }
-    this.ctx = canvas.getContext('2d');
-    this.overCtx = overCanvas.getContext('2d');
     this.dpr = canvas.width / canvas.getBoundingClientRect().width;
     this.setOption(option);
     this.draw();

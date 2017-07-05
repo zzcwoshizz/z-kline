@@ -1044,12 +1044,8 @@ function Depth(canvas, data) {
     var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
     this.dpr = canvas.width / canvas.getBoundingClientRect().width;
-    this.setOption(option);
     this.canvas = canvas;
-    this.width = canvas.width;
-    this.height = canvas.height;
-    this.ctx = canvas.getContext('2d');
-    this.ctx.font = this.dpr * this.option.fontSize + 'px sans-serif';
+    this.setOption(option);
     this.data = data;
 
     this.colors = {
@@ -1064,6 +1060,7 @@ function Depth(canvas, data) {
 
     canvas.addEventListener('mousemove', function (e) {
         _this.pos = _this.getMousePos(e);
+        _this.forceUpdate();
     });
     this.forceUpdate();
     this.draw();
@@ -1083,6 +1080,11 @@ Depth.prototype.setOption = function (option) {
             priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal
         };
     }
+    this.ctx = this.canvas.getContext('2d');
+    this.ctx.font = this.dpr * this.option.fontSize + 'px Consolas, Monaco, monospace, sans-serif';
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+    this.forceUpdate();
 };
 
 Depth.prototype.forceUpdate = function () {
@@ -1090,7 +1092,7 @@ Depth.prototype.forceUpdate = function () {
 };
 
 Depth.prototype.draw = function () {
-    if (!this.pos && !this.force) {
+    if (!this.force) {
         requestAnimationFrame(this.draw.bind(this));
         return;
     }
@@ -1365,9 +1367,6 @@ Depth.prototype.draw = function () {
 
     if (this.force) {
         this.force = false;
-    }
-    if (this.pos) {
-        this.pos = null;
     }
     requestAnimationFrame(this.draw.bind(this));
 };
@@ -2472,11 +2471,12 @@ function operation(canvas, overCanvas) {
     var _this = this;
 
     var overCtx = this.overCtx;
-    var mainView = this.mainView,
-        mainYaxisView = this.mainYaxisView,
-        aidView = this.aidView,
-        aidYaxisView = this.aidYaxisView;
-
+    var getMainView = function getMainView() {
+        return _this.mainView;
+    };
+    var getAidView = function getAidView() {
+        return _this.aidView;
+    };
 
     var isDown = false;
     var lastIndex = -1;
@@ -2485,6 +2485,8 @@ function operation(canvas, overCanvas) {
     var moveLine = null;
 
     var move = function move(e) {
+        var mainView = getMainView();
+        var aidView = getAidView();
         var pos = _this.getMousePos(e);
         _this.mousePos = pos;
 
@@ -2532,6 +2534,7 @@ function operation(canvas, overCanvas) {
 
     if (this.device === 'pc') {
         var mousedown = function mousedown(e) {
+            var aidView = getAidView();
             var pos = _this.getMousePos(e);
             if (e.button === 0) {
                 isDown = true;
@@ -2603,6 +2606,7 @@ function operation(canvas, overCanvas) {
     } else {
         var touchstart = function touchstart(e) {
             isDown = true;
+            var mainView = getMainView();
             if (e.targetTouches.length == 2) {
                 var touch1 = _this.getMousePos(e.targetTouches[0]);
                 var touch2 = _this.getMousePos(e.targetTouches[1]);
@@ -3272,7 +3276,7 @@ function setData() {
     }
     maxLength = maxLength > 20 ? 20 : maxLength;
 
-    return Math.ceil(this.ctx.measureText(Math.pow(10, maxLength)).width);
+    return Math.ceil(this.ctx.measureText(Math.pow(10, maxLength)).width + 10 * this.dpr);
 }
 
 /***/ }),
@@ -3382,8 +3386,10 @@ function init() {
         lineHilightColor: isDarkTheme ? '#fff' : '#000'
     };
 
-    this.ctx.font = this.option.fontSize * this.dpr + 'px sans-serif';
-    this.overCtx.font = this.option.fontSize * this.dpr + 'px sans-serif';
+    this.ctx = this.canvas.getContext('2d');
+    this.overCtx = this.overCanvas.getContext('2d');
+    this.ctx.font = this.option.fontSize * this.dpr + 'px Consolas, Monaco, monospace, sans-serif';
+    this.overCtx.font = this.option.fontSize * this.dpr + 'px Consolas, Monaco, monospace, sans-serif';
 
     var yAxisWidth = this.setData();
 
@@ -5133,8 +5139,6 @@ function KLine(canvas, overCanvas, option) {
         console.log('Two canvas\'s width and height must equal');
         return;
     }
-    this.ctx = canvas.getContext('2d');
-    this.overCtx = overCanvas.getContext('2d');
     this.dpr = canvas.width / canvas.getBoundingClientRect().width;
     this.setOption(option);
     this.draw();

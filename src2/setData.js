@@ -247,5 +247,5 @@ export default function setData() {
     }
     maxLength = maxLength > 20 ? 20 : maxLength;
 
-    return Math.ceil(this.ctx.measureText(10 ** maxLength).width);
+    return Math.ceil(this.ctx.measureText(10 ** maxLength).width + 10 * this.dpr);
 }

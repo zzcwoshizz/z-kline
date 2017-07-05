@@ -1,11 +1,7 @@
 export default function Depth(canvas, data, option = {}) {
     this.dpr = canvas.width / canvas.getBoundingClientRect().width;
-    this.setOption(option);
     this.canvas = canvas;
-    this.width = canvas.width;
-    this.height = canvas.height;
-    this.ctx = canvas.getContext('2d');
-    this.ctx.font = this.dpr * this.option.fontSize + 'px sans-serif';
+    this.setOption(option);
     this.data = data;
 
     this.colors = {
@@ -20,6 +16,7 @@ export default function Depth(canvas, data, option = {}) {
 
     canvas.addEventListener('mousemove', e => {
         this.pos = this.getMousePos(e);
+        this.forceUpdate();
     });
     this.forceUpdate();
     this.draw();
@@ -39,6 +36,11 @@ Depth.prototype.setOption = function(option) {
             priceDecimal: option.priceDecimal === undefined ? 0 : option.priceDecimal,
         }
     }
+    this.ctx = this.canvas.getContext('2d');
+    this.ctx.font = this.dpr * this.option.fontSize + 'px Consolas, Monaco, monospace, sans-serif';
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+    this.forceUpdate();
 }
 
 Depth.prototype.forceUpdate = function() {
@@ -46,7 +48,7 @@ Depth.prototype.forceUpdate = function() {
 }
 
 Depth.prototype.draw = function() {
-    if (!this.pos && !this.force) {
+    if (!this.force) {
         requestAnimationFrame(this.draw.bind(this));
         return;
     }
@@ -322,9 +324,6 @@ Depth.prototype.draw = function() {
 
     if (this.force) {
         this.force = false;
-    }
-    if (this.pos) {
-        this.pos = null;
     }
     requestAnimationFrame(this.draw.bind(this));
 };
