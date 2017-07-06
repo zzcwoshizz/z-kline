@@ -149,7 +149,7 @@ function init() {
     this.minVerticalRectNumber = 30;
     this.force = [true, true];
 
-    this.lines = [];
-    this.lineCache = null;
+    this.lines = this.lines.length === 0 ? [] : this.lines;
+    this.lineCache = this.lineCache || null;
     this.mousePos = {};
 }
