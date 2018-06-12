@@ -1,10 +1,16 @@
+# Deprecated
+
+[zkline](https://github.com/zzcwoshizz/zkline)
+
 # Kline
-k线插件
+
+k 线插件
 
 ## Usage
-	$ npm install
 
-	$ npm start
+    $ npm install
+
+    $ npm start
 
     $ npm run server
 
