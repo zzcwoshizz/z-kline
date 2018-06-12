@@ -1,5 +1,6 @@
 # Deprecated
 
+已废弃。
 [zkline](https://github.com/zzcwoshizz/zkline)
 
 # Kline
